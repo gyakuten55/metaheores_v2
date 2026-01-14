@@ -72,6 +72,12 @@ body {
   font-family: 'Inter', 'Noto Sans JP', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-width: 1280px;
+  overflow-x: auto;
+}
+
+#root {
+  min-width: 1280px;
 }
 
 .scrollbar-hide {
