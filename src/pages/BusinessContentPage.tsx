@@ -28,14 +28,14 @@ const CONTENT_DATA = {
     concept: '社会課題をエンタメに翻訳する',
     description: '社会課題を、メタバースだからこそ解決できるサービスとして展開。重い問題を「エンターテインメント」へと翻訳し、参加のハードルを下げます。',
     issues: [
-      { label: '社会課題への無関心', icon: '/assets/business-content/metaverce/社会課題への無関心.png', points: ['情報不足', '他人事', 'きっかけがない'] },
-      { label: '難解な解決プロセス', icon: '/assets/business-content/metaverce/難解な解決プロセス.png', points: ['問題の複雑さ', '解決の方法が周知されていない'] },
-      { label: '若年層の巻き込み', icon: '/assets/business-content/metaverce/若年層の巻き込み.png', points: ['参加方法が分からない', '地域・社会とのつながりの希薄化'] },
+      { label: '社会課題への無関心', icon: '/assets/business-content/metaverce/indifference.png', points: ['情報不足', '他人事', 'きっかけがない'] },
+      { label: '難解な解決プロセス', icon: '/assets/business-content/metaverce/difficult_process.png', points: ['問題の複雑さ', '解決の方法が周知されていない'] },
+      { label: '若年層の巻き込み', icon: '/assets/business-content/metaverce/youth_involvement.png', points: ['参加方法が分からない', '地域・社会とのつながりの希薄化'] },
     ],
     solutions: [
-      { title: 'ゲーム性のある学習', text: 'ユーザーが積極的に参加するために、ゲームの要素を取り入れた体験を中心としたデザインを提供します。', image: '/assets/business-content/metaverce/ゲーム性のある学習.png' },
+      { title: 'ゲーム性のある学習', text: 'ユーザーが積極的に参加するために、ゲームの要素を取り入れた体験を中心としたデザインを提供します。', image: '/assets/business-content/metaverce/game_learning.png' },
       { title: '没入体験', text: '物理的な制約を超えて、安全に実践的なシミュレーションを何度でも体験できます。', image: '/assets/business-content/metaverce/没入体験.png' },
-      { title: 'ワンストップ体制', text: '企画から運用まで、一気通貫で対応するため、開発コストの削減や一貫したブランド体験を提供します。', image: '/assets/business-content/metaverce/ワンストップ体制.png' },
+      { title: 'ワンストップ体制', text: '企画から運用まで、一気通貫で対応するため、開発コストの削減や一貫したブランド体験を提供します。', image: '/assets/business-content/metaverce/onestop.png' },
     ]
   },
   ai: {
