@@ -13,7 +13,6 @@ import {
   Users,
   Building,
   Mail,
-  Lock,
   X,
   Check,
   Calendar,

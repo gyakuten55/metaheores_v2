@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { PageHero } from '../../components/PageHero';
 import { Link } from 'react-router-dom';
 import { getBlogs, Blog } from '../../lib/microcms';
-import { motion } from 'framer-motion';
 
 export const XrSolutionsPage: React.FC = () => {
   const [news, setNews] = useState<Blog[]>([]);
@@ -11,9 +10,9 @@ export const XrSolutionsPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const newsData = await getBlogs(4, undefined, { filters: 'category[equals]news' });
+        const newsData = await getBlogs(4, undefined, { categoryId: 'news' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { filters: 'category[equals]case-study' });
+        const worksData = await getBlogs(4, undefined, { categoryId: 'case-study' });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);

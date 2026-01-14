@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 import { 
-  Send, Building, User, Mail, Phone, MessageSquare, CheckCircle2, Loader2 
+  Send, Building, MessageSquare, CheckCircle2, Loader2 
 } from 'lucide-react';
 
 const SERVICES = ['HERO AIVO', 'AI人材育成研修', 'AIリスキリング', 'Holoshare', 'Metaheroes guild', 'XRソリューション', '防災メタバース'];

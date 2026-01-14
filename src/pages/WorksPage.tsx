@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { getBlogs, Blog, Category, client } from '../lib/microcms';
 import { Search, ChevronDown } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
-import { motion } from 'framer-motion';
 
 const PLACEHOLDER_IMAGE = 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1974&auto=format&fit=crop';
 

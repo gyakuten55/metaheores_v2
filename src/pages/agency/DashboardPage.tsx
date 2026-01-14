@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
-import { FileText, Users, Clock, Download, ChevronRight, Folder, FolderOpen } from 'lucide-react';
+import { FileText, Users, Clock, ChevronRight, Folder } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Database } from '../../types/database.types';
 
@@ -12,14 +12,12 @@ const DashboardPage: React.FC = () => {
   const { profile, role } = useAuth();
   const [categories, setCategories] = useState<Category[]>([]);
   const [recentDocs, setRecentDocs] = useState<Document[]>([]);
-  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    setLoading(true);
     try {
       const [catRes, docRes] = await Promise.all([
         supabase.from('categories').select('*').is('parent_id', null).order('display_order'),
@@ -29,19 +27,6 @@ const DashboardPage: React.FC = () => {
       if (docRes.data) setRecentDocs(docRes.data);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDownload = async (doc: Document) => {
-    if (!doc.file_url) return;
-    try {
-      const { data, error } = await supabase.storage.from('documents').createSignedUrl(doc.file_url, 60);
-      if (error) throw error;
-      window.open(data.signedUrl, '_blank');
-    } catch (error) {
-      console.error('Download failed:', error);
     }
   };
 

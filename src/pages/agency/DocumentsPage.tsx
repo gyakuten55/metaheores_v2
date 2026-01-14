@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 import { Database } from '../../types/database.types';
 import { 
-  FileText, Plus, Search, Filter, Download, Trash2, X, Check, Loader2, FolderOpen, Tag, AlignLeft, Edit3, Save, Eye, Maximize2 
+  Plus, Search, Download, Trash2, X, Loader2, Tag, AlignLeft, Edit3, Eye 
 } from 'lucide-react';
 
 type Document = Database['public']['Tables']['documents']['Row'];
@@ -12,7 +12,7 @@ type Service = Database['public']['Tables']['services']['Row'];
 type UserRole = Database['public']['Enums']['user_role'];
 
 const DocumentsPage: React.FC = () => {
-  const { profile, role } = useAuth();
+  const { role } = useAuth();
   const [documents, setDocuments] = useState<Document[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [services, setServices] = useState<Service[]>([]);
@@ -73,10 +73,10 @@ const DocumentsPage: React.FC = () => {
         const fileExt = selectedFile.name.split('.').pop();
         const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
         filePath = `uploads/${fileName}`;
-        fileType = fileExt;
+        fileType = fileExt || null;
         await supabase.storage.from('documents').upload(filePath, selectedFile);
       }
-      const payload = { title: docForm.title, description: docForm.description, content: docForm.content, category_id: docForm.categoryId, service_id: docForm.serviceId || null, file_url: filePath, file_type: fileType, allowed_roles: docForm.allowedRoles, updated_at: new Date().toISOString() };
+      const payload: any = { title: docForm.title, description: docForm.description, content: docForm.content, category_id: docForm.categoryId, service_id: docForm.serviceId || null, file_url: filePath, file_type: fileType, allowed_roles: docForm.allowedRoles, updated_at: new Date().toISOString() };
       if (selectedDoc) { await supabase.from('documents').update(payload).eq('id', selectedDoc.id); }
       else { await supabase.from('documents').insert({ ...payload, created_by: (await supabase.auth.getUser()).data.user?.id }); }
       setIsAddModalOpen(false); setIsEditing(false); setSelectedDoc(null); resetForm(); fetchData();

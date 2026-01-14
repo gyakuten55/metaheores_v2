@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { PageHero } from '../components/PageHero';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useLocation, Link } from 'react-router-dom';
 
 type ServiceCategory = 'all' | 'metaverse' | 'ai' | 'event' | 'vacant-facility';

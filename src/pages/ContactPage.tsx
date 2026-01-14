@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { PageHero } from '../components/PageHero';
-import { ChevronRight, Lock, CheckCircle2, ChevronLeft, Send } from 'lucide-react';
+import { ChevronRight, CheckCircle2, ChevronLeft, Send } from 'lucide-react';
 
 type ContactCategory = 'business' | 'service' | 'partner' | 'recruit' | 'press' | 'other' | '';
 type FormStep = 'input' | 'confirm' | 'complete';
@@ -232,7 +232,7 @@ export const ContactPage: React.FC = () => {
                   {formData.occupation && <ConfirmRow label="現在の職業 / 所属" value={formData.occupation} />}
                   <ConfirmRow label="お名前" value={formData.name} />
                   <ConfirmRow label="メールアドレス" value={formData.email} />
-                  <ConfirmRow label="お問い合わせ内容" value={formData.content} isMultiline />
+                  <ConfirmRow label="お問い合わせ内容" value={formData.content} />
                 </div>
                 <div className="py-20 flex flex-col items-center gap-6">
                   <button onClick={handleFinalSubmit} disabled={isSubmitting} className="inline-flex items-center justify-center px-20 py-5 bg-blue-600 text-white text-sm font-black tracking-[0.3em] hover:bg-blue-700 shadow-xl shadow-blue-600/20 transition-all min-w-[340px]">
@@ -273,7 +273,7 @@ export const ContactPage: React.FC = () => {
 };
 
 // ヘルパーコンポーネント: 確認画面の行
-const ConfirmRow: React.FC<{ label: string; value: string; isMultiline?: boolean }> = ({ label, value, isMultiline }) => (
+const ConfirmRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <div className="grid md:grid-cols-[280px,1fr] border-b border-gray-200">
     <div className="bg-gray-50 px-8 py-6 font-bold text-gray-500 text-sm tracking-wider flex items-center">{label}</div>
     <div className="px-8 py-6 bg-white font-black text-gray-900 text-sm leading-relaxed whitespace-pre-wrap">
