@@ -33,9 +33,9 @@ export const AboutStatsSection: React.FC = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0">
             {[
-              { label: 'メタバース\nプレイ数', value: '27', suffix: '万名', icon: '/assets/about/メタバースプレイ数_icon.png' },
-              { label: 'イベント\n来場者数', value: '13', suffix: '万名', icon: '/assets/about/イベント来場者数_icon.png' },
-              { label: 'AI/DX人材育成研修\n受講者数', value: '1.5', suffix: '万名', icon: '/assets/about/AIDX人材育成研修受講者数_icon.png' },
+              { label: 'メタバース\nプレイ数', value: '27', suffix: '万名', icon: '/assets/about/stats_metaverse_icon.png' },
+              { label: 'イベント\n来場者数', value: '13', suffix: '万名', icon: '/assets/about/stats_event_icon.png' },
+              { label: 'AI/DX人材育成研修\n受講者数', value: '1.5', suffix: '万名', icon: '/assets/about/stats_ai_icon.png' },
             ].map((item, idx) => (
               <div key={idx} className={`flex flex-col items-center text-center ${idx !== 2 ? 'md:border-r border-gray-100' : ''}`}>
                 <div className="w-16 h-16 mb-6">
@@ -56,9 +56,9 @@ export const AboutStatsSection: React.FC = () => {
         {/* Bottom Three Independent Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { label: '設立年', value: '2021', suffix: '年', icon: '/assets/about/設立年_icon.png' },
-            { label: '従業員数', value: '17', suffix: '名', icon: '/assets/about/従業員数_icon.png' },
-            { label: '平均年齢', value: '29.1', suffix: '歳', icon: '/assets/about/平均年齢_icon.png' },
+            { label: '設立年', value: '2021', suffix: '年', icon: '/assets/about/stats_year_icon.png' },
+            { label: '従業員数', value: '17', suffix: '名', icon: '/assets/about/stats_employees_icon.png' },
+            { label: '平均年齢', value: '29.1', suffix: '歳', icon: '/assets/about/stats_age_icon.png' },
           ].map((item, idx) => (
             <div key={idx} className="bg-white rounded-[2rem] p-10 shadow-[0_15px_50px_rgba(0,0,0,0.04)] flex flex-col items-center text-center">
               <h3 className="text-sm font-black text-gray-800 mb-8 relative pb-4 w-full">

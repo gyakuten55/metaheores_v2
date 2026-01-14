@@ -17,7 +17,7 @@ export const AboutPage: React.FC = () => {
         {/* Base Image (100% width) */}
         <div className="w-full h-auto">
           <img 
-            src="/assets/about/CEOファーストビュー.png" 
+            src="/assets/about/ceo_hero.png" 
             alt="CEO 松石 和俊" 
             className="w-full h-auto object-cover"
           />

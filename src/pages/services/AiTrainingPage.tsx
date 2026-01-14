@@ -36,7 +36,7 @@ export const AiTrainingPage: React.FC = () => {
       {/* Full Width Hero Banner with Overlay */}
       <section className="relative w-full overflow-hidden">
         <img 
-          src="/assets/services/AI人材育成研修/hero-thumbnail.png" 
+          src="/assets/services/ai-training/hero-thumbnail.png" 
           alt="AI 人材育成研修" 
           className="w-full h-auto"
         />
@@ -115,17 +115,17 @@ export const AiTrainingPage: React.FC = () => {
             {[
               { 
                 title: '柔軟なカリキュラム', 
-                icon: '/assets/services/AI人材育成研修/icon-curriculum.png', 
+                icon: '/assets/services/ai-training/icon-curriculum.png', 
                 desc: '事務/営業/企画など、職種別の具体的な研修カリキュラムの設計。' 
               },
               { 
                 title: 'ハンズオン形式', 
-                icon: '/assets/services/AI人材育成研修/icon-handson.png', 
+                icon: '/assets/services/ai-training/icon-handson.png', 
                 desc: '座学で終わらず、その場でツールを動かすワークショップ構成。' 
               },
               { 
                 title: '最適なツール選定', 
-                icon: '/assets/services/AI人材育成研修/icon-tools.png', 
+                icon: '/assets/services/ai-training/icon-tools.png', 
                 desc: '顧客の目的に合わせた最適な生成AIツールの選定。' 
               }
             ].map((feature, idx) => (
@@ -193,7 +193,7 @@ export const AiTrainingPage: React.FC = () => {
               <Link key={item.id} to={`/blog/${item.id}`} className="group block">
                 <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 mb-4 border border-gray-50 shadow-sm">
                   <img 
-                    src={item.eyecatch?.url || '/assets/services/AI人材育成研修/hero-thumbnail.png'} 
+                    src={item.eyecatch?.url || '/assets/services/ai-training/hero-thumbnail.png'} 
                     alt={item.title} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                   />
@@ -241,7 +241,7 @@ export const AiTrainingPage: React.FC = () => {
               <Link key={item.id} to={`/blog/${item.id}`} className="group block">
                 <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 mb-4 border border-gray-50 shadow-sm">
                    <img 
-                    src={item.eyecatch?.url || '/assets/services/AI人材育成研修/hero-thumbnail.png'} 
+                    src={item.eyecatch?.url || '/assets/services/ai-training/hero-thumbnail.png'} 
                     alt={item.title} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                   />

@@ -36,7 +36,7 @@ export const HeroAivoPage: React.FC = () => {
       {/* Full Width Hero Banner with Overlay */}
       <section className="relative w-full overflow-hidden">
         <img 
-          src="/assets/services/HERO AIVO/hero-thumbnail.png" 
+          src="/assets/services/hero-aivo/hero-thumbnail.png" 
           alt="HERO AIVO" 
           className="w-full h-auto"
         />
@@ -115,17 +115,17 @@ export const HeroAivoPage: React.FC = () => {
             {[
               { 
                 title: 'AIに適した構造', 
-                icon: '/assets/services/HERO AIVO/icon-structure.png', 
+                icon: '/assets/services/hero-aivo/icon-structure.png', 
                 desc: 'AIに引用してもらいやすいようにWebサイト構築を行います。' 
               },
               { 
                 title: '誤情報を防止', 
-                icon: '/assets/services/HERO AIVO/icon-prevention.png', 
+                icon: '/assets/services/hero-aivo/icon-prevention.png', 
                 desc: '公式情報をAIに直接紐付け、「AIの嘘」を防ぎます。' 
               },
               { 
                 title: 'AI診断', 
-                icon: '/assets/services/HERO AIVO/icon-diagnostic.png', 
+                icon: '/assets/services/hero-aivo/icon-diagnostic.png', 
                 desc: '現状のサイト状況がAIに見つけてもらえやすいかを診断します。' 
               }
             ].map((feature, idx) => (
@@ -193,7 +193,7 @@ export const HeroAivoPage: React.FC = () => {
               <Link key={item.id} to={`/blog/${item.id}`} className="group block">
                 <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 mb-4 border border-gray-50 shadow-sm">
                   <img 
-                    src={item.eyecatch?.url || '/assets/services/HERO AIVO/hero-thumbnail.png'} 
+                    src={item.eyecatch?.url || '/assets/services/hero-aivo/hero-thumbnail.png'} 
                     alt={item.title} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                   />
@@ -241,7 +241,7 @@ export const HeroAivoPage: React.FC = () => {
               <Link key={item.id} to={`/blog/${item.id}`} className="group block">
                 <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 mb-4 border border-gray-50 shadow-sm">
                    <img 
-                    src={item.eyecatch?.url || '/assets/services/HERO AIVO/hero-thumbnail.png'} 
+                    src={item.eyecatch?.url || '/assets/services/hero-aivo/hero-thumbnail.png'} 
                     alt={item.title} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                   />

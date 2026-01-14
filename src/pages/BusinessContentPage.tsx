@@ -14,17 +14,17 @@ const CATEGORY_MAP: Record<BusinessType, string> = {
 };
 
 const BUSINESS_TABS = [
-  { id: 'metaverse' as BusinessType, label: 'メタバース事業', image: '/assets/business-content/metaverce/メタバース_ファーストビュー.png' },
-  { id: 'ai' as BusinessType, label: 'AI事業', image: '/assets/business-content/ai/AI事業_ファーストビュー.png' },
-  { id: 'event' as BusinessType, label: 'イベント事業', image: '/assets/business-content/event/イベント事業_ファーストビュー.png' },
-  { id: 'vacant-facility' as BusinessType, label: '空き施設活用事業', image: '/assets/business-content/vacant-facility/空き施設活用事業_ファーストビュー.png' },
+  { id: 'metaverse' as BusinessType, label: 'メタバース事業', image: '/assets/business-content/metaverce/metaverse_hero.png' },
+  { id: 'ai' as BusinessType, label: 'AI事業', image: '/assets/business-content/ai/ai_hero.png' },
+  { id: 'event' as BusinessType, label: 'イベント事業', image: '/assets/business-content/event/event_hero.png' },
+  { id: 'vacant-facility' as BusinessType, label: '空き施設活用事業', image: '/assets/business-content/vacant-facility/vacant_hero.png' },
 ];
 
 const CONTENT_DATA = {
   metaverse: {
     titleJa: 'メタバース事業',
     titleEn: 'METAVERSE',
-    heroImage: '/assets/business-content/metaverce/メタバース_ファーストビュー.png',
+    heroImage: '/assets/business-content/metaverce/metaverse_hero.png',
     concept: '社会課題をエンタメに翻訳する',
     description: '社会課題を、メタバースだからこそ解決できるサービスとして展開。重い問題を「エンターテインメント」へと翻訳し、参加のハードルを下げます。',
     issues: [
@@ -41,7 +41,7 @@ const CONTENT_DATA = {
   ai: {
     titleJa: 'AI事業',
     titleEn: 'ARTIFICIAL INTELLIGENCE',
-    heroImage: '/assets/business-content/ai/AI事業_ファーストビュー.png',
+    heroImage: '/assets/business-content/ai/ai_hero.png',
     concept: 'AI技術でビジネスと教育を加速させる',
     description: '最新のAI技術を実社会に実装。ビジネスプロセスの効率化から、次世代のAI人材育成まで、未来を見据えたソリューションを提供します。',
     issues: [
@@ -58,7 +58,7 @@ const CONTENT_DATA = {
   event: {
     titleJa: 'イベント事業',
     titleEn: 'EVENT & EXPERIENCE',
-    heroImage: '/assets/business-content/event/イベント事業_ファーストビュー.png',
+    heroImage: '/assets/business-content/event/event_hero.png',
     concept: 'リアルな体験が未来を変える',
     description: 'デジタル技術とリアルな場を融合させた、体験型イベントをプロデュース。五感を刺激する演出で、確かな感動と深い理解を生み出します。',
     issues: [
@@ -75,7 +75,7 @@ const CONTENT_DATA = {
   'vacant-facility': {
     titleJa: '空き施設活用事業',
     titleEn: 'FACILITY REUTILIZATION',
-    heroImage: '/assets/business-content/vacant-facility/空き施設活用事業_ファーストビュー.png',
+    heroImage: '/assets/business-content/vacant-facility/vacant_hero.png',
     concept: '眠れる資産を地域の希望へ',
     description: '全国に広がる空き家や遊休施設を、最先端のDX教育拠点やコミュニティスペースとして再生。地域に新しい人の流れと雇用を創出します。',
     issues: [
@@ -316,7 +316,7 @@ export const BusinessContentPage: React.FC = () => {
               各事業はそれぞれ独立して存在しているわけではありません。相互に連携することで、サービスの質を高めたり、新たな価値を生み出したりしています。
             </p>
             <div className="py-8 flex justify-center">
-              <img src="/assets/business-content/4事業のシナジー.png" alt="Synergy Diagram" className="w-full max-w-3xl h-auto" />
+              <img src="/assets/business-content/synergy.png" alt="Synergy Diagram" className="w-full max-w-3xl h-auto" />
             </div>
           </div>
         </section>
@@ -337,7 +337,7 @@ export const BusinessContentPage: React.FC = () => {
               私たちMeta Heroesは、教育・防災・地方創生をテーマにした社会課題を、テクノロジー開発とリアルの場でのイベントや空き施設活用を通じて解決へと導きます。
             </p>
             <div className="py-8 flex justify-center">
-              <img src="/assets/business-content/3つの注力分野.png" alt="Focus Areas" className="w-full max-w-3xl h-auto" />
+              <img src="/assets/business-content/focus_areas.png" alt="Focus Areas" className="w-full max-w-3xl h-auto" />
             </div>
           </div>
         </section>

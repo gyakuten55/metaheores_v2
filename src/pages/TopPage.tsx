@@ -284,10 +284,10 @@ export const TopPage: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {[
-              { label: '企業情報', iconPath: '/assets/top/企業情報_icon.png', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800' },
-              { label: 'サービス', iconPath: '/assets/top/サービス_icon.png', image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800' },
-              { label: '採用', iconPath: '/assets/top/採用情報_icon.png', image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=800' },
-              { label: 'ブログ', iconPath: '/assets/top/ブログ_icon.png', image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800' },
+              { label: '企業情報', iconPath: '/assets/top/company_icon.png', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800' },
+              { label: 'サービス', iconPath: '/assets/top/service_icon.png', image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800' },
+              { label: '採用', iconPath: '/assets/top/recruit_icon.png', image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=800' },
+              { label: 'ブログ', iconPath: '/assets/top/blog_icon.png', image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800' },
             ].map((cat, idx) => (
               <a key={idx} href="#" className="relative group aspect-[3/4] rounded-[2rem] overflow-hidden shadow-xl">
                 <img src={cat.image} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="" />

@@ -19,10 +19,10 @@ interface ServiceItem {
 
 const SERVICES: ServiceItem[] = [
   // Digital Solution
-  { id: 'xr-sol', section: 'digital', type: 'metaverse', category: 'メタバース', title: 'XRソリューション', description: '仮想現実(VR)や拡張現実(AR)を用いた総合的なソリューションをご提供します。', image: '/assets/services/first-view/XRソリューション.png', path: '/services/xr' },
+  { id: 'xr-sol', section: 'digital', type: 'metaverse', category: 'メタバース', title: 'XRソリューション', description: '仮想現実(VR)や拡張現実(AR)を用いた総合的なソリューションをご提供します。', image: '/assets/services/first-view/xr_solutions.png', path: '/services/xr' },
   { id: 'holoshare', section: 'digital', type: 'metaverse', category: 'メタバース', title: 'holoshare', description: '持ち運び困難な製品を目の前に。商談を円滑にする営業特化型VRツールです。', image: '/assets/services/first-view/HS_logo.png', path: '/services/holoshare' },
   { id: 'hero-aivo', section: 'digital', type: 'ai', category: 'AI特化型Web制作・運用', title: 'HERO AIVO', description: '生成AI(LLM)に最適化された最新のWebサイト制作・運用サービスです。', image: '/assets/services/first-view/HERO AIVO_logo.png', path: '/services/hero-aivo' },
-  { id: 'ai-training', section: 'digital', type: 'ai', category: 'AI企業研修', title: 'AI 人材育成研修', description: '企業・団体向けのAIリテラシー向上および実践的な活用研修サービスです。', image: '/assets/services/first-view/AI人材育成研修.png', path: '/services/ai-training' },
+  { id: 'ai-training', section: 'digital', type: 'ai', category: 'AI企業研修', title: 'AI 人材育成研修', description: '企業・団体向けのAIリテラシー向上および実践的な活用研修サービスです。', image: '/assets/services/first-view/ai_training.png', path: '/services/ai-training' },
 
   // Social & Education
   { id: 'bousai-meta', section: 'social', type: 'metaverse', category: 'メタバース', title: '防災メタバース', description: '仮想空間や複合現実を用いた、没入感のある最先端の防災訓練サービスです。', image: '/assets/services/first-view/防災メタバース.png', path: '/services/bousai-metaverse' },
