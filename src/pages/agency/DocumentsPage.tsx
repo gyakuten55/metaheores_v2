@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 import { Database } from '../../types/database.types';
@@ -13,13 +14,14 @@ type UserRole = Database['public']['Enums']['user_role'];
 
 const DocumentsPage: React.FC = () => {
   const { role } = useAuth();
+  const [searchParams] = useSearchParams();
   const [documents, setDocuments] = useState<Document[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedService, setSelectedService] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>(searchParams.get('category') || 'all');
+  const [selectedService, setSelectedService] = useState<string>(searchParams.get('service') || 'all');
   
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
@@ -32,12 +34,20 @@ const DocumentsPage: React.FC = () => {
 
   useEffect(() => { fetchData(); }, []);
 
+  // Sync state with URL params when they change
+  useEffect(() => {
+    const catParam = searchParams.get('category');
+    const serParam = searchParams.get('service');
+    if (catParam) setSelectedCategory(catParam);
+    if (serParam) setSelectedService(serParam);
+  }, [searchParams]);
+
   const fetchData = async () => {
     setLoading(true);
     try {
       const [catRes, serRes, docRes] = await Promise.all([
-        supabase.from('categories').select('*').order('display_order'),
-        supabase.from('services').select('*').order('name'),
+        supabase.from('categories').select('*').order('display_order', { ascending: true }).order('name', { ascending: true }),
+        supabase.from('services').select('*').order('name', { ascending: true }),
         supabase.from('documents').select('*').order('created_at', { ascending: false })
       ]);
       if (catRes.data) setCategories(catRes.data);
@@ -129,7 +139,7 @@ const DocumentsPage: React.FC = () => {
         </div>
         <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="px-2 py-1.5 bg-white border border-slate-200 rounded text-xs outline-none">
           <option value="all">すべてのカテゴリ</option>
-          {categories.filter(c => !c.parent_id).map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
+          {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
         </select>
         <select value={selectedService} onChange={(e) => setSelectedService(e.target.value)} className="px-2 py-1.5 bg-white border border-slate-200 rounded text-xs outline-none">
           <option value="all">すべてのサービス</option>

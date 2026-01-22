@@ -7,6 +7,7 @@ import {
   Tag, 
   Loader2, 
   Settings,
+  LayoutDashboard,
   ShieldCheck,
   Users,
   Mail,
@@ -18,6 +19,7 @@ import {
 } from 'lucide-react';
 
 type Service = Database['public']['Tables']['services']['Row'];
+type Category = Database['public']['Tables']['categories']['Row'];
 type ProfileWithEmail = Database['public']['Tables']['profiles']['Row'] & { email: string };
 
 export const AdminPage: React.FC = () => {
@@ -25,6 +27,7 @@ export const AdminPage: React.FC = () => {
   
   // States
   const [services, setServices] = useState<Service[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [users, setUsers] = useState<ProfileWithEmail[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,6 +41,7 @@ export const AdminPage: React.FC = () => {
   
   // Form States
   const [newServiceName, setNewServiceName] = useState('');
+  const [newCategory, setNewCategory] = useState({ name: '', display_order: 0 });
 
   useEffect(() => {
     fetchData();
@@ -46,12 +50,14 @@ export const AdminPage: React.FC = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [serRes, usersRes] = await Promise.all([
+      const [serRes, catRes, usersRes] = await Promise.all([
         supabase.from('services').select('*').order('name'),
+        supabase.from('categories').select('*').order('display_order', { ascending: true }),
         supabase.functions.invoke('manage-users', { body: { action: 'list' } })
       ]);
       
       if (serRes.data) setServices(serRes.data);
+      if (catRes.data) setCategories(catRes.data);
       if (usersRes.data && !usersRes.error) {
         setUsers(usersRes.data);
       }
@@ -60,6 +66,25 @@ export const AdminPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAddCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCategory.name.trim()) return;
+    const slug = newCategory.name.toLowerCase().replace(/\s+/g, '-');
+    await supabase.from('categories').insert({ 
+      name: newCategory.name.trim(), 
+      display_order: 0,
+      slug: slug
+    });
+    setNewCategory({ name: '', display_order: 0 });
+    fetchData();
+  };
+
+  const handleDeleteCategory = async (id: string) => {
+    if (!window.confirm('カテゴリを削除しますか？紐づく資料が表示されなくなる可能性があります。')) return;
+    await supabase.from('categories').delete().eq('id', id);
+    fetchData();
   };
 
   const handleUpdateUser = async () => {
@@ -206,8 +231,29 @@ export const AdminPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Sidebar: Services */}
+        {/* Sidebar: Services & Categories */}
         <div className="space-y-6">
+          {/* Category Management */}
+          <div className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+            <div className="px-5 py-4 border-b border-slate-200 bg-slate-50 font-semibold text-slate-700 text-sm flex items-center gap-2">
+              <LayoutDashboard size={16} className="text-slate-400" /> カテゴリ管理
+            </div>
+            <div className="p-5 space-y-4">
+              <form onSubmit={handleAddCategory} className="flex gap-2">
+                <input type="text" placeholder="新カテゴリ名" value={newCategory.name} onChange={(e)=>setNewCategory({...newCategory, name: e.target.value})} className="flex-1 px-3 py-1.5 border border-slate-200 rounded text-xs outline-none" />
+                <button type="submit" className="px-3 py-1.5 bg-slate-800 text-white rounded text-[10px] font-bold">追加</button>
+              </form>
+              <div className="space-y-1 max-h-[300px] overflow-y-auto">
+                {categories.map(c => (
+                  <div key={c.id} className="flex items-center justify-between p-2 text-xs bg-slate-50 rounded border border-slate-100 group">
+                    <span className="text-slate-700">{c.name}</span>
+                    <button onClick={()=>handleDeleteCategory(c.id)} className="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100"><Trash2 size={12} /></button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
             <div className="px-5 py-4 border-b border-slate-200 bg-slate-50 font-semibold text-slate-700 text-sm flex items-center gap-2">
               <Tag size={16} className="text-slate-400" /> サービス管理
