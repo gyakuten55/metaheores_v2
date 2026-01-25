@@ -291,7 +291,7 @@ export const TopPage: React.FC = () => {
         {/* Background Decoration Image - Desktop only */}
         <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-full opacity-30 pointer-events-none">
           <img 
-            src="/assets/top/ビジョン.png" 
+            src="/assets/top/vision.png" 
             alt="" 
             className="w-full h-full object-contain object-right"
           />
@@ -340,7 +340,7 @@ export const TopPage: React.FC = () => {
                 className="w-full max-w-lg"
               >
                 <img 
-                  src="/assets/mission/ビジョン.png" 
+                  src="/assets/mission/vision.png" 
                   alt="Society 5.0 x SDGs x HERO Vision" 
                   className="w-full h-auto object-contain max-h-[400px] md:max-h-[500px]"
                 />

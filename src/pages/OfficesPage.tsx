@@ -14,7 +14,7 @@ const OFFICE_DATA = [
       '阪急電鉄「大阪梅田駅」より徒歩10分。',
       'JR「大阪駅」より徒歩11分。'
     ],
-    image: '/assets/offices/本社.png',
+    image: '/assets/offices/head_office.png',
     actualMapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.1143211111!2d135.50211111111!3d34.70211111111!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e691ec666667%3A0x6666666666666666!2z5LiJ5YWx5 Wilfred55Sw44OT44Or!5e0!3m2!1sja!2sjp!4v1704450000000!5m2!1sja!2sjp'
   },
   {
@@ -45,7 +45,7 @@ const OFFICE_DATA = [
       '阪急電鉄「大阪梅田駅」より徒歩8分。',
       'JR「大阪駅」より徒歩9分。'
     ],
-    image: '/assets/offices/コミュニティスペース.png',
+    image: '/assets/offices/community_space.png',
     actualMapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.1541!2d135.5022!3d34.7011!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e691ec666667%3A0x9999999999999999!2z44OX44Op44K25 Wilfred55Sw44OT44Or!5e0!3m2!1sja!2sjp!4v1704450000000!5m2!1sja!2sjp'
   }
 ];

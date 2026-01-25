@@ -31,7 +31,7 @@ export const MissionPage: React.FC = () => {
             
             {/* Vision Diagram */}
             <div className="py-12 flex justify-center">
-              <img src="/assets/mission/ビジョン.png" alt="Vision Diagram" className="w-full max-w-2xl h-auto" />
+              <img src="/assets/mission/vision.png" alt="Vision Diagram" className="w-full max-w-2xl h-auto" />
             </div>
           </div>
         </section>
@@ -91,7 +91,7 @@ export const MissionPage: React.FC = () => {
 
                       <p className="text-gray-600 leading-[1.8] font-medium tracking-wider">
 
-                        一人ひとりが経営者の視点を持ち、HEROを生み出すための行動をします。そして、チーム一丸となって、社会課題を解決するHEROを作り、支え、そして自分たち自身もHEROになります。
+                        一人ひとりが経営者の視点を持ち、HEROを生み出すための行動をします。そして、チーム一丸となって、社会課題を解決するHEROを作り、支え、および自分たち自身もHEROになります。
 
                       </p>
 
@@ -102,9 +102,9 @@ export const MissionPage: React.FC = () => {
                     {/* Value Cards */}
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
                       {[
-                        { label: '光', en: 'HOPE', icon: '/assets/mission/バリュー_光.png', text: '社会にとって価値のある未来のビジョンを描き、仲間に共有する。' },
-                        { label: '火', en: 'WELL', icon: '/assets/mission/バリュー_火.png', text: '自分自身の力で新しい仕組みを生み出す勇気と情熱を持つ。' },
-                        { label: '水', en: 'SOLVE', icon: '/assets/mission/バリュー_水.png', text: '役割や立場を超えて、課題に柔軟に対応する。' },
+                        { label: '光', en: 'HOPE', icon: '/assets/mission/value_light.png', text: '社会にとって価値のある未来のビジョンを描き、仲間に共有する。' },
+                        { label: '火', en: 'WELL', icon: '/assets/mission/value_fire.png', text: '自分自身の力で新しい仕組みを生み出す勇気と情熱を持つ。' },
+                        { label: '水', en: 'SOLVE', icon: '/assets/mission/value_water.png', text: '役割や立場を超えて、課題に柔軟に対応する。' },
                       ].map((value, idx) => (
                         <div 
                           key={value.label} 

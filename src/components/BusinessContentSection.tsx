@@ -47,7 +47,7 @@ export const BusinessContentSection: React.FC = () => {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/assets/top/事業内容_BG.png"
+          src="/assets/top/business_bg.png"
           alt=""
           className="w-full h-full object-cover opacity-80"
         />

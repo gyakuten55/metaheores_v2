@@ -13,7 +13,7 @@ export const CeoMessagePage: React.FC = () => {
         {/* CEO Image */}
         <div className="mb-16 shadow-[0_20px_60px_rgba(0,0,0,0.1)] overflow-hidden rounded-sm">
           <img 
-            src="/assets/ceo-message/代表メッセージ_ファーストビュー.png" 
+            src="/assets/ceo-message/ceo_message_hero.png" 
             alt="代表取締役社長CEO 松石 和俊" 
             className="w-full h-auto"
           />
