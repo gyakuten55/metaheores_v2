@@ -71,14 +71,14 @@ export interface BlogResponse {
 // ブログ記事一覧を取得
 export const getBlogs = async (
   limit: number = 10,
-  offset: number = 0,
   memberId?: string,
   filters?: {
     categoryId?: string;
     excludeCategoryId?: string;
     year?: string;
     keyword?: string;
-  }
+  },
+  offset: number = 0
 ): Promise<BlogResponse> => {
   const queries: any = {
     limit,

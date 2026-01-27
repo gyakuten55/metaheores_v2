@@ -46,11 +46,16 @@ export const NewsPage: React.FC = () => {
       setLoading(true);
       try {
         const offset = (currentPage - 1) * limit;
-        const response = await getBlogs(limit, offset, undefined, {
-          year: selectedYear,
-          keyword: searchQuery,
-          categoryId: selectedCategory
-        });
+        const response = await getBlogs(
+          limit, 
+          undefined, 
+          {
+            year: selectedYear,
+            keyword: searchQuery,
+            categoryId: selectedCategory
+          },
+          offset
+        );
         
         setBlogs(response.contents || []);
         setTotalCount(response.totalCount || 0);
