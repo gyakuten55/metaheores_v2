@@ -30,7 +30,7 @@ export interface BannerResponse {
 // ピックアップニュースを5件取得
 export const getPickups = async (): Promise<BannerResponse> => {
   return await client.get<BannerResponse>({
-    endpoint: 'blogs',
+    endpoint: 'news',
     queries: {
       filters: 'category[equals]pickup',
       limit: 5,
@@ -71,6 +71,7 @@ export interface BlogResponse {
 // ブログ記事一覧を取得
 export const getBlogs = async (
   limit: number = 10,
+  offset: number = 0,
   memberId?: string,
   filters?: {
     categoryId?: string;
@@ -81,6 +82,7 @@ export const getBlogs = async (
 ): Promise<BlogResponse> => {
   const queries: any = {
     limit,
+    offset,
     orders: '-publishedAt',
   };
 
@@ -112,7 +114,7 @@ export const getBlogs = async (
   }
 
   return await client.get<BlogResponse>({
-    endpoint: 'blogs',
+    endpoint: 'news',
     queries,
   });
 };
@@ -120,7 +122,7 @@ export const getBlogs = async (
 // ブログ記事を単一取得
 export const getBlogById = async (blogId: string): Promise<Blog> => {
   return await client.get<Blog>({
-    endpoint: 'blogs',
+    endpoint: 'news',
     contentId: blogId,
   });
 };
@@ -128,7 +130,7 @@ export const getBlogById = async (blogId: string): Promise<Blog> => {
 // お知らせを取得
 export const getAnnouncements = async (limit: number = 5): Promise<BlogResponse> => {
   return await client.get<BlogResponse>({
-    endpoint: 'blogs',
+    endpoint: 'news',
     queries: {
       filters: 'category[equals]announcement',
       limit,

@@ -7,11 +7,16 @@ import { PageHero } from '../components/PageHero';
 
 export const NewsPage: React.FC = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedYear, setSelectedYear] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [loading, setLoading] = useState(false);
+
+  // PC: 30, Mobile: 10
+  const limit = typeof window !== 'undefined' && window.innerWidth >= 1024 ? 30 : 10;
 
   // カテゴリ取得
   useEffect(() => {
@@ -40,25 +45,15 @@ export const NewsPage: React.FC = () => {
     const fetchBlogs = async () => {
       setLoading(true);
       try {
-        const response = await getBlogs(100, undefined, {
+        const offset = (currentPage - 1) * limit;
+        const response = await getBlogs(limit, offset, undefined, {
           year: selectedYear,
-          keyword: searchQuery
+          keyword: searchQuery,
+          categoryId: selectedCategory
         });
         
-        let filtered = response.contents || [];
-
-        // カテゴリフィルタリング
-        if (selectedCategory) {
-          filtered = filtered.filter(b => b.category?.id === selectedCategory);
-        } else {
-          // 「すべて」の場合：「実績」「事例」を含むカテゴリを除外
-          filtered = filtered.filter(b => {
-            const catName = b.category?.name || '';
-            return !catName.includes('事例') && !catName.includes('実績');
-          });
-        }
-
-        setBlogs(filtered);
+        setBlogs(response.contents || []);
+        setTotalCount(response.totalCount || 0);
       } catch (error) {
         console.error('Failed to fetch blogs', error);
       } finally {
@@ -70,7 +65,14 @@ export const NewsPage: React.FC = () => {
       fetchBlogs();
     }, 500);
     return () => clearTimeout(timer);
-  }, [selectedCategory, selectedYear, searchQuery, categories.length]);
+  }, [selectedCategory, selectedYear, searchQuery, currentPage, limit]);
+
+  // フィルタ変更時に1ページ目に戻す
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, selectedYear, searchQuery]);
+
+  const totalPages = Math.ceil(totalCount / limit);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -149,50 +151,89 @@ export const NewsPage: React.FC = () => {
                <p className="text-gray-300 font-black text-sm tracking-[0.2em] uppercase">No articles found.</p>
              </div>
           ) : (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"
-            >
-              {blogs.map((item) => (
-                <Link key={item.id} to={`/blog/${item.id}`} className="group flex flex-col h-full">
-                  {/* Eyecatch */}
-                  <div className="relative aspect-video overflow-hidden rounded-xl bg-gray-100 mb-6 shadow-sm border border-gray-50">
-                    <img 
-                      src={item.eyecatch?.url || '/assets/top/business_bg.png'} 
-                      alt={item.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    {item.category && (
-                      <div className="absolute top-4 left-4">
-                        <span className="px-4 py-1.5 bg-gray-900/90 backdrop-blur-sm text-[9px] font-black text-white uppercase tracking-[0.2em] rounded-sm">
-                          {item.category.name}
-                        </span>
+            <>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"
+              >
+                {blogs.map((item) => (
+                  <Link key={item.id} to={`/blog/${item.id}`} className="group flex flex-col h-full">
+                    {/* Eyecatch */}
+                    <div className="relative aspect-video overflow-hidden rounded-xl bg-gray-100 mb-6 shadow-sm border border-gray-50">
+                      <img 
+                        src={item.eyecatch?.url || '/assets/top/business_bg.png'} 
+                        alt={item.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      {item.category && (
+                        <div className="absolute top-4 left-4">
+                          <span className="px-4 py-1.5 bg-gray-900/90 backdrop-blur-sm text-[9px] font-black text-white uppercase tracking-[0.2em] rounded-sm">
+                            {item.category.name}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex flex-col flex-grow">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-6 h-6 rounded-full border border-blue-200 flex items-center justify-center flex-shrink-0 transition-colors group-hover:bg-blue-600 group-hover:border-blue-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3 text-blue-500 group-hover:text-white">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                          </svg>
+                        </div>
+                        <time className="text-[10px] font-black text-gray-400 tracking-[0.2em] font-mono">
+                          {formatDate(item.publishedAt)}
+                        </time>
                       </div>
-                    )}
+                      
+                      <h3 className="text-base font-black text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2 tracking-tight leading-snug">
+                        {item.title}
+                      </h3>
+                    </div>
+                  </Link>
+                ))}
+              </motion.div>
+
+              {/* Pagination UI */}
+              {totalPages > 1 && (
+                <div className="mt-20 flex justify-center items-center gap-4">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center transition-all hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed group"
+                  >
+                    <ChevronDown className="w-5 h-5 text-gray-400 rotate-90 group-hover:text-blue-600" />
+                  </button>
+                  
+                  <div className="flex items-center gap-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`w-12 h-12 rounded-full text-xs font-black transition-all ${
+                          currentPage === page 
+                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
+                            : 'text-gray-400 hover:bg-gray-50'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
                   </div>
 
-                  {/* Content */}
-                  <div className="flex flex-col flex-grow">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-6 h-6 rounded-full border border-blue-200 flex items-center justify-center flex-shrink-0 transition-colors group-hover:bg-blue-600 group-hover:border-blue-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3 text-blue-500 group-hover:text-white">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
-                      </div>
-                      <time className="text-[10px] font-black text-gray-400 tracking-[0.2em] font-mono">
-                        {formatDate(item.publishedAt)}
-                      </time>
-                    </div>
-                    
-                    <h3 className="text-base font-black text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2 tracking-tight leading-snug">
-                      {item.title}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
-            </motion.div>
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center transition-all hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed group"
+                  >
+                    <ChevronDown className="w-5 h-5 text-gray-400 -rotate-90 group-hover:text-blue-600" />
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
