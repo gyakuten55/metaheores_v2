@@ -1,5 +1,12 @@
 {
+  "crons": [
+    {
+      "path": "/api/sync",
+      "schedule": "0 7 * * *"
+    }
+  ],
   "rewrites": [
+    { "source": "/api/sync", "destination": "/api/sync.js" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
