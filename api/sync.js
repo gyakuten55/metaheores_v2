@@ -6,22 +6,54 @@ const MICROCMS_API_KEY = 'cONapSqFkKcDF9MqPltOcuntceBifMmKQqQi';
 const MICROCMS_ENDPOINT = 'news';
 const PR_TIMES_COMPANY_ID = '94539';
 
+/**
+ * microCMSのメディア管理に画像をアップロードする
+ */
+async function uploadToMicroCMSMedia(imageUrl) {
+    if (!imageUrl || imageUrl.includes('microcms-assets.io')) return imageUrl;
+    try {
+        const response = await fetch(imageUrl);
+        if (!response.ok) return null;
+        const buffer = await response.arrayBuffer();
+        
+        const fileName = `pr_${Date.now()}_${Math.floor(Math.random() * 1000)}.jpg`;
+        const formData = new FormData();
+        const blob = new Blob([buffer], { type: response.headers.get('content-type') || 'image/jpeg' });
+        formData.append('file', blob, fileName);
+
+        const uploadRes = await fetch(`https://${MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/media`, {
+            method: 'POST',
+            headers: { 'X-MICROCMS-API-KEY': MICROCMS_API_KEY },
+            body: formData
+        });
+
+        if (!uploadRes.ok) {
+            const errText = await uploadRes.text();
+            console.error(`  Upload Error (${uploadRes.status}): ${errText}`);
+            return null;
+        }
+
+        const data = await uploadRes.json();
+        return data.url; // 正規のURLを返す
+    } catch (e) {
+        console.error(`  Media Upload Fetch Error: ${e.message}`);
+        return null;
+    }
+}
+
 export default async function handler(req, res) {
-    // セキュリティチェック
     const authHeader = req.headers['authorization'];
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
     try {
-        console.log('Fetching existing news from microCMS...');
         const resList = await axios.get(`https://${MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/${MICROCMS_ENDPOINT}`, {
             headers: { 'X-MICROCMS-API-KEY': MICROCMS_API_KEY },
             params: { limit: 10, fields: 'title' }
         });
         const existingTitles = new Set(resList.data.contents.map(c => c.title));
 
-        console.log('Fetching PR Times RSS...');
         const rssUrl = `https://prtimes.jp/companyrdf.php?company_id=${PR_TIMES_COMPANY_ID}`;
         const { data: rssXml } = await axios.get(rssUrl);
         const $rss = cheerio.load(rssXml, { xmlMode: true });
@@ -39,61 +71,63 @@ export default async function handler(req, res) {
             });
         });
 
-        // 2026-01-29以降かつ未登録の記事を1件ずつ処理（タイムアウト回避のため）
         const filterDate = new Date('2026-01-29T00:00:00+09:00');
         const newItems = items.filter(item => {
             const d = new Date(item.pubDate);
             return d >= filterDate && !existingTitles.has(item.title);
         });
 
-        console.log(`Found ${newItems.length} new items to sync.`);
+        console.log(`Starting sync for ${newItems.length} articles...`);
 
         for (const item of newItems) {
             console.log(`Processing article: ${item.title}`);
             const { data: html } = await axios.get(item.link);
             const $ = cheerio.load(html);
+            const ogImage = $('meta[property="og:image"]').attr('content');
             
-            // アイキャッチURL（パラメータなしの綺麗なURLを取得）
-            let ogImage = $('meta[property="og:image"]').attr('content');
-            if (ogImage) ogImage = ogImage.split('?')[0];
-
-            // 本文抽出
             let $content = $('.press-release-body-v3-0-0');
             if ($content.length === 0) $content = $('.release-body');
-            
             $content.find('script, style, iframe, .social-buttons').remove();
 
-            // 本文内の画像を microCMS 形式に整形
-            $content.find('img').each((i, el) => {
-                let src = $(el).attr('src') || $(el).attr('data-src');
+            const imgEls = $content.find('img').get();
+            const imageUrls = imgEls.map(img => {
+                let src = $(img).attr('src') || $(img).attr('data-src');
                 if (src && src.startsWith('//')) src = 'https:' + src;
-                if (src) src = src.split('?')[0];
-                
-                // タグをクリーンにする
-                const newImg = `<img src="${src}" alt="" />`;
-                $(el).replaceWith(newImg);
+                return src;
             });
 
-            // 投稿用データ
-            // 以前の調査で eyecatch: "URL文字列" で成功していたので、その形式を維持しつつ
-            // microCMSの自動インポートを誘発させます。
+            // 画像のアップロードを一括で行う（タイムアウト対策）
+            console.log(`  Uploading ${imageUrls.length + 1} images...`);
+            const [uploadedEyecatchUrl, ...uploadedBodyImages] = await Promise.all([
+                uploadToMicroCMSMedia(ogImage),
+                ...imageUrls.map(url => uploadToMicroCMSMedia(url))
+            ]);
+
+            // 本文内の画像URLを置換
+            imgEls.forEach((img, idx) => {
+                if (uploadedBodyImages[idx]) {
+                    $(img).attr('src', uploadedBodyImages[idx]);
+                    $(img).removeAttr('data-src').removeAttr('srcset');
+                }
+            });
+
             const payload = {
                 title: item.title,
                 content: $content.html(),
                 category_new: ["PRtimes"],
                 publishedAt: item.pubDate,
-                eyecatch: ogImage // URLを直接送信
+                eyecatch: uploadedEyecatchUrl // 文字列として送信
             };
 
             await axios.post(`https://${MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/${MICROCMS_ENDPOINT}`, payload, {
                 headers: { 'X-MICROCMS-API-KEY': MICROCMS_API_KEY }
             });
-            console.log(`Successfully synced: ${item.title}`);
+            console.log(`  Successfully synced: ${item.title}`);
         }
 
         return res.status(200).json({ success: true, synced: newItems.length });
     } catch (error) {
         console.error('Sync error:', error.response?.data || error.message);
-        return res.status(500).json({ error: error.message, details: error.response?.data });
+        return res.status(500).json({ error: error.message });
     }
 }

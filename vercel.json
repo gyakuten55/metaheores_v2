@@ -22,5 +22,10 @@
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/sync.js": {
+      "maxDuration": 60
+    }
+  }
 }
