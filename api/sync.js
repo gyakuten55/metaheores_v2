@@ -11,37 +11,33 @@ const PR_TIMES_COMPANY_ID = '94539';
  */
 async function uploadToMicroCMSMedia(imageUrl) {
     if (!imageUrl || imageUrl.includes('microcms-assets.io')) return imageUrl;
-    
-    // 絶対パスでない、またはPR Timesの画像サーバーでない場合はスキップ
     if (!imageUrl.startsWith('http')) return null;
-    if (!imageUrl.includes('prtimes.jp') && !imageUrl.includes('prcdn.freetls.fastly.net')) return null;
 
     try {
-        console.log(`  Fetching image: ${imageUrl.substring(0, 50)}...`);
         const response = await fetch(imageUrl);
         if (!response.ok) return null;
-        
         const buffer = await response.arrayBuffer();
+        
         const fileName = `pr_${Date.now()}_${Math.floor(Math.random() * 1000)}.jpg`;
         const formData = new FormData();
         const blob = new Blob([buffer], { type: response.headers.get('content-type') || 'image/jpeg' });
         formData.append('file', blob, fileName);
 
-        // Vercel環境でも安定して動作するよう、標準エンドポイントを叩く
-        const uploadRes = await fetch(`https://${MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/media`, {
+        // Management API エンドポイントを優先的に使用
+        const uploadRes = await fetch(`https://${MICROCMS_SERVICE_DOMAIN}.microcms-management.io/api/v1/media`, {
             method: 'POST',
             headers: { 'X-MICROCMS-API-KEY': MICROCMS_API_KEY },
             body: formData
         });
 
-        if (!uploadRes.ok) {
+        if (uploadRes.ok) {
+            const data = await uploadRes.json();
+            return data.url;
+        } else {
             const errText = await uploadRes.text();
-            console.error(`  Upload failed (${uploadRes.status}): ${errText}`);
+            console.error(`  Management API Upload failed (${uploadRes.status}): ${errText}`);
             return null;
         }
-
-        const data = await uploadRes.json();
-        return data.url;
     } catch (e) {
         console.error(`  Media Upload Error: ${e.message}`);
         return null;
@@ -84,8 +80,6 @@ export default async function handler(req, res) {
             return d >= filterDate && !existingTitles.has(item.title);
         });
 
-        console.log(`Starting sync for ${newItems.length} articles...`);
-
         for (const item of newItems) {
             console.log(`Processing: ${item.title}`);
             const { data: html } = await axios.get(item.link);
@@ -97,39 +91,38 @@ export default async function handler(req, res) {
             $content.find('script, style, iframe, .social-buttons').remove();
 
             const imgEls = $content.find('img').get();
-            const imageUrls = imgEls.map(img => {
-                let src = $(img).attr('src') || $(img).attr('data-src');
-                if (src && src.startsWith('//')) src = 'https:' + src;
-                // PR Timesのドメインでないものは除外
-                if (src && (src.includes('prtimes.jp') || src.includes('prcdn.freetls.fastly.net'))) {
-                    return src;
-                }
-                return null;
-            });
-
-            // 全ての画像を並列アップロード（nullを除外）
-            const [eyecatchUrl, ...mediaUrls] = await Promise.all([
+            
+            // 画像のアップロード
+            const [uploadedEyecatchUrl, ...uploadedBodyImages] = await Promise.all([
                 uploadToMicroCMSMedia(ogImage),
-                ...imageUrls.map(url => url ? uploadToMicroCMSMedia(url) : Promise.resolve(null))
+                ...imgEls.map(img => {
+                    let src = $(img).attr('src') || $(img).attr('data-src');
+                    if (src && src.startsWith('//')) src = 'https:' + src;
+                    return uploadToMicroCMSMedia(src);
+                })
             ]);
 
             // 本文置換
             imgEls.forEach((img, idx) => {
-                if (mediaUrls[idx]) {
-                    $(img).attr('src', mediaUrls[idx]);
-                    $(img).removeAttr('data-src').removeAttr('srcset');
+                // アップロードに成功した場合は新URL、失敗した場合は元URLを維持してmicroCMSの自動取得に賭ける
+                if (uploadedBodyImages[idx]) {
+                    $(img).attr('src', uploadedBodyImages[idx]);
                 } else {
-                    // PR Times以外の画像（装飾用など）は削除
-                    $(img).remove();
+                    let src = $(img).attr('src') || $(img).attr('data-src');
+                    if (src && src.startsWith('//')) src = 'https:' + src;
+                    $(img).attr('src', src);
                 }
+                $(img).removeAttr('data-src').removeAttr('srcset');
             });
 
+            // ペイロード作成
             const payload = {
                 title: item.title,
                 content: $content.html(),
                 category_new: ["PRtimes"],
                 publishedAt: item.pubDate,
-                eyecatch: eyecatchUrl ? { url: eyecatchUrl } : undefined
+                // アップロード成功URLか、失敗時はPR Timesの元URL（microCMSのインポート機能を期待）
+                eyecatch: uploadedEyecatchUrl || ogImage
             };
 
             await axios.post(`https://${MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/${MICROCMS_ENDPOINT}`, payload, {
