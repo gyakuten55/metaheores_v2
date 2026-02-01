@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronDown, Search } from 'lucide-react';
-import { getBlogs, Blog, client, Category, getCategoryOptions } from '../lib/microcms';
+import { getBlogs, Blog, Category, getCategoryOptions } from '../lib/microcms';
 import { PageHero } from '../components/PageHero';
 
 export const NewsPage: React.FC = () => {

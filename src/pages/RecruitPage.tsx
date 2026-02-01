@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { PageHero } from '../components/PageHero';
 import { allMembers } from '../data/members';
@@ -341,12 +341,12 @@ export const RecruitPage: React.FC = () => {
                         </div>
                       )}
                       {type.link && (
-                        <a href={type.link} className="inline-flex items-center gap-2 group">
+                        <Link to="/members" className="inline-flex items-center gap-2 group">
                           <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 text-blue-500"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
                           </div>
                           <span className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">チームメンバー紹介</span>
-                        </a>
+                        </Link>
                       )}
                     </div>
                   </div>

@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { getBlogs, Blog, Category, client, getCategoryOptions } from '../lib/microcms';
+import { getBlogs, Blog, Category, getCategoryOptions } from '../lib/microcms';
 import { Search, ChevronDown } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
 
@@ -20,7 +18,20 @@ export const WorksPage: React.FC = () => {
   const limit = typeof window !== 'undefined' && window.innerWidth >= 1024 ? 30 : 10;
 
   // カテゴリ取得
-// ... (useEffect for categories remains similar)
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const options = await getCategoryOptions();
+        const filtered = options.filter(cat => cat.name.includes('実績'));
+        setCategories(filtered);
+      } catch (e) {
+        console.warn('Failed to load categories for works:', e);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // 実績取得
   useEffect(() => {
     const fetchWorks = async () => {
       setLoading(true);

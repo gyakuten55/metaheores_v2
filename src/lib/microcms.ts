@@ -1,5 +1,4 @@
 import { createClient } from 'microcms-js-sdk';
-import axios from 'axios';
 
 // 既存のアカウント (ニュース・実績)
 export const client = createClient({
@@ -13,9 +12,35 @@ export const memberClient = createClient({
   apiKey: '3cEPye52LNlCwgRRAydNRajAvav3lR9EOCmU',
 });
 
-const MANAGEMENT_API_KEY = 'apdNtrwXnGxRIg7IgDTmfRsgn6YYfg8J2RFt';
+// カテゴリの型定義
+export interface Category {
+  id: string;
+  name: string;
+}
 
-// ... (Category interfaces etc remain)
+// ブログ記事の型定義
+export interface Blog {
+  id: string;
+  title: string;
+  content?: string;
+  eyecatch?: {
+    url: string;
+    width: number;
+    height: number;
+  };
+  category_new?: string[];
+  category?: Category; // メンバーブログ用の単一カテゴリ
+  publishedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BlogResponse {
+  contents: Blog[];
+  totalCount: number;
+  offset: number;
+  limit: number;
+}
 
 // メンバーブログの取得
 export const getMemberBlogs = async (
@@ -65,14 +90,7 @@ export const getMemberBlogById = async (blogId: string): Promise<Blog> => {
   });
 };
 
-// カテゴリの型定義
-export interface Category {
-  id: string;
-  name: string;
-}
-
 // microCMSの「カテゴリ_new」セレクトフィールドに設定されている全選択肢のマスターリスト
-// ユーザー提供の正確なリストに更新
 const CATEGORY_MASTER: Category[] = [
   { id: 'ピックアップ', name: 'ピックアップ' },
   { id: 'プレスリリース', name: 'プレスリリース' },
@@ -140,33 +158,10 @@ export const getPickups = async (): Promise<BannerResponse> => {
   });
 };
 
-// ブログ記事の型定義
-export interface Blog {
-  id: string;
-  title: string;
-  content?: string;
-  eyecatch?: {
-    url: string;
-    width: number;
-    height: number;
-  };
-  category_new?: string[];
-  publishedAt: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface BlogResponse {
-  contents: Blog[];
-  totalCount: number;
-  offset: number;
-  limit: number;
-}
-
 // ブログ記事一覧を取得
 export const getBlogs = async (
   limit: number = 10,
-  memberId?: string,
+  memberId?: string, // 互換性のために残していますが現在は未使用
   filters?: {
     categoryId?: string;
     excludeCategoryId?: string;
@@ -183,13 +178,7 @@ export const getBlogs = async (
 
   const filterConditions: string[] = [];
 
-  if (memberId) {
-    // memberIdのフィルタリングが必要な場合
-    // filterConditions.push(`member[equals]${memberId}`);
-  }
-
   if (filters?.categoryId) {
-    // 複数選択フィールド(category_new)に対するフィルタリング
     filterConditions.push(`category_new[contains]${filters.categoryId}`);
   }
 
@@ -231,7 +220,7 @@ export const getAnnouncements = async (limit: number = 5): Promise<BlogResponse>
       filters: 'category_new[contains]お知らせ',
       limit,
       orders: '-publishedAt',
-      fields: 'id,title,publishedAt,category_new', // 軽量化のため必要なフィールドのみ取得
+      fields: 'id,title,publishedAt,category_new',
     },
   });
 };
