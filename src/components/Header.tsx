@@ -60,7 +60,7 @@ const NAV_ITEMS: NavItem[] = [
     en: 'MEMBERS',
     path: '/members',
     children: [
-      { label: 'メンバーブログ一覧', path: '/news' },
+      { label: 'メンバーブログ一覧', path: '/members/blog' },
     ]
   },
   {

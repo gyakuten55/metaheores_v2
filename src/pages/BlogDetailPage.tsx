@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Blog, getBlogById, getBlogs } from '../lib/microcms';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
+import { Blog, getBlogById, getBlogs, getMemberBlogById, getMemberBlogs } from '../lib/microcms';
 
 const PLACEHOLDER_IMAGE = '/assets/top/business_bg.png';
 
 export const BlogDetailPage = () => {
   const { blogId } = useParams<{ blogId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isMemberBlog = location.pathname.startsWith('/member-blog');
+  
   const [blog, setBlog] = useState<Blog | null>(null);
   const [relatedBlogs, setRelatedBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
@@ -18,11 +21,21 @@ export const BlogDetailPage = () => {
 
       try {
         setLoading(true);
-        // 記事詳細と関連記事（多めに取得してフィルタリング）を並行取得
-        const [blogData, relatedData] = await Promise.all([
-          getBlogById(blogId),
-          getBlogs(6) 
-        ]);
+        
+        let blogData;
+        let relatedData;
+
+        if (isMemberBlog) {
+          [blogData, relatedData] = await Promise.all([
+            getMemberBlogById(blogId),
+            getMemberBlogs(6)
+          ]);
+        } else {
+          [blogData, relatedData] = await Promise.all([
+            getBlogById(blogId),
+            getBlogs(6) 
+          ]);
+        }
         
         setBlog(blogData);
         // 表示中の記事を除外し、最大3件を表示
@@ -36,7 +49,7 @@ export const BlogDetailPage = () => {
     };
 
     fetchData();
-  }, [blogId]);
+  }, [blogId, isMemberBlog]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -75,11 +88,6 @@ export const BlogDetailPage = () => {
         {/* ヘッダーエリア: タイトル・日付・カテゴリ */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-4 mb-6">
-            {blog.category && (
-              <span className="px-3 py-1 bg-blue-600 text-white text-[10px] font-black tracking-widest uppercase rounded-sm">
-                {blog.category.name}
-              </span>
-            )}
             <time className="text-xs font-bold text-gray-400 tracking-widest font-mono">
               {formatDate(blog.publishedAt || blog.createdAt)}
             </time>
@@ -117,8 +125,31 @@ export const BlogDetailPage = () => {
           />
         )}
 
+        {/* カテゴリ一覧セクション */}
+        {(blog.category_new || (isMemberBlog && blog.category)) && (
+          <div className="mt-16 pt-8 border-t border-gray-100">
+            <div className="flex flex-wrap gap-2 justify-center">
+              {/* 通常ブログの複数カテゴリ */}
+              {blog.category_new?.map((cat) => (
+                <span 
+                  key={cat}
+                  className="px-4 py-1.5 bg-gray-100 text-gray-600 text-[10px] font-black tracking-widest uppercase rounded-full border border-gray-200"
+                >
+                  {cat}
+                </span>
+              ))}
+              {/* メンバーブログの単一カテゴリ（人物名） */}
+              {isMemberBlog && blog.category && (
+                <span className="px-4 py-1.5 bg-blue-50 text-blue-600 text-[10px] font-black tracking-widest uppercase rounded-full border border-blue-100">
+                  {(blog.category as any).name}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* ギャラリーボタン */}
-        <div className="mt-16 text-center">
+        <div className="mt-12 text-center">
           <Link
             to="/gallery"
             className="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-black rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
@@ -133,7 +164,7 @@ export const BlogDetailPage = () => {
         {/* 戻るボタン */}
         <div className="mt-20 pt-10 border-t border-gray-100 text-center">
           <Link
-            to="/news"
+            to={isMemberBlog ? "/members/blog" : "/news"}
             className="inline-flex items-center gap-2 px-8 py-3 bg-white border border-gray-200 text-gray-900 font-bold rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
@@ -155,18 +186,13 @@ export const BlogDetailPage = () => {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {relatedBlogs.map((item) => (
-                        <Link key={item.id} to={`/blog/${item.id}`} className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                        <Link key={item.id} to={isMemberBlog ? `/member-blog/${item.id}` : `/blog/${item.id}`} className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
                             <div className="relative aspect-video overflow-hidden bg-gray-200">
                                 <img 
                                     src={item.eyecatch?.url || PLACEHOLDER_IMAGE} 
                                     alt="" 
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                                 />
-                                {item.category && (
-                                    <span className="absolute top-3 left-3 px-3 py-1 bg-white/90 backdrop-blur-sm text-[10px] font-black tracking-widest text-gray-900 rounded-full">
-                                        {item.category.name}
-                                    </span>
-                                )}
                             </div>
                             <div className="p-6">
                                 <time className="text-[10px] font-bold text-gray-400 tracking-widest font-mono block mb-3">

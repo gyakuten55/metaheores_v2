@@ -190,9 +190,7 @@ export const BusinessContentPage: React.FC = () => {
                 <span className="text-[10px] md:text-xs font-bold text-gray-400 tracking-[0.2em] uppercase block mb-2">ISSUE</span>
                 <div className="flex flex-col items-start">
                   <h2 className="text-2xl md:text-3xl font-black text-gray-800">解決したい課題</h2>
-                  <div className="w-full h-px bg-gray-100 relative mt-6">
-                    <div className="absolute top-0 left-0 w-12 h-1 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
-                  </div>
+                  <div className="w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 mt-6" />
                 </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
@@ -221,9 +219,7 @@ export const BusinessContentPage: React.FC = () => {
                 <span className="text-[10px] md:text-xs font-bold text-gray-400 tracking-[0.2em] uppercase block mb-2">SOLUTION</span>
                 <div className="flex flex-col items-start">
                   <h2 className="text-2xl md:text-3xl font-black text-gray-800">提供する解決策</h2>
-                  <div className="w-full h-px bg-gray-100 relative mt-6">
-                    <div className="absolute top-0 left-0 w-12 h-1 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
-                  </div>
+                  <div className="w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 mt-6" />
                 </div>
               </div>
               <div className="space-y-12">
@@ -249,9 +245,7 @@ export const BusinessContentPage: React.FC = () => {
                 <span className="text-[10px] md:text-xs font-bold text-gray-400 tracking-[0.2em] uppercase block mb-2">CASE STUDY & WORKS</span>
                 <div className="flex flex-col items-start">
                   <h2 className="text-2xl md:text-3xl font-black text-gray-800">導入事例・実績</h2>
-                  <div className="w-full h-px bg-gray-100 relative mt-6">
-                    <div className="absolute top-0 left-0 w-12 h-1 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
-                  </div>
+                  <div className="w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 mt-6" />
                 </div>
               </div>
 
@@ -289,7 +283,7 @@ export const BusinessContentPage: React.FC = () => {
 
               <div className="text-center mt-16">
                 <Link 
-                  to="/news" 
+                  to="/works" 
                   className="inline-flex items-center gap-3 px-10 py-3 bg-gray-800 text-white text-xs font-black rounded-full hover:bg-black transition-all group shadow-lg"
                 >
                   もっと見る
@@ -311,9 +305,7 @@ export const BusinessContentPage: React.FC = () => {
             <span className="text-[10px] md:text-xs font-bold text-gray-400 tracking-[0.2em] uppercase block mb-2">THE SYNERGY</span>
             <div className="flex flex-col items-start">
               <h2 className="text-2xl md:text-3xl font-black text-gray-800">4事業のシナジー</h2>
-              <div className="w-full h-px bg-gray-100 relative mt-6">
-                <div className="absolute top-0 left-0 w-12 h-1 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
-              </div>
+              <div className="w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 mt-6" />
             </div>
           </div>
           <div className="space-y-12">
@@ -332,9 +324,7 @@ export const BusinessContentPage: React.FC = () => {
             <span className="text-[10px] md:text-xs font-bold text-gray-400 tracking-[0.2em] uppercase block mb-2">FOCUS AREAS</span>
             <div className="flex flex-col items-start">
               <h2 className="text-2xl md:text-3xl font-black text-gray-800">3つの注力分野</h2>
-              <div className="w-full h-px bg-gray-100 relative mt-6">
-                <div className="absolute top-0 left-0 w-12 h-1 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
-              </div>
+              <div className="w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 mt-6" />
             </div>
           </div>
           <div className="space-y-12">

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronDown, Search } from 'lucide-react';
-import { getBlogs, Blog, client, Category } from '../lib/microcms';
+import { getBlogs, Blog, client, Category, getCategoryOptions } from '../lib/microcms';
 import { PageHero } from '../components/PageHero';
 
 export const NewsPage: React.FC = () => {
@@ -22,19 +22,15 @@ export const NewsPage: React.FC = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await client.get({ endpoint: 'categories' });
-        // 「事例」または「実績」を含まないカテゴリのみを抽出
-        const filtered = response.contents.filter((cat: Category) => 
-          !cat.name.includes('事例') && !cat.name.includes('実績')
-        );
+        // マスタリストから全取得
+        const options = await getCategoryOptions();
+        
+        // 「実績」を含まないカテゴリのみを抽出
+        // セミナー・ウェビナー・講演・登壇 などが含まれるようになります
+        const filtered = options.filter(cat => !cat.name.includes('実績'));
         setCategories(filtered);
       } catch (e) {
-        console.warn('Categories endpoint not found or error, using defaults');
-        setCategories([
-           { id: 'event', name: 'EVENT' },
-           { id: 'press', name: 'PRESS' },
-           { id: 'info', name: 'INFO' },
-        ]);
+        console.warn('Failed to load categories:', e);
       }
     };
     fetchCategories();
@@ -61,6 +57,8 @@ export const NewsPage: React.FC = () => {
         setTotalCount(response.totalCount || 0);
       } catch (error) {
         console.error('Failed to fetch blogs', error);
+        setBlogs([]);
+        setTotalCount(0);
       } finally {
         setLoading(false);
       }
@@ -78,6 +76,29 @@ export const NewsPage: React.FC = () => {
   }, [selectedCategory, selectedYear, searchQuery]);
 
   const totalPages = Math.ceil(totalCount / limit);
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisible = 5;
+    
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (currentPage > 3) pages.push('...');
+      
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+      
+      for (let i = start; i <= end; i++) {
+        if (!pages.includes(i)) pages.push(i);
+      }
+      
+      if (currentPage < totalPages - 2) pages.push('...');
+      if (!pages.includes(totalPages)) pages.push(totalPages);
+    }
+    return pages;
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -172,13 +193,6 @@ export const NewsPage: React.FC = () => {
                         alt={item.title} 
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
-                      {item.category && (
-                        <div className="absolute top-4 left-4">
-                          <span className="px-4 py-1.5 bg-gray-900/90 backdrop-blur-sm text-[9px] font-black text-white uppercase tracking-[0.2em] rounded-sm">
-                            {item.category.name}
-                          </span>
-                        </div>
-                      )}
                     </div>
 
                     {/* Content */}
@@ -214,18 +228,23 @@ export const NewsPage: React.FC = () => {
                   </button>
                   
                   <div className="flex items-center gap-2">
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`w-12 h-12 rounded-full text-xs font-black transition-all ${
-                          currentPage === page 
-                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
-                            : 'text-gray-400 hover:bg-gray-50'
-                        }`}
-                      >
-                        {page}
-                      </button>
+                    {getPageNumbers().map((page, idx) => (
+                      <React.Fragment key={idx}>
+                        {page === '...' ? (
+                          <span className="w-8 text-center text-gray-300 font-bold">...</span>
+                        ) : (
+                          <button
+                            onClick={() => setCurrentPage(Number(page))}
+                            className={`w-12 h-12 rounded-full text-xs font-black transition-all ${
+                              currentPage === page 
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
+                                : 'text-gray-400 hover:bg-gray-50'
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        )}
+                      </React.Fragment>
                     ))}
                   </div>
 

@@ -35,6 +35,9 @@ import { GalleryPage } from './pages/GalleryPage';
 import { ContactPage } from './pages/ContactPage';
 import { ContactPrivacyPage } from './pages/ContactPrivacyPage';
 import { DocumentRequestPage } from './pages/DocumentRequestPage';
+import { RecruitPage } from './pages/RecruitPage';
+import { FAQPage } from './pages/FAQPage';
+import { MemberBlogPage } from './pages/MemberBlogPage';
 
 import LoginPage from './pages/agency/LoginPage';
 import { Footer } from './components/Footer';
@@ -96,6 +99,8 @@ function App() {
             <Route path="/contact/privacy" element={<ContactPrivacyPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/document-request" element={<DocumentRequestPage />} />
+            <Route path="/recruit" element={<RecruitPage />} />
+            <Route path="/faq" element={<><PageTitle title="よくある質問 | 株式会社MetaHeroes" /><FAQPage /></>} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/services/xr" element={<XrSolutionsPage />} />
             <Route path="/services/holoshare" element={<HolosharePage />} />
@@ -113,9 +118,11 @@ function App() {
             <Route path="/ceo-message" element={<CeoMessagePage />} />
             <Route path="/news" element={<NewsPage />} />
             <Route path="/works" element={<WorksPage />} />
+            <Route path="/members/blog" element={<MemberBlogPage />} />
             <Route path="/members" element={<MemberListPage />} />
             <Route path="/member/:memberId" element={<MemberPage />} />
             <Route path="/blog/:blogId" element={<BlogDetailPage />} />
+            <Route path="/member-blog/:blogId" element={<BlogDetailPage />} />
           </Routes>
         </div>
         {!isAgencyPage && <Footer />}

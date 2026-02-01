@@ -1,9 +1,113 @@
 import { createClient } from 'microcms-js-sdk';
+import axios from 'axios';
 
+// 既存のアカウント (ニュース・実績)
 export const client = createClient({
   serviceDomain: 'g07uki3u26',
   apiKey: 'cONapSqFkKcDF9MqPltOcuntceBifMmKQqQi',
 });
+
+// メンバーブログ用のアカウント
+export const memberClient = createClient({
+  serviceDomain: 'tsrozu3k55',
+  apiKey: '3cEPye52LNlCwgRRAydNRajAvav3lR9EOCmU',
+});
+
+const MANAGEMENT_API_KEY = 'apdNtrwXnGxRIg7IgDTmfRsgn6YYfg8J2RFt';
+
+// ... (Category interfaces etc remain)
+
+// メンバーブログの取得
+export const getMemberBlogs = async (
+  limit: number = 10,
+  filters?: {
+    categoryId?: string;
+    keyword?: string;
+  },
+  offset: number = 0
+): Promise<BlogResponse> => {
+  const queries: any = {
+    limit,
+    offset,
+    orders: '-publishedAt',
+  };
+
+  if (filters?.categoryId) {
+    queries.filters = `category[equals]${filters.categoryId}`;
+  }
+
+  if (filters?.keyword) {
+    queries.q = filters.keyword;
+  }
+
+  return await memberClient.get<BlogResponse>({
+    endpoint: 'blogs',
+    queries,
+  });
+};
+
+// メンバーブログのカテゴリ（人物）取得
+export const getMemberCategories = async (): Promise<Category[]> => {
+  try {
+    const res = await memberClient.get({ endpoint: 'categories' });
+    return res.contents;
+  } catch (e) {
+    console.error('Failed to fetch member categories:', e);
+    return [];
+  }
+};
+
+// メンバーブログを単一取得
+export const getMemberBlogById = async (blogId: string): Promise<Blog> => {
+  return await memberClient.get<Blog>({
+    endpoint: 'blogs',
+    contentId: blogId,
+  });
+};
+
+// カテゴリの型定義
+export interface Category {
+  id: string;
+  name: string;
+}
+
+// microCMSの「カテゴリ_new」セレクトフィールドに設定されている全選択肢のマスターリスト
+// ユーザー提供の正確なリストに更新
+const CATEGORY_MASTER: Category[] = [
+  { id: 'ピックアップ', name: 'ピックアップ' },
+  { id: 'プレスリリース', name: 'プレスリリース' },
+  { id: 'インフォメーション', name: 'インフォメーション' },
+  { id: 'ナレッジ', name: 'ナレッジ' },
+  { id: 'XRソリューション', name: 'XRソリューション' },
+  { id: 'holoshare', name: 'holoshare' },
+  { id: 'HERO AIVO', name: 'HERO AIVO' },
+  { id: 'AI人材育成研修', name: 'AI人材育成研修' },
+  { id: '防災メタバース', name: '防災メタバース' },
+  { id: '防災万博 / こども防災万博', name: '防災万博 / こども防災万博' },
+  { id: 'ゲームメイキングキャンプ', name: 'ゲームメイキングキャンプ' },
+  { id: 'Hero Egg', name: 'Hero Egg' },
+  { id: 'GLOBAL HERO SUMMIT', name: 'GLOBAL HERO SUMMIT' },
+  { id: 'EGG JAM', name: 'EGG JAM' },
+  { id: 'AI MONDAY', name: 'AI MONDAY' },
+  { id: 'ゲーム × イベント', name: 'ゲーム × イベント' },
+  { id: 'Meta Heroes Guild', name: 'Meta Heroes Guild' },
+  { id: 'PRtimes', name: 'PRtimes' },
+  { id: 'セミナー・ウェビナー・講演・登壇 実績', name: 'セミナー・ウェビナー・講演・登壇 実績' },
+  { id: 'メタバース開発実績', name: 'メタバース開発実績' },
+  { id: 'Hero Egg 実績', name: 'Hero Egg 実績' },
+  { id: 'AI / 開発 実績', name: 'AI / 開発 実績' },
+  { id: 'イベント実績', name: 'イベント実績' },
+  { id: '事業領域 [ 防災 ]', name: '事業領域 [ 防災 ]' },
+  { id: '事業領域 [ 教育 ]', name: '事業領域 [ 教育 ]' },
+  { id: '事業領域 [ 地方創生 ]', name: '事業領域 [ 地方創生 ]' },
+  { id: 'セミナー・ウェビナー・講演・登壇', name: 'セミナー・ウェビナー・講演・登壇' },
+  { id: 'ブース出展', name: 'ブース出展' }
+];
+
+// ニュースのデータから実際に使用されているカテゴリの選択肢を抽出する
+export const getCategoryOptions = async (): Promise<Category[]> => {
+  return CATEGORY_MASTER;
+};
 
 // バナー(ピックアップニュース)の型定義
 export interface Banner {
@@ -14,10 +118,7 @@ export interface Banner {
     width: number;
     height: number;
   };
-  category?: {
-    id: string;
-    name: string;
-  };
+  category_new?: string[];
 }
 
 export interface BannerResponse {
@@ -32,18 +133,12 @@ export const getPickups = async (): Promise<BannerResponse> => {
   return await client.get<BannerResponse>({
     endpoint: 'news',
     queries: {
-      filters: 'category[equals]pickup',
+      filters: 'category_new[contains]ピックアップ',
       limit: 5,
       orders: '-publishedAt',
     },
   });
 };
-
-// カテゴリの型定義
-export interface Category {
-  id: string;
-  name: string;
-}
 
 // ブログ記事の型定義
 export interface Blog {
@@ -55,7 +150,7 @@ export interface Blog {
     width: number;
     height: number;
   };
-  category?: Category;
+  category_new?: string[];
   publishedAt: string;
   createdAt: string;
   updatedAt: string;
@@ -94,11 +189,12 @@ export const getBlogs = async (
   }
 
   if (filters?.categoryId) {
-    filterConditions.push(`category[equals]${filters.categoryId}`);
+    // 複数選択フィールド(category_new)に対するフィルタリング
+    filterConditions.push(`category_new[contains]${filters.categoryId}`);
   }
 
   if (filters?.excludeCategoryId) {
-    filterConditions.push(`category[not_equals]${filters.excludeCategoryId}`);
+    filterConditions.push(`category_new[not_contains]${filters.excludeCategoryId}`);
   }
 
   if (filters?.year) {
@@ -132,10 +228,10 @@ export const getAnnouncements = async (limit: number = 5): Promise<BlogResponse>
   return await client.get<BlogResponse>({
     endpoint: 'news',
     queries: {
-      filters: 'category[equals]announcement',
+      filters: 'category_new[contains]お知らせ',
       limit,
       orders: '-publishedAt',
-      fields: 'id,title,publishedAt,category', // 軽量化のため必要なフィールドのみ取得
+      fields: 'id,title,publishedAt,category_new', // 軽量化のため必要なフィールドのみ取得
     },
   });
 };

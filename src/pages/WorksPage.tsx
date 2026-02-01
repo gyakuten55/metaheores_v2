@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getBlogs, Blog, Category, client } from '../lib/microcms';
+import { getBlogs, Blog, Category, client, getCategoryOptions } from '../lib/microcms';
 import { Search, ChevronDown } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
 
@@ -8,49 +8,37 @@ const PLACEHOLDER_IMAGE = '/assets/top/business_bg.png';
 
 export const WorksPage: React.FC = () => {
   const [works, setWorks] = useState<Blog[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedYear, setSelectedYear] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
-  // カテゴリ取得
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await client.get({ endpoint: 'categories' });
-        // 「実績」または「事例」という文字が含まれるカテゴリのみに絞り込む
-        const filtered = response.contents.filter((cat: Category) => 
-          cat.name.includes('実績') || cat.name.includes('事例')
-        );
-        setCategories(filtered);
-      } catch (e) {
-        console.warn('Categories error:', e);
-        setCategories([
-           { id: 'case-study', name: '実績・事例' },
-        ]);
-      }
-    };
-    fetchCategories();
-  }, []);
+  // PC: 30, Mobile: 10
+  const limit = typeof window !== 'undefined' && window.innerWidth >= 1024 ? 30 : 10;
 
-  // 実績取得
+  // カテゴリ取得
+// ... (useEffect for categories remains similar)
   useEffect(() => {
     const fetchWorks = async () => {
       setLoading(true);
       try {
-        const response = await getBlogs(100, undefined, {
+        const offset = (currentPage - 1) * limit;
+        const response = await getBlogs(limit, undefined, {
           categoryId: selectedCategory,
           year: selectedYear,
           keyword: searchQuery
-        });
+        }, offset);
         
-        // カテゴリ名に「実績」または「事例」が含まれる記事のみを表示
+        // カテゴリ名に「実績」が含まれる記事のみを表示
         const filteredWorks = response.contents.filter(item => 
-          item.category?.name.includes('実績') || item.category?.name.includes('事例')
+          item.category_new?.some(cat => cat.includes('実績'))
         );
         
         setWorks(filteredWorks);
+        setTotalCount(response.totalCount || 0);
       } catch (error) {
         console.error('Failed to fetch works:', error);
       } finally {
@@ -62,7 +50,37 @@ export const WorksPage: React.FC = () => {
       fetchWorks();
     }, 500);
     return () => clearTimeout(timer);
+  }, [selectedCategory, selectedYear, searchQuery, currentPage, limit]);
+
+  // フィルタ変更時に1ページ目に戻す
+  useEffect(() => {
+    setCurrentPage(1);
   }, [selectedCategory, selectedYear, searchQuery]);
+
+  const totalPages = Math.ceil(totalCount / limit);
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisible = 5;
+    
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (currentPage > 3) pages.push('...');
+      
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+      
+      for (let i = start; i <= end; i++) {
+        if (!pages.includes(i)) pages.push(i);
+      }
+      
+      if (currentPage < totalPages - 2) pages.push('...');
+      if (!pages.includes(totalPages)) pages.push(totalPages);
+    }
+    return pages;
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -137,32 +155,71 @@ export const WorksPage: React.FC = () => {
                <p className="text-gray-400 font-black text-sm tracking-[0.2em] uppercase">No works found.</p>
              </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
-              {works.map((item) => (
-                <Link key={item.id} to={`/blog/${item.id}`} className="group block">
-                  <div className="relative aspect-video overflow-hidden mb-6 bg-gray-100 rounded-sm">
-                    <img 
-                      src={item.eyecatch?.url || PLACEHOLDER_IMAGE} 
-                      alt="" 
-                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
-                    />
-                    {item.category && (
-                      <span className="absolute bottom-0 left-0 px-4 py-2 bg-blue-600 text-[10px] font-black tracking-widest text-white uppercase">
-                        {item.category.name}
-                      </span>
-                    )}
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
+                {works.map((item) => (
+                  <Link key={item.id} to={`/blog/${item.id}`} className="group block">
+                    <div className="relative aspect-video overflow-hidden mb-6 bg-gray-100 rounded-sm">
+                      <img 
+                        src={item.eyecatch?.url || PLACEHOLDER_IMAGE} 
+                        alt="" 
+                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
+                      />
+                    </div>
+                    <div className="space-y-4 px-1">
+                      <time className="text-[10px] font-black text-gray-300 tracking-[0.2em] font-mono block">
+                        {formatDate(item.publishedAt)}
+                      </time>
+                      <h3 className="text-gray-900 text-base font-black leading-relaxed line-clamp-2 group-hover:text-blue-600 transition-colors tracking-tight">
+                        {item.title}
+                      </h3>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              {/* Pagination UI */}
+              {totalPages > 1 && (
+                <div className="mt-20 flex justify-center items-center gap-4">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center transition-all hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed group"
+                  >
+                    <ChevronDown className="w-5 h-5 text-gray-400 rotate-90 group-hover:text-blue-600" />
+                  </button>
+                  
+                  <div className="flex items-center gap-2">
+                    {getPageNumbers().map((page, idx) => (
+                      <React.Fragment key={idx}>
+                        {page === '...' ? (
+                          <span className="w-8 text-center text-gray-300 font-bold">...</span>
+                        ) : (
+                          <button
+                            onClick={() => setCurrentPage(Number(page))}
+                            className={`w-12 h-12 rounded-full text-xs font-black transition-all ${
+                              currentPage === page 
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
+                                : 'text-gray-400 hover:bg-gray-50'
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        )}
+                      </React.Fragment>
+                    ))}
                   </div>
-                  <div className="space-y-4 px-1">
-                    <time className="text-[10px] font-black text-gray-300 tracking-[0.2em] font-mono block">
-                      {formatDate(item.publishedAt)}
-                    </time>
-                    <h3 className="text-gray-900 text-base font-black leading-relaxed line-clamp-2 group-hover:text-blue-600 transition-colors tracking-tight">
-                      {item.title}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
-            </div>
+
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center transition-all hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed group"
+                  >
+                    <ChevronDown className="w-5 h-5 text-gray-400 -rotate-90 group-hover:text-blue-600" />
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

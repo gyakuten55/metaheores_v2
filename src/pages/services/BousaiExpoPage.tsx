@@ -232,7 +232,7 @@ export const BousaiExpoPage: React.FC = () => {
           </div>
 
           <div className="text-center">
-            <Link to="/business" className="inline-flex items-center gap-2 px-10 py-3 bg-gray-800 text-white text-xs font-bold rounded-full hover:bg-black transition-colors shadow-md">
+            <Link to="/works" className="inline-flex items-center gap-2 px-10 py-3 bg-gray-800 text-white text-xs font-bold rounded-full hover:bg-black transition-colors shadow-md">
               もっと見る
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
@@ -246,10 +246,10 @@ export const BousaiExpoPage: React.FC = () => {
       <section className="bg-gray-50 mt-32">
         <div className="container mx-auto px-4 py-24">
           <div className="flex flex-col md:flex-row justify-center items-stretch gap-6">
-            <a
+            <Link
               href="https://meta-heroes.co.jp"
-              target="_blank"
-              rel="noopener noreferrer"
+              
+              
               className="group relative flex items-center justify-between w-full md:w-[320px] px-8 py-5 bg-[#333333] text-white rounded-full overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -259,10 +259,10 @@ export const BousaiExpoPage: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                 </svg>
               </div>
-            </a>
+            </Link>
             
-            <a
-              href="#"
+            <Link
+              to="/document-request"
               className="group relative flex items-center justify-between w-full md:w-[320px] px-8 py-5 bg-[#3b82f6] text-white rounded-full overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/30 hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -272,12 +272,12 @@ export const BousaiExpoPage: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                 </svg>
               </div>
-            </a>
+            </Link>
 
-            <a
-              href="https://meta-heroes.co.jp/contact"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/contact"
+              
+              
               className="group relative flex items-center justify-between w-full md:w-[320px] px-8 py-5 bg-[#0ea5e9] text-white rounded-full overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-cyan-500/30 hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -287,7 +287,7 @@ export const BousaiExpoPage: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       </section>

@@ -13,19 +13,19 @@ const CATEGORIES = [
     label: 'サービス', 
     iconPath: '/assets/top/service_icon.png', 
     image: '/assets/recruit/services.png',
-    path: '#' // Update if service page exists
+    path: '/services'
   },
   { 
     label: '採用', 
     iconPath: '/assets/top/recruit_icon.png', 
     image: '/assets/recruit/recruit_top.jpg',
-    path: '#' // Update if recruitment page exists
+    path: '/recruit'
   },
   { 
     label: 'ブログ', 
     iconPath: '/assets/top/blog_icon.png', 
     image: '/assets/top/business_bg.png',
-    path: '/news'
+    path: '/members/blog'
   },
 ];
 

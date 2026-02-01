@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Blog, getBlogs } from '../lib/microcms';
+import { Blog, getMemberBlogs, getMemberCategories } from '../lib/microcms';
 
 interface BlogSectionProps {
   memberId: string;
@@ -16,8 +16,19 @@ export const BlogSection = ({ memberId, memberName }: BlogSectionProps) => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-        const response = await getBlogs(6, memberId);
-        setBlogs(response.contents);
+        
+        // 1. まずカテゴリマスタから名前が一致するカテゴリ(人物)を探す
+        const categories = await getMemberCategories();
+        const targetCategory = categories.find(c => c.name === memberName);
+        
+        if (targetCategory) {
+          // 2. 見つかったIDでブログをフィルタリング
+          const response = await getMemberBlogs(6, { categoryId: targetCategory.id });
+          setBlogs(response.contents);
+        } else {
+          // カテゴリが見つからない場合は空にする
+          setBlogs([]);
+        }
       } catch (err) {
         console.error('ブログ記事の取得に失敗しました:', err);
         setError('ブログ記事の取得に失敗しました');
@@ -27,7 +38,7 @@ export const BlogSection = ({ memberId, memberName }: BlogSectionProps) => {
     };
 
     fetchBlogs();
-  }, [memberId]);
+  }, [memberId, memberName]);
 
   // 日付をフォーマット
   const formatDate = (dateString: string) => {
@@ -80,7 +91,7 @@ export const BlogSection = ({ memberId, memberName }: BlogSectionProps) => {
             {blogs.map((blog) => (
               <Link
                 key={blog.id}
-                to={`/blog/${blog.id}`}
+                to={`/member-blog/${blog.id}`}
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow block"
               >
                 {/* アイキャッチ画像 */}

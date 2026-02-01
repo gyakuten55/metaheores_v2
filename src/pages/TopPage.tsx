@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getPickups, getBlogs, Blog } from '../lib/microcms';
 import { BusinessContentSection } from '../components/BusinessContentSection';
+import { ServiceSection } from '../components/ServiceSection';
 import { MovieSection } from '../components/MovieSection';
 
 const STATIC_BANNERS = [
@@ -38,7 +39,7 @@ const PLACEHOLDER_IMAGE = '/assets/top/business_bg.png';
 export const TopPage: React.FC = () => {
   const [banners, setBanners] = useState<any[]>(STATIC_BANNERS);
   const [newsItems, setNewsItems] = useState<Blog[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(2);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export const TopPage: React.FC = () => {
 
         if (bannersData.contents.length > 0) {
           setBanners(bannersData.contents);
-          setCurrentIndex(Math.floor(bannersData.contents.length / 2));
+          setCurrentIndex(0);
         }
 
         setNewsItems(newsData.contents);
@@ -65,10 +66,10 @@ export const TopPage: React.FC = () => {
   // Filter news based on tab
   const filteredNews = newsItems.filter(item => {
     if (activeTab === 'all') return true;
-    if (activeTab === 'news_release') return item.category?.id === 'press';
-    if (activeTab === 'information') return item.category?.id === 'info';
-    if (activeTab === 'knowledge') return item.category?.id === 'knowledge';
-    if (activeTab === 'blog') return item.category?.id === 'blog';
+    if (activeTab === 'news_release') return item.category_new?.some(c => c === 'PRtimes' || c === 'press' || c === 'ニュースリリース');
+    if (activeTab === 'information') return item.category_new?.some(c => c === 'info' || c === 'information' || c === 'インフォメーション' || c === 'お知らせ');
+    if (activeTab === 'knowledge') return item.category_new?.some(c => c === 'knowledge' || c === 'ナレッジ');
+    if (activeTab === 'blog') return item.category_new?.some(c => c === 'blog' || c === 'ブログ');
     return true;
   });
 
@@ -209,6 +210,157 @@ export const TopPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Mission Section */}
+      <section className="bg-white overflow-hidden relative min-h-[600px] md:min-h-[700px] flex flex-col justify-center py-16 md:py-24">
+        {/* Video Side - Right Edge, Full Height, Left 50% content, Narrower width */}
+        <div className="absolute right-0 top-0 bottom-0 w-full lg:w-[40%] overflow-hidden z-0 hidden lg:block">
+          <div className="absolute inset-0 w-[200%] h-full">
+            <video 
+              src="/assets/top/1-1_toppage_video.mp4" 
+              autoPlay 
+              muted 
+              loop 
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          </div>
+          {/* White fade overlay for natural blending */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10 hidden lg:block" />
+          {/* Overlay for mobile readability if text overlaps video */}
+          <div className="absolute inset-0 bg-white/40 lg:hidden" />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <span className="text-[10px] font-bold tracking-[0.4em] text-gray-400 block mb-1 uppercase">OUR MISSION</span>
+            <div className="flex flex-col items-center">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">MetaHeroesの使命</h2>
+              <div className="w-8 h-0.5 bg-blue-600" />
+            </div>
+          </div>
+
+          <div className="flex flex-col lg:flex-row items-center">
+            {/* Text Content Area - Left side */}
+            <div className="w-full lg:w-[60%] space-y-8 lg:pr-16">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-black italic tracking-wide text-gray-900 leading-tight">
+                Society 5.0 × SDGs × HERO
+              </h2>
+              
+              <div className="space-y-6 text-sm md:text-base font-medium text-gray-600 leading-loose">
+                <p>
+                  テクノロジーによって描かれた未来の社会「Society 5.0」と、世界が目指すべき目標「SDGs」を実現するためには、行動力のある個人、つまり「ヒーロー」が必要です。
+                </p>
+                <p>
+                  そのために、「学ぶ人」「挑戦する人」「変革する人」を次々と生み出す仕組みを作り、未来を実現する人材で満たされた世界を目指します。
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <Link 
+                  to="/about/mission" 
+                  className="inline-flex items-center gap-3 px-10 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-xs font-black rounded-full hover:shadow-lg hover:scale-105 transition-all group"
+                >
+                  もっと見る
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3 group-hover:translate-x-1 transition-transform">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+
+            {/* Image Area - Overlapping the video background, aligned with text height */}
+            <div className="w-full lg:w-[40%] flex items-center justify-center p-8 mt-12 lg:mt-0">
+              <img 
+                src="/assets/top/society_sdgs.png" 
+                alt="Society 5.0 x SDGs" 
+                className="max-w-full max-h-[300px] md:max-h-[400px] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About MetaHeroes Section */}
+      <section className="bg-white overflow-hidden relative min-h-[600px] md:min-h-[700px] flex flex-col justify-center py-16 md:py-24">
+        {/* Video Side - LEFT Edge, Full Height, Left 50% content, Narrower width */}
+        <div className="absolute left-0 top-0 bottom-0 w-full lg:w-[40%] overflow-hidden z-0 hidden lg:block">
+          <div className="absolute inset-0 w-[200%] h-full">
+            <video 
+              src="/assets/top/2025_MH_実績集_02.mp4" 
+              autoPlay 
+              muted 
+              loop 
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          </div>
+          {/* White fade overlay for natural blending (Right side of video) */}
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10 hidden lg:block" />
+          {/* Overlay for mobile readability if text overlaps video */}
+          <div className="absolute inset-0 bg-white/40 lg:hidden" />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <span className="text-[10px] font-bold tracking-[0.4em] text-gray-400 block mb-1 uppercase">ABOUT US</span>
+            <div className="flex flex-col items-center">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">MetaHeroesについて</h2>
+              <div className="w-8 h-0.5 bg-blue-600" />
+            </div>
+          </div>
+
+          <div className="flex flex-col lg:flex-row items-center">
+            {/* Image Area - Moved to bottom on mobile, stays on left on desktop */}
+            <div className="w-full lg:w-[40%] flex items-center justify-center p-8 mb-12 lg:mb-0 order-2 lg:order-1">
+              <img 
+                src="/assets/top/about Meta Heroes_02.png" 
+                alt="About MetaHeroes" 
+                className="max-w-full max-h-[350px] md:max-h-[450px] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+              />
+            </div>
+
+            {/* Text Content Area - Moved to top on mobile, stays on right on desktop */}
+            <div className="w-full lg:w-[60%] space-y-8 lg:pl-16 order-1 lg:order-2">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-black italic tracking-wide text-gray-900 leading-tight">
+                デジタル×リアルで新しい社会価値を生み出す
+              </h2>
+              
+              <div className="space-y-6 text-sm md:text-base font-medium text-gray-600 leading-loose">
+                <p>
+                  私たちMeta Heroesは、教育・防災・地方創生などの様々な分野で抱える社会課題を、テクノロジー開発とリアルの場でのイベントを通じた、社会課題を解決するソーシャルイノベーターです。
+                </p>
+                <p>
+                  社会に存在する「課題」を、テクノロジーとエンターテインメントの力で「希望」に変え、デジタルとリアルの境界をなくし、誰もがヒーローになれる舞台を作る役割を果たします。
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <Link 
+                  to="/about/company" 
+                  className="inline-flex items-center gap-3 px-10 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-xs font-black rounded-full hover:shadow-lg hover:scale-105 transition-all group"
+                >
+                  もっと見る
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3 group-hover:translate-x-1 transition-transform">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Business Content Section */}
+      <BusinessContentSection />
+
+      {/* Service Section */}
+      <ServiceSection />
+
+      {/* Movie Section */}
+      <MovieSection />
+
       {/* News Section */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
@@ -258,12 +410,6 @@ export const TopPage: React.FC = () => {
                       <time className="text-[11px] md:text-[13px] font-bold text-gray-900 font-mono w-auto md:w-24">
                         {formatDate(item.publishedAt)}
                       </time>
-                      <span className={`
-                        px-2 md:px-3 py-0.5 text-[9px] md:text-[10px] font-black text-white uppercase tracking-widest min-w-[60px] md:min-w-[70px] text-center rounded
-                        ${item.category?.id === 'blog' ? 'bg-blue-400' : 'bg-emerald-400'}
-                      `}>
-                        {item.category?.name || 'INFO'}
-                      </span>
                     </div>
                     <h3 className="text-sm md:text-[14px] font-bold text-gray-700 group-hover:text-blue-600 transition-colors line-clamp-2 md:line-clamp-1 flex-grow leading-relaxed md:leading-normal">
                       {item.title}
@@ -286,87 +432,17 @@ export const TopPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Vision Section (Society 5.0 x SDGs x HERO) */}
-      <section className="py-16 md:py-24 bg-white overflow-hidden relative">
-        {/* Background Decoration Image - Desktop only */}
-        <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-full opacity-30 pointer-events-none">
-          <img 
-            src="/assets/top/vision.png" 
-            alt="" 
-            className="w-full h-full object-contain object-right"
-          />
-        </div>
-
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8 relative z-10">
-            {/* Text Content */}
-            <div className="w-full lg:w-1/2 space-y-8">
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="text-2xl md:text-3xl lg:text-4xl font-black italic tracking-wide text-gray-900 leading-tight"
-              >
-                Society 5.0 × SDGs × HERO
-              </motion.h2>
-              
-              <div className="space-y-6 text-sm md:text-base font-medium text-gray-600 leading-loose">
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                >
-                  テクノロジーによって描かれた未来の社会「Society 5.0」と、世界が目指すべき目標「SDGs」を実現するためには、行動力のある個人、つまり「ヒーロー」が必要です。
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 }}
-                >
-                  そのために、「学ぶ人」「挑戦する人」「変革する人」を次々と生み出す仕組みを作り、未来を実現する人材で満たされた世界を目指します。
-                </motion.p>
-              </div>
-            </div>
-
-            {/* Main Content Image - Visible on all screens */}
-            <div className="w-full lg:w-1/2 flex justify-center lg:justify-start">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="w-full max-w-lg"
-              >
-                <img 
-                  src="/assets/mission/vision.png" 
-                  alt="Society 5.0 x SDGs x HERO Vision" 
-                  className="w-full h-auto object-contain max-h-[400px] md:max-h-[500px]"
-                />
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Business Content Section */}
-      <BusinessContentSection />
-
-      {/* Movie Section */}
-      <MovieSection />
-
       {/* Category Grid Section */}
       <section className="py-12 md:py-24 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 max-w-6xl mx-auto">
             {[
-              { label: '企業情報', iconPath: '/assets/top/company_icon.png', image: '/assets/recruit/about_meta_heroes.png' },
-              { label: 'サービス', iconPath: '/assets/top/service_icon.png', image: '/assets/recruit/services.png' },
-              { label: '採用', iconPath: '/assets/top/recruit_icon.png', image: '/assets/recruit/recruit_top.jpg' },
-              { label: 'ブログ', iconPath: '/assets/top/blog_icon.png', image: '/assets/top/business_bg.png' },
+              { label: '企業情報', iconPath: '/assets/top/company_icon.png', image: '/assets/recruit/about_meta_heroes.png', path: '/about' },
+              { label: 'サービス', iconPath: '/assets/top/service_icon.png', image: '/assets/recruit/services.png', path: '/services' },
+              { label: '採用', iconPath: '/assets/top/recruit_icon.png', image: '/assets/recruit/recruit_top.jpg', path: '/recruit' },
+              { label: 'ブログ', iconPath: '/assets/top/blog_icon.png', image: '/assets/top/business_bg.png', path: '/news' },
             ].map((cat, idx) => (
-              <a key={idx} href="#" className="relative group aspect-square md:aspect-[3/4] rounded-2xl md:rounded-[2rem] overflow-hidden shadow-xl">
+              <Link key={idx} to={cat.path} className="relative group aspect-square md:aspect-[3/4] rounded-2xl md:rounded-[2rem] overflow-hidden shadow-xl">
                 <img src={cat.image} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:from-black/60 transition-colors" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-white gap-2 md:gap-5">
@@ -380,7 +456,7 @@ export const TopPage: React.FC = () => {
                   </motion.div>
                   <span className="text-xs md:text-base font-black tracking-[0.2em] md:tracking-[0.3em]">{cat.label}</span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

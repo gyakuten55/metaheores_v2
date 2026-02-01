@@ -51,7 +51,7 @@ const FOOTER_COLUMNS = [
       links: [
         { label: '実績一覧', path: '/works' },
         { label: 'ギャラリー', path: '/gallery' },
-        { label: 'メンバーブログ', path: '/news' },
+        { label: 'メンバーブログ', path: '/members/blog' },
       ]
     },
         {
@@ -223,7 +223,7 @@ const FOOTER_COLUMNS = [
             <a href="https://www.facebook.com/people/%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BEMetaHeroes/100094289003996/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-[#1877F2] hover:text-white transition-all duration-300">
               <Facebook size={20} />
             </a>
-            <a href="https://www.instagram.com/metaheroes100/?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-[#E4405F] hover:text-white transition-all duration-300">
+            <a href="https://www.instagram.com/metaheroes100/?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-[#E4405F] hover:text-white transition-all duration-300">
               <Instagram size={20} />
             </a>
             <a href="https://www.youtube.com/@MetaHeroes" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-[#FF0000] hover:text-white transition-all duration-300">
