@@ -8,7 +8,7 @@ const SERVICES = [
     subLabel: 'デジタルソリューション',
     title: 'XR & AI Solutions',
     tags: ['メタバース開発', 'AIシステム開発', 'AI人材育成企業研修'],
-    bgImage: '/assets/top/サービス紹介_bg_XRAI.png',
+    bgImage: '/assets/top/service_bg_xrai.png',
     link: '/services#digital',
     gradient: 'from-blue-600/80 to-cyan-500/40'
   },
@@ -17,7 +17,7 @@ const SERVICES = [
     subLabel: '教育 × テクノロジー',
     title: 'Technology & Education',
     tags: ['Hero Egg', 'ゲームクリエイター体験会', '防災万博'],
-    bgImage: '/assets/top/サービス紹介_bg_TechEdu.png',
+    bgImage: '/assets/top/service_bg_techedu.png',
     link: '/services#social',
     gradient: 'from-emerald-600/80 to-teal-500/40'
   },
@@ -26,7 +26,7 @@ const SERVICES = [
     subLabel: '共創・コミュニティ',
     title: 'Community & Co-creation',
     tags: ['イベント開催', '講演会', 'オープンイノベーション'],
-    bgImage: '/assets/top/サービス紹介_bg_com.png',
+    bgImage: '/assets/top/service_bg_community.png',
     link: '/services#community',
     gradient: 'from-purple-600/80 to-pink-500/40'
   }
