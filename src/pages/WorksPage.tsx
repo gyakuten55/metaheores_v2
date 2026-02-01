@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { getBlogs, Blog, Category, getCategoryOptions } from '../lib/microcms';
 import { Search, ChevronDown } from 'lucide-react';
 import { PageHero } from '../components/PageHero';
@@ -22,7 +24,7 @@ export const WorksPage: React.FC = () => {
     const fetchCategories = async () => {
       try {
         const options = await getCategoryOptions();
-        const filtered = options.filter(cat => cat.name.includes('実績'));
+        const filtered = options.filter((cat: Category) => cat.name.includes('実績'));
         setCategories(filtered);
       } catch (e) {
         console.warn('Failed to load categories for works:', e);
@@ -37,15 +39,15 @@ export const WorksPage: React.FC = () => {
       setLoading(true);
       try {
         const offset = (currentPage - 1) * limit;
-        const response = await getBlogs(limit, undefined, {
+        const response = await getBlogs(limit, {
           categoryId: selectedCategory,
           year: selectedYear,
           keyword: searchQuery
         }, offset);
         
         // カテゴリ名に「実績」が含まれる記事のみを表示
-        const filteredWorks = response.contents.filter(item => 
-          item.category_new?.some(cat => cat.includes('実績'))
+        const filteredWorks = response.contents.filter((item: Blog) => 
+          item.category_new?.some((cat: string) => cat.includes('実績'))
         );
         
         setWorks(filteredWorks);
@@ -71,7 +73,7 @@ export const WorksPage: React.FC = () => {
   const totalPages = Math.ceil(totalCount / limit);
 
   const getPageNumbers = () => {
-    const pages = [];
+    const pages: (number | string)[] = [];
     const maxVisible = 5;
     
     if (totalPages <= maxVisible) {
@@ -119,7 +121,7 @@ export const WorksPage: React.FC = () => {
                 className="w-full appearance-none px-6 py-3 bg-gray-50 border-none rounded-sm text-xs font-black tracking-widest text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer pr-12"
               >
                 <option value="">CATEGORY: ALL</option>
-                {categories.map((cat) => (
+                {categories.map((cat: Category) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.name.toUpperCase()}
                   </option>
@@ -168,7 +170,7 @@ export const WorksPage: React.FC = () => {
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
-                {works.map((item) => (
+                {works.map((item: Blog) => (
                   <Link key={item.id} to={`/blog/${item.id}`} className="group block">
                     <div className="relative aspect-video overflow-hidden mb-6 bg-gray-100 rounded-sm">
                       <img 
@@ -193,7 +195,7 @@ export const WorksPage: React.FC = () => {
               {totalPages > 1 && (
                 <div className="mt-20 flex justify-center items-center gap-4">
                   <button
-                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    onClick={() => setCurrentPage((prev: number) => Math.max(1, prev - 1))}
                     disabled={currentPage === 1}
                     className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center transition-all hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed group"
                   >
@@ -201,7 +203,7 @@ export const WorksPage: React.FC = () => {
                   </button>
                   
                   <div className="flex items-center gap-2">
-                    {getPageNumbers().map((page, idx) => (
+                    {getPageNumbers().map((page: number | string, idx: number) => (
                       <React.Fragment key={idx}>
                         {page === '...' ? (
                           <span className="w-8 text-center text-gray-300 font-bold">...</span>
@@ -222,7 +224,7 @@ export const WorksPage: React.FC = () => {
                   </div>
 
                   <button
-                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    onClick={() => setCurrentPage((prev: number) => Math.min(totalPages, prev + 1))}
                     disabled={currentPage === totalPages}
                     className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center transition-all hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed group"
                   >
