@@ -287,7 +287,7 @@ export const TopPage: React.FC = () => {
         <div className="absolute left-0 top-0 bottom-0 w-full lg:w-[40%] overflow-hidden z-0 hidden lg:block">
           <div className="absolute inset-0 w-[200%] h-full">
             <video 
-              src="/assets/top/2025_MH_実績集_02.mp4" 
+              src="/assets/top/2025_mh_achievements_02.mp4" 
               autoPlay 
               muted 
               loop 
@@ -315,7 +315,7 @@ export const TopPage: React.FC = () => {
             {/* Image Area - Moved to bottom on mobile, stays on left on desktop */}
             <div className="w-full lg:w-[40%] flex items-center justify-center p-8 mb-12 lg:mb-0 order-2 lg:order-1">
               <img 
-                src="/assets/top/about Meta Heroes_02.png" 
+                src="/assets/top/about_meta_heroes_02.png" 
                 alt="About MetaHeroes" 
                 className="max-w-full max-h-[350px] md:max-h-[450px] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
               />
