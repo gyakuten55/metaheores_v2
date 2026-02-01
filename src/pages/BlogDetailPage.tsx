@@ -57,6 +57,14 @@ export const BlogDetailPage = () => {
     return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
   };
 
+  // SEO用の本文クレンジング処理
+  const getPureText = (html: string) => {
+    return html
+      .replace(/<[^>]*>?/gm, '') // タグ除去
+      .replace(/\s+/g, ' ')      // 改行・空白の整理
+      .trim();
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
@@ -81,22 +89,49 @@ export const BlogDetailPage = () => {
     );
   }
 
+  // カテゴリ名をキーワードに変換
+  const blogKeywords = [
+    ...(blog.category_new || []),
+    ...(isMemberBlog && (blog as any).category ? [((blog as any).category as any).name] : []),
+    "MetaHeroes", "メタバース", "AI", "XR"
+  ].join(', ');
+
+  const description = blog.content 
+    ? getPureText(blog.content).slice(0, 160) + '...'
+    : `${blog.title}に関する株式会社MetaHeroesの最新情報をお届けします。`;
+
   return (
     <div className="min-h-screen bg-white">
       <SEO 
         title={`${blog.title} | 株式会社MetaHeroes`}
-        description={blog.content ? blog.content.replace(/<[^>]*>?/gm, '').slice(0, 160) + '...' : undefined}
+        description={description}
+        keywords={blogKeywords}
         image={blog.eyecatch?.url}
         type="article"
         schema={{
           "@context": "https://schema.org",
           "@type": "BlogPosting",
           "headline": blog.title,
+          "description": description,
           "image": blog.eyecatch?.url || PLACEHOLDER_IMAGE,
           "datePublished": blog.publishedAt || blog.createdAt,
+          "dateModified": blog.updatedAt || blog.publishedAt || blog.createdAt,
           "author": {
             "@type": "Organization",
-            "name": "株式会社MetaHeroes"
+            "name": "株式会社MetaHeroes",
+            "url": "https://meta-heroes.co.jp/"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "株式会社MetaHeroes",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://meta-heroes.co.jp/assets/logo.png"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://meta-heroes.co.jp${location.pathname}`
           }
         }}
       />
