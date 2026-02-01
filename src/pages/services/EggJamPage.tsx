@@ -246,8 +246,7 @@ export const EggJamPage: React.FC = () => {
       <section className="bg-gray-50 mt-32">
         <div className="container mx-auto px-4 py-24">
           <div className="flex flex-col md:flex-row justify-center items-stretch gap-6">
-            <Link
-              href="https://meta-heroes.co.jp"
+            <a href="https://meta-heroes.co.jp" target="_blank" rel="noopener noreferrer"
               
               
               className="group relative flex items-center justify-between w-full md:w-[320px] px-8 py-5 bg-[#333333] text-white rounded-full overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
@@ -259,7 +258,7 @@ export const EggJamPage: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                 </svg>
               </div>
-            </Link>
+            </a>
             
             <Link
               to="/document-request"

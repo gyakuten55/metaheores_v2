@@ -161,6 +161,7 @@ export const getPickups = async (): Promise<BannerResponse> => {
 // ブログ記事一覧を取得
 export const getBlogs = async (
   limit: number = 10,
+  _memberId?: string, // 互換性のために残しています
   filters?: {
     categoryId?: string;
     excludeCategoryId?: string;

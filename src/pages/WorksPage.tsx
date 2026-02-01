@@ -39,7 +39,7 @@ export const WorksPage: React.FC = () => {
       setLoading(true);
       try {
         const offset = (currentPage - 1) * limit;
-        const response = await getBlogs(limit, {
+        const response = await getBlogs(limit, undefined, {
           categoryId: selectedCategory,
           year: selectedYear,
           keyword: searchQuery
