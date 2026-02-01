@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { PageTitle } from './components/PageTitle';
+import { SEO } from './components/SEO';
 import { ScrollToTop } from './components/ScrollToTop';
 import { BlogDetailPage } from './pages/BlogDetailPage';
 import { MemberPage } from './pages/MemberPage';
@@ -63,63 +63,92 @@ function App() {
         {!isAgencyPage && <Header />}
         <div className="flex-grow">
           <Routes>
-            <Route path="/" element={<><PageTitle title="株式会社MetaHeroes | ヒーローと共創するメタバース・AIカンパニー" /><TopPage /></>} />
+            <Route path="/" element={
+              <>
+                <SEO 
+                  title="株式会社MetaHeroes | ヒーローと共創するメタバース・AIカンパニー" 
+                  description="株式会社MetaHeroesは、メタバース、AI、XR技術を駆使して社会課題を解決するインパクト・ビジネスを展開。2044年までに100のHEROを創出するビジョンのもと、教育・防災・地方創生の革新に挑みます。"
+                  schema={{
+                    "@context": "https://schema.org",
+                    "@type": "Organization",
+                    "name": "株式会社MetaHeroes",
+                    "url": "https://meta-heroes.co.jp/",
+                    "logo": "https://meta-heroes.co.jp/assets/logo.png",
+                    "description": "メタバース・AI・XRで社会課題を解決し、日本の未来をワクワクさせるインパクト・ビジネスを展開。",
+                    "address": {
+                      "@type": "PostalAddress",
+                      "streetAddress": "堂山町1-5 三共梅田ビル 8F",
+                      "addressLocality": "大阪市北区",
+                      "addressRegion": "大阪府",
+                      "postalCode": "530-0027",
+                      "addressCountry": "JP"
+                    },
+                    "founder": {
+                      "@type": "Person",
+                      "name": "松石 和俊"
+                    },
+                    "foundingDate": "2021-12-03"
+                  }}
+                />
+                <TopPage />
+              </>
+            } />
             
             {/* Agency Routes */}
-            <Route path="/agency-login" element={<><PageTitle title="代理店ログイン | 株式会社MetaHeroes" /><LoginPage /></>} />
+            <Route path="/agency-login" element={<><SEO title="代理店ログイン | 株式会社MetaHeroes" /><LoginPage /></>} />
             <Route path="/agency" element={
               <ProtectedRoute>
                 <AgencyLayout />
               </ProtectedRoute>
             }>
-              <Route index element={<><PageTitle title="代理店ダッシュボード | 株式会社MetaHeroes" /><DashboardPage /></>} />
-              <Route path="documents" element={<><PageTitle title="資料ライブラリ | 株式会社MetaHeroes" /><DocumentsPage /></>} />
-              <Route path="videos" element={<><PageTitle title="動画ライブラリ | 株式会社MetaHeroes" /><VideosPage /></>} />
-              <Route path="events" element={<><PageTitle title="イベント情報 | 株式会社MetaHeroes" /><EventsPage /></>} />
-              <Route path="links" element={<><PageTitle title="関連リンク | 株式会社MetaHeroes" /><LinksPage /></>} />
+              <Route index element={<><SEO title="代理店ダッシュボード | 株式会社MetaHeroes" /><DashboardPage /></>} />
+              <Route path="documents" element={<><SEO title="資料ライブラリ | 株式会社MetaHeroes" /><DocumentsPage /></>} />
+              <Route path="videos" element={<><SEO title="動画ライブラリ | 株式会社MetaHeroes" /><VideosPage /></>} />
+              <Route path="events" element={<><SEO title="イベント情報 | 株式会社MetaHeroes" /><EventsPage /></>} />
+              <Route path="links" element={<><SEO title="関連リンク | 株式会社MetaHeroes" /><LinksPage /></>} />
               <Route path="admin" element={
                 <ProtectedRoute allowedRoles={['admin']}>
-                  <PageTitle title="管理者設定 | 株式会社MetaHeroes" />
+                  <SEO title="管理者設定 | 株式会社MetaHeroes" />
                   <AdminPage />
                 </ProtectedRoute>
               } />
             </Route>
 
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/about/company" element={<AboutCompanyPage />} />
-            <Route path="/about/profile" element={<CompanyProfilePage />} />
-            <Route path="/about/mission" element={<MissionPage />} />
-            <Route path="/about/offices" element={<OfficesPage />} />
-            <Route path="/about/conduct" element={<CodeOfConductPage />} />
-            <Route path="/about/privacy" element={<PrivacyPolicyPage />} />
-            <Route path="/about/group" element={<GroupCompaniesPage />} />
-            <Route path="/business" element={<BusinessContentPage />} />
+            <Route path="/about" element={<><SEO title="MetaHeroesについて | 株式会社MetaHeroes" description="株式会社MetaHeroesのビジョン、ミッション、そして2044年に向けた100のHERO創出計画についてご紹介します。" /><AboutPage /></>} />
+            <Route path="/about/company" element={<><SEO title="会社概要 | 株式会社MetaHeroes" /><AboutCompanyPage /></>} />
+            <Route path="/about/profile" element={<><SEO title="企業プロフィール | 株式会社MetaHeroes" /><CompanyProfilePage /></>} />
+            <Route path="/about/mission" element={<><SEO title="ミッション・ビジョン | 株式会社MetaHeroes" description="「Society 5.0 × SDGs × HERO」デジタルの力で社会課題を解決し、誰もがヒーローになれる世界を目指します。" /><MissionPage /></>} />
+            <Route path="/about/offices" element={<><SEO title="オフィス案内 | 株式会社MetaHeroes" /><OfficesPage /></>} />
+            <Route path="/about/conduct" element={<><SEO title="行動指針 | 株式会社MetaHeroes" /><CodeOfConductPage /></>} />
+            <Route path="/about/privacy" element={<><SEO title="プライバシーポリシー | 株式会社MetaHeroes" /><PrivacyPolicyPage /></>} />
+            <Route path="/about/group" element={<><SEO title="グループ会社 | 株式会社MetaHeroes" /><GroupCompaniesPage /></>} />
+            <Route path="/business" element={<><SEO title="事業内容 | 株式会社MetaHeroes" description="教育、防災、地方創生の3領域におけるメタバース・AI活用ソリューションを提供しています。" /><BusinessContentPage /></>} />
 
-            <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/contact/privacy" element={<ContactPrivacyPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/document-request" element={<DocumentRequestPage />} />
-            <Route path="/recruit" element={<RecruitPage />} />
-            <Route path="/faq" element={<><PageTitle title="よくある質問 | 株式会社MetaHeroes" /><FAQPage /></>} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/services/xr" element={<XrSolutionsPage />} />
-            <Route path="/services/holoshare" element={<HolosharePage />} />
-            <Route path="/services/hero-aivo" element={<HeroAivoPage />} />
-            <Route path="/services/ai-training" element={<AiTrainingPage />} />
-            <Route path="/services/bousai-metaverse" element={<BousaiMetaversePage />} />
-            <Route path="/services/bousai-expo" element={<BousaiExpoPage />} />
-            <Route path="/services/hero-egg-collection" element={<HeroEggCollectionPage />} />
-            <Route path="/services/hero-expo" element={<HeroExpoPage />} />
-            <Route path="/services/global-hero-summit" element={<GlobalHeroSummitPage />} />
-            <Route path="/services/egg-jam" element={<EggJamPage />} />
-            <Route path="/services/ai-monday" element={<AiMondayPage />} />
-            <Route path="/services/game-event" element={<GameEventPage />} />
-            <Route path="/services/meta-heroes-guild" element={<MetaHeroesGuildPage />} />
-            <Route path="/ceo-message" element={<CeoMessagePage />} />
-            <Route path="/news" element={<NewsPage />} />
-            <Route path="/works" element={<WorksPage />} />
-            <Route path="/members/blog" element={<MemberBlogPage />} />
-            <Route path="/members" element={<MemberListPage />} />
+            <Route path="/gallery" element={<><SEO title="ギャラリー | 株式会社MetaHeroes" /><GalleryPage /></>} />
+            <Route path="/contact/privacy" element={<><SEO title="個人情報の取り扱いについて | 株式会社MetaHeroes" /><ContactPrivacyPage /></>} />
+            <Route path="/contact" element={<><SEO title="お問い合わせ | 株式会社MetaHeroes" /><ContactPage /></>} />
+            <Route path="/document-request" element={<><SEO title="資料請求 | 株式会社MetaHeroes" /><DocumentRequestPage /></>} />
+            <Route path="/recruit" element={<><SEO title="採用情報 | 株式会社MetaHeroes" description="次世代の社会基盤を創るHEROを募集しています。メタバース・AIの力で世界をワクワクさせませんか？" /><RecruitPage /></>} />
+            <Route path="/faq" element={<><SEO title="よくある質問 | 株式会社MetaHeroes" /><FAQPage /></>} />
+            <Route path="/services" element={<><SEO title="サービス一覧 | 株式会社MetaHeroes" /><ServicesPage /></>} />
+            <Route path="/services/xr" element={<><SEO title="XRソリューション | VR・MRによる没入型課題解決 | 株式会社MetaHeroes" description="VR/AR/MR技術を駆使し、場所や時間の制約を超えた没入体験を提供。防災・教育・地域創生など、実社会の「不」を解消する最新のXRソリューションをオーダーメイドで構築します。" keywords="VR, AR, MR, 没入体験, デジタルツイン, メタバース開発, UEFN" /><XrSolutionsPage /></>} />
+            <Route path="/services/holoshare" element={<><SEO title="HoloShare | ホログラム・XR共有プラットフォーム | 株式会社MetaHeroes" /><HolosharePage /></>} />
+            <Route path="/services/hero-aivo" element={<><SEO title="HERO AIVO | AI検索最適化(LLMO)診断・Web制作 | 株式会社MetaHeroes" description="AI検索（ChatGPT/Perplexity等）が主流になる時代。情報の誤認識を防ぎ、AIから正しく引用・推奨されるWebサイトへと最適化する国内屈指のLLMOソリューション。" keywords="LLMO, AI検索最適化, AI集客, Web制作, HERO AIVO" /><HeroAivoPage /></>} />
+            <Route path="/services/ai-training" element={<><SEO title="AI人材育成研修 | 実務に直結するDXリスキリング | 株式会社MetaHeroes" description="15,000名以上の実績を誇る実践的AI研修。単なるツールの習得ではなく、自社の課題をAIで解決する「AIリテラシー」を底上げし、組織全体の生産性を向上させます。" keywords="AI研修, DX研修, リスキリング, 生産性向上, 生成AI活用" /><AiTrainingPage /></>} />
+            <Route path="/services/bousai-metaverse" element={<><SEO title="防災メタバース | 没入型防災教育・訓練シミュレーション | 株式会社MetaHeroes" description="「教えられる防災」から「自ら学ぶ防災」へ。仮想空間での火災・浸水体験を通じ、高い没入感で危機意識を自分事化させる、自治体・教育機関向けの次世代防災教育。" keywords="防災教育, 避難訓練, VR防災, シミュレーション, 自治体DX" /><BousaiMetaversePage /></>} />
+            <Route path="/services/bousai-expo" element={<><SEO title="防災万博 | 株式会社MetaHeroes" /><BousaiExpoPage /></>} />
+            <Route path="/services/hero-egg-collection" element={<><SEO title="Hero Egg Collection | 株式会社MetaHeroes" /><HeroEggCollectionPage /></>} />
+            <Route path="/services/hero-expo" element={<><SEO title="HERO EXPO | 次世代DX体験イベント | 株式会社MetaHeroes" /><HeroExpoPage /></>} />
+            <Route path="/services/global-hero-summit" element={<><SEO title="Global Hero Summit | 株式会社MetaHeroes" /><GlobalHeroSummitPage /></>} />
+            <Route path="/services/egg-jam" element={<><SEO title="EGG JAM | 株式会社MetaHeroes" /><EggJamPage /></>} />
+            <Route path="/services/ai-monday" element={<><SEO title="AI MONDAY | 生成AI実践学習コミュニティ | 株式会社MetaHeroes" description="毎週月曜日開催。生成AIの最新情報を学び、アウトプットする実践型コミュニティ。AIライト層からビジネスリーダーまで、共に学び成長する場を提供します。" /><AiMondayPage /></>} />
+            <Route path="/services/game-event" element={<><SEO title="ゲーム×イベント | 没入型プロモーション | 株式会社MetaHeroes" /><GameEventPage /></>} />
+            <Route path="/services/meta-heroes-guild" element={<><SEO title="Meta Heroes Guild | クリエイター共創コミュニティ | 株式会社MetaHeroes" /><MetaHeroesGuildPage /></>} />
+            <Route path="/ceo-message" element={<><SEO title="代表メッセージ | 株式会社MetaHeroes" /><CeoMessagePage /></>} />
+            <Route path="/news" element={<><SEO title="ニュース | 株式会社MetaHeroes" /><NewsPage /></>} />
+            <Route path="/works" element={<><SEO title="制作実績 | 株式会社MetaHeroes" /><WorksPage /></>} />
+            <Route path="/members/blog" element={<><SEO title="メンバーブログ | 株式会社MetaHeroes" /><MemberBlogPage /></>} />
+            <Route path="/members" element={<><SEO title="メンバー紹介 | 株式会社MetaHeroes" /><MemberListPage /></>} />
             <Route path="/member/:memberId" element={<MemberPage />} />
             <Route path="/blog/:blogId" element={<BlogDetailPage />} />
             <Route path="/member-blog/:blogId" element={<BlogDetailPage />} />

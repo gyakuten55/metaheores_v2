@@ -1,3 +1,31 @@
 User-agent: *
+Allow: /
 Disallow: /agency/
 Disallow: /agency-login
+
+# Allow major LLM crawlers for LLMO (Large Language Model Optimization)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-bot
+Allow: /
+
+User-agent: ClaudeWeb
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+Sitemap: https://meta-heroes.co.jp/sitemap.xml

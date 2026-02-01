@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { Blog, getBlogById, getBlogs, getMemberBlogById, getMemberBlogs } from '../lib/microcms';
+import { SEO } from '../components/SEO';
 
 const PLACEHOLDER_IMAGE = '/assets/top/business_bg.png';
 
@@ -82,6 +83,23 @@ export const BlogDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title={`${blog.title} | 株式会社MetaHeroes`}
+        description={blog.content ? blog.content.replace(/<[^>]*>?/gm, '').slice(0, 160) + '...' : undefined}
+        image={blog.eyecatch?.url}
+        type="article"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": blog.title,
+          "image": blog.eyecatch?.url || PLACEHOLDER_IMAGE,
+          "datePublished": blog.publishedAt || blog.createdAt,
+          "author": {
+            "@type": "Organization",
+            "name": "株式会社MetaHeroes"
+          }
+        }}
+      />
       {/* メインコンテンツ */}
       <main className="container mx-auto px-4 sm:px-8 pt-40 pb-20 max-w-4xl">
         

@@ -10,6 +10,7 @@ import { ScheduleSection } from '../components/ScheduleSection';
 import { BlogSection } from '../components/BlogSection';
 import { OtherMembersSection } from '../components/OtherMembersSection';
 import { allMembers } from '../data/members';
+import { SEO } from '../components/SEO';
 
 export const MemberPage = () => {
   const { memberId } = useParams<{ memberId: string }>();
@@ -63,6 +64,22 @@ export const MemberPage = () => {
 
   return (
     <main className="relative">
+      <SEO 
+        title={`${member.name} | メンバー紹介 | 株式会社MetaHeroes`}
+        description={`${member.name}のプロフィール、経歴、哲学について。株式会社MetaHeroesのプロフェッショナルメンバーをご紹介します。`}
+        image={member.heroImage}
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": member.name,
+          "jobTitle": member.role,
+          "worksFor": {
+            "@type": "Organization",
+            "name": "株式会社MetaHeroes"
+          },
+          "image": member.heroImage
+        }}
+      />
       <div className="relative z-20">
         <HeroSection member={member} />
       </div>
