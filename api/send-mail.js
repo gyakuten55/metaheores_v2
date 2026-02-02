@@ -32,10 +32,11 @@ export default async function handler(req, res) {
   }
 
   // SMTP Settings (Heteml)
+  // Remove ALL spaces (not just leading/trailing) from user and pass
   const host = (process.env.SMTP_HOST || 'smtp.heteml.jp').trim();
   const port = parseInt((process.env.SMTP_PORT || '465').trim());
-  const user = (process.env.SMTP_USER || '').trim();
-  const pass = (process.env.SMTP_PASS || '').trim();
+  const user = (process.env.SMTP_USER || '').replace(/\s+/g, '');
+  const pass = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
 
   const transporter = nodemailer.createTransport({
     host: host,
