@@ -150,7 +150,7 @@ function App() {
             <Route path="/members/blog" element={<><SEO title="メンバーブログ | 株式会社MetaHeroes" /><MemberBlogPage /></>} />
             <Route path="/members" element={<><SEO title="メンバー紹介 | 株式会社MetaHeroes" /><MemberListPage /></>} />
             <Route path="/member/:memberId" element={<MemberPage />} />
-            <Route path="/blog/:blogId" element={<BlogDetailPage />} />
+            <Route path="/news/:blogId" element={<BlogDetailPage />} />
             <Route path="/member-blog/:blogId" element={<BlogDetailPage />} />
           </Routes>
         </div>

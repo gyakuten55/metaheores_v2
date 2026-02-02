@@ -159,7 +159,7 @@ export const XrSolutionsPage: React.FC = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             {news.length > 0 ? news.map((item) => (
-              <Link key={item.id} to={`/blog/${item.id}`} className="group block">
+              <Link key={item.id} to={`/news/${item.id}`} className="group block">
                 <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 mb-4 border border-gray-50 shadow-sm">
                   <img 
                     src={item.eyecatch?.url || '/assets/services/xr-solutions/hero-thumbnail.png'} 
@@ -208,7 +208,7 @@ export const XrSolutionsPage: React.FC = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             {works.length > 0 ? works.map((item) => (
-              <Link key={item.id} to={`/blog/${item.id}`} className="group block">
+              <Link key={item.id} to={`/news/${item.id}`} className="group block">
                 <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 mb-4 border border-gray-50 shadow-sm">
                    <img 
                     src={item.eyecatch?.url || '/assets/services/xr-solutions/hero-thumbnail.png'} 

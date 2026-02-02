@@ -239,7 +239,7 @@ export const BlogDetailPage = () => {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {relatedBlogs.map((item) => (
-                        <Link key={item.id} to={isMemberBlog ? `/member-blog/${item.id}` : `/blog/${item.id}`} className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+                        <Link key={item.id} to={isMemberBlog ? `/member-blog/${item.id}` : `/news/${item.id}`} className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
                             <div className="relative aspect-video overflow-hidden bg-gray-200">
                                 <img 
                                     src={item.eyecatch?.url || PLACEHOLDER_IMAGE} 

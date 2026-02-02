@@ -260,7 +260,7 @@ export const BusinessContentPage: React.FC = () => {
               ) : (
                 <div className="flex overflow-x-auto pb-8 md:grid md:grid-cols-4 gap-4 md:gap-6 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
                   {caseStudies.map((item) => (
-                    <Link key={item.id} to={`/blog/${item.id}`} className="group block flex-shrink-0 w-[200px] md:w-auto">
+                    <Link key={item.id} to={`/news/${item.id}`} className="group block flex-shrink-0 w-[200px] md:w-auto">
                       <div className="relative aspect-[4/3] overflow-hidden rounded-lg md:rounded-xl mb-3 bg-gray-100 shadow-sm border border-gray-50">
                         <img 
                           src={item.eyecatch?.url || 'https://via.placeholder.com/800x600?text=No+Image'} 

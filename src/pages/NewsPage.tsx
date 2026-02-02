@@ -185,7 +185,7 @@ export const NewsPage: React.FC = () => {
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"
               >
                 {blogs.map((item) => (
-                  <Link key={item.id} to={`/blog/${item.id}`} className="group flex flex-col h-full">
+                  <Link key={item.id} to={`/news/${item.id}`} className="group flex flex-col h-full">
                     {/* Eyecatch */}
                     <div className="relative aspect-video overflow-hidden rounded-xl bg-gray-100 mb-6 shadow-sm border border-gray-50">
                       <img 

@@ -171,7 +171,7 @@ export const WorksPage: React.FC = () => {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
                 {works.map((item: Blog) => (
-                  <Link key={item.id} to={`/blog/${item.id}`} className="group block">
+                  <Link key={item.id} to={`/news/${item.id}`} className="group block">
                     <div className="relative aspect-video overflow-hidden mb-6 bg-gray-100 rounded-sm">
                       <img 
                         src={item.eyecatch?.url || PLACEHOLDER_IMAGE} 

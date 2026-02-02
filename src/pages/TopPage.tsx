@@ -123,7 +123,7 @@ export const TopPage: React.FC = () => {
                     }}
                     className="absolute w-[80%] md:w-[70%] aspect-video rounded-xl overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.3)] bg-white border-[1px] border-white/20"
                   >
-                    <Link to={`/blog/${banner.id}`} className="block w-full h-full">
+                    <Link to={`/news/${banner.id}`} className="block w-full h-full">
                       <img 
                         src={banner.eyecatch?.url || PLACEHOLDER_IMAGE} 
                         alt={banner.title} 
@@ -405,7 +405,7 @@ export const TopPage: React.FC = () => {
             {filteredNews.length > 0 ? (
               <div className="divide-y divide-gray-100">
                 {filteredNews.slice(0, 5).map((item) => (
-                  <Link key={item.id} to={`/blog/${item.id}`} className="group flex flex-col md:flex-row md:items-center gap-2 md:gap-4 py-4 md:py-3 hover:bg-gray-50/50 transition-all px-2 -mx-2 rounded-lg">
+                  <Link key={item.id} to={`/news/${item.id}`} className="group flex flex-col md:flex-row md:items-center gap-2 md:gap-4 py-4 md:py-3 hover:bg-gray-50/50 transition-all px-2 -mx-2 rounded-lg">
                     <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
                       <time className="text-[11px] md:text-[13px] font-bold text-gray-900 font-mono w-auto md:w-24">
                         {formatDate(item.publishedAt)}
