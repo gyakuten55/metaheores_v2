@@ -32,9 +32,8 @@ export default async function handler(req, res) {
   }
 
   // SMTP Settings (Heteml/Hetemail)
-  // Remove ALL spaces (not just leading/trailing) from user and pass
   const host = (process.env.SMTP_HOST || 'smtp.hetemail.jp').replace(/\s+/g, '');
-  const port = parseInt((process.env.SMTP_PORT || '465').replace(/\s+/g, ''));
+  const port = parseInt((process.env.SMTP_PORT || '587').replace(/\s+/g, ''));
   const user = (process.env.SMTP_USER || '').replace(/\s+/g, '');
   const pass = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
 
@@ -45,16 +44,20 @@ export default async function handler(req, res) {
   const transporter = nodemailer.createTransport({
     host: host,
     port: port,
-    secure: port === 465, 
+    secure: port === 465, // true for 465, false for 587
     auth: {
       user: user,
       pass: pass,
     },
-    debug: true, // Enable debug output
-    logger: true, // Log to console
+    // 一部のサーバーで必要な認証方式の明示
+    authMethod: 'LOGIN',
     tls: {
-      rejectUnauthorized: false
-    }
+      // 接続先サーバー名が証明書と一致しない場合のエラー回避
+      rejectUnauthorized: false,
+      minVersion: 'TLSv1.2'
+    },
+    debug: true,
+    logger: true
   });
 
   try {
