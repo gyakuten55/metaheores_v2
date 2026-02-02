@@ -35,7 +35,17 @@ export const CategoryNavigation: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {CATEGORIES.map((cat, idx) => (
-            <Link key={idx} to={cat.path} className="relative group aspect-[3/4] rounded-[2rem] overflow-hidden shadow-xl">
+            <Link 
+              key={idx} 
+              to={cat.path} 
+              className="relative group aspect-[3/4] rounded-[2rem] overflow-hidden shadow-xl"
+              onClick={(e) => {
+                if (cat.path === '/recruit') {
+                  e.preventDefault();
+                  alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
+                }
+              }}
+            >
               <img src={cat.image} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:from-black/60 transition-colors" />
               <div className="absolute inset-0 flex flex-col items-center justify-center text-white gap-5">

@@ -159,7 +159,16 @@ export const Header: React.FC = () => {
                 onMouseEnter={() => setActiveDropdown(item.label)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <Link to={item.path} className="relative block px-3 z-10 h-7 overflow-hidden">
+                <Link 
+                  to={item.path} 
+                  className="relative block px-3 z-10 h-7 overflow-hidden"
+                  onClick={(e) => {
+                    if (item.path === '/recruit') {
+                      e.preventDefault();
+                      alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
+                    }
+                  }}
+                >
                   <div className="flex flex-col transition-transform duration-700 ease-[0.19,1,0.22,1] group-hover:-translate-y-1/2">
                     {/* Japanese */}
                     <span className={`flex items-center justify-center h-7 text-[13px] font-bold tracking-wider transition-colors duration-700 ${
@@ -372,7 +381,14 @@ export const Header: React.FC = () => {
                       ) : (
                         <Link
                           to={item.path}
-                          onClick={() => setIsMobileMenuOpen(false)}
+                          onClick={(e) => {
+                            if (item.path === '/recruit') {
+                              e.preventDefault();
+                              alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
+                            } else {
+                              setIsMobileMenuOpen(false);
+                            }
+                          }}
                           className="flex flex-col items-start py-2 group"
                         >
                           <span className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">

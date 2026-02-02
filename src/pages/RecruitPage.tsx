@@ -65,6 +65,10 @@ export const RecruitPage: React.FC = () => {
   const blogScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Show 'Under Construction' notification and redirect
+    alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
+    window.location.href = '/';
+
     const fetchBlogs = async () => {
       try {
         const response = await getMemberBlogs(8);
@@ -553,8 +557,10 @@ export const RecruitPage: React.FC = () => {
               </Link>
 
               {/* Entry Button */}
-              <Link 
-                to="/contact" 
+              <a 
+                href="https://jp.indeed.com/cmp/%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BEmeta-Heroes"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-between bg-gradient-to-r from-[#2563eb] to-[#06b6d4] text-white p-1 rounded-full shadow-lg hover:shadow-xl transition-all group overflow-hidden"
               >
                 <span className="text-base md:text-lg font-bold tracking-[0.2em] pl-12 pr-4 py-4 flex-grow text-center">エントリー</span>
@@ -563,7 +569,7 @@ export const RecruitPage: React.FC = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                   </svg>
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
         </div>

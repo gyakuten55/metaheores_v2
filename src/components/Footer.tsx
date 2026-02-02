@@ -119,6 +119,12 @@ const FOOTER_COLUMNS = [
                                 ) : (
                                   <Link 
                                     to={link.path}
+                                    onClick={(e) => {
+                                      if (link.path === '/recruit') {
+                                        e.preventDefault();
+                                        alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
+                                      }
+                                    }}
                                     className={`text-xs font-bold transition-colors block pl-4 ${
                                       link.label === '代理店専用' 
                                         ? 'text-blue-600 hover:text-gray-500' 
@@ -154,6 +160,12 @@ const FOOTER_COLUMNS = [
                             ) : (
                               <Link 
                                 to={link.path}
+                                onClick={(e) => {
+                                  if (link.path === '/recruit') {
+                                    e.preventDefault();
+                                    alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
+                                  }
+                                }}
                                 className={`text-[13px] font-bold transition-colors block ${
                                   link.label === '代理店専用' 
                                     ? 'text-blue-600 hover:text-gray-500' 
