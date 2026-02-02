@@ -7,6 +7,7 @@
   ],
   "rewrites": [
     { "source": "/api/sync", "destination": "/api/sync.js" },
+    { "source": "/api/send-mail", "destination": "/api/send-mail.js" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
