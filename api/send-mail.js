@@ -12,8 +12,26 @@ export default async function handler(req, res) {
     name, 
     email, 
     occupation, 
-    content 
+    content,
+    confirm_email_field, // Honeypot
+    _t // Timestamp
   } = req.body;
+
+  // 1. Honeypot check: If filled, it's a bot
+  if (confirm_email_field) {
+    console.warn('Spam detected: Honeypot filled');
+    return res.status(200).json({ success: true, message: 'Spam filtered' }); // Return success to fool the bot
+  }
+
+  // 2. Referer check: Prevent external API calls
+  const referer = req.headers.referer || '';
+  const allowedDomains = ['meta-heroes.co.jp', 'localhost', 'vercel.app'];
+  const isAllowed = allowedDomains.some(domain => referer.includes(domain));
+  
+  if (!isAllowed) {
+    console.warn(`Unauthorized referer: ${referer}`);
+    return res.status(403).json({ error: 'Access denied' });
+  }
 
   const categoryLabels = {
     business: '事業に関するお問い合わせ',

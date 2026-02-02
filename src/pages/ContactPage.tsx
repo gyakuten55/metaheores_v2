@@ -19,6 +19,7 @@ interface FormData {
   mediaName: string;
   publishDate: string;
   content: string;
+  confirm_email_field?: string; // Honeypot field
 }
 
 const INITIAL_DATA: FormData = {
@@ -33,6 +34,7 @@ const INITIAL_DATA: FormData = {
   mediaName: '',
   publishDate: '',
   content: '',
+  confirm_email_field: '',
 };
 
 export const ContactPage: React.FC = () => {
@@ -40,6 +42,7 @@ export const ContactPage: React.FC = () => {
   const [agreed, setAgreed] = useState(false);
   const [formData, setFormData] = useState<FormData>(INITIAL_DATA);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [startTime] = useState(Date.now()); // Track when the form was loaded
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -49,6 +52,13 @@ export const ContactPage: React.FC = () => {
   const goToConfirm = (e: React.FormEvent) => {
     e.preventDefault();
     if (!agreed) return;
+    
+    // Simple frontend time check: if filled in less than 3 seconds, it's likely a bot
+    const timeTaken = (Date.now() - startTime) / 1000;
+    if (timeTaken < 3) {
+      console.warn('Submission too fast, likely a bot.');
+    }
+
     setStep('confirm');
     window.scrollTo(0, 0);
   };
@@ -66,7 +76,10 @@ export const ContactPage: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          _t: Date.now() // Add a timestamp
+        }),
       });
 
       if (!response.ok) {
@@ -131,6 +144,18 @@ export const ContactPage: React.FC = () => {
                   <p className="text-sm text-gray-500 font-bold">以下のフォームより必要事項をご入力の上、送信してください。</p>
                 </div>
                 <form className="space-y-0 border-t-2 border-gray-900" onSubmit={goToConfirm}>
+                  {/* Honeypot field for spam prevention */}
+                  <div style={{ position: 'absolute', left: '-9999px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>
+                    <input 
+                      type="text" 
+                      name="confirm_email_field" 
+                      value={formData.confirm_email_field} 
+                      onChange={handleInputChange} 
+                      tabIndex={-1} 
+                      autoComplete="off" 
+                    />
+                  </div>
+
                   {/* お問い合わせ項目 */}
                   <div className="grid md:grid-cols-[280px,1fr] border-b border-gray-200">
                     <label className="bg-gray-50 px-8 py-8 flex items-center gap-3">
