@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     // 1. Send to Admin
     await transporter.sendMail({
       from: `"MetaHeroes Website" <${process.env.SMTP_USER}>`,
-      to: 'info@meta-heroes.io',
+      to: 'contact@meta-heroes.io',
       replyTo: email,
       subject: `【お問い合わせ】${categoryLabel} - ${name}様`,
       text: `
