@@ -32,21 +32,32 @@ export default async function handler(req, res) {
   }
 
   // SMTP Settings (Heteml)
-  // These should be set in Vercel environment variables
+  const host = (process.env.SMTP_HOST || 'smtp.heteml.jp').trim();
+  const port = parseInt((process.env.SMTP_PORT || '465').trim());
+  const user = (process.env.SMTP_USER || '').trim();
+  const pass = (process.env.SMTP_PASS || '').trim();
+
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.heteml.jp',
-    port: parseInt(process.env.SMTP_PORT || '465'),
-    secure: process.env.SMTP_PORT === '465' || !process.env.SMTP_PORT, // Default to secure if port is 465 or not set
+    host: host,
+    port: port,
+    secure: port === 465, 
     auth: {
-      user: process.env.SMTP_USER, // info@meta-heroes.io
-      pass: process.env.SMTP_PASS,
+      user: user,
+      pass: pass,
     },
+    // SSLの証明書エラーを回避するためのオプション（念のため）
+    tls: {
+      rejectUnauthorized: false
+    }
   });
 
   try {
+    // Verify connection configuration
+    await transporter.verify();
+
     // 1. Send to Admin
     await transporter.sendMail({
-      from: `"MetaHeroes Website" <${process.env.SMTP_USER}>`,
+      from: `"MetaHeroes Website" <${user}>`,
       to: 'contact@meta-heroes.io',
       replyTo: email,
       subject: `【お問い合わせ】${categoryLabel} - ${name}様`,
@@ -67,7 +78,7 @@ ${content}
 
     // 2. Send Auto-reply to User
     await transporter.sendMail({
-      from: `"株式会社MetaHeroes" <${process.env.SMTP_USER}>`,
+      from: `"株式会社MetaHeroes" <${user}>`,
       to: email,
       subject: `【株式会社MetaHeroes】お問い合わせありがとうございます`,
       text: `
@@ -98,7 +109,11 @@ URL: https://meta-heroes.co.jp/
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error('Mail send error:', error);
-    return res.status(500).json({ error: 'Failed to send email' });
+    console.error('Mail send error detailed:', error);
+    return res.status(500).json({ 
+      error: 'Failed to send email', 
+      details: error.message,
+      code: error.code
+    });
   }
 }
