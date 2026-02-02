@@ -165,7 +165,7 @@ MetaHeroesは、松石代表の「100のHERO（事業・組織）」という目
 10. 【設立5期目突入】株式会社Meta Heroes、2025年12月3日よりDX ..., 2月 1, 2026にアクセス、 [https://prtimes.jp/main/html/rd/p/000000270.000094539.html](https://prtimes.jp/main/html/rd/p/000000270.000094539.html)  
 11. MetaHeroes | HEROをつくるHEROに, 2月 1, 2026にアクセス、 [https://meta-heroes.co.jp/](https://meta-heroes.co.jp/)  
 12. メタバース×AI×防災教育で、地域と世界をつなぐ次世代の挑戦 \- MetaHeroes, 2月 1, 2026にアクセス、 [https://meta-heroes.co.jp/news/-fbjnnbS](https://meta-heroes.co.jp/news/-fbjnnbS)  
-13. MetaHeroes | HEROをつくるHEROに, 2月 1, 2026にアクセス、 [https://meta-heroes.io/](https://meta-heroes.io/)  
+13. MetaHeroes | HEROをつくるHEROに, 2月 1, 2026にアクセス、 [https://meta-heroes.co.jp/](https://meta-heroes.co.jp/)  
 14. メタバースは「実証の時代」から「実装の10年」へ、Metaverse Japan Summit 2025@Osakaで新プロダクトを発表 \- PR TIMES, 2月 1, 2026にアクセス、 [https://prtimes.jp/main/html/rd/p/000000210.000094539.html](https://prtimes.jp/main/html/rd/p/000000210.000094539.html)  
 15. 【実施レポート】500名が来場したメタバース最大級イベントでMeta Heroesが登壇, 2月 1, 2026にアクセス、 [https://prtimes.jp/main/html/rd/p/000000219.000094539.html](https://prtimes.jp/main/html/rd/p/000000219.000094539.html)  
 16. Meta Heroesが提案する防災メタバース・AIの新しい社会実装の発表（5月28日／大阪・関西万博 EXPOホール）【防災は“教えられるもの”から“主体的に学びたくなるもの”へ】 \- PR TIMES, 2月 1, 2026にアクセス、 [https://prtimes.jp/main/html/rd/p/000000126.000094539.html](https://prtimes.jp/main/html/rd/p/000000126.000094539.html)  
