@@ -31,8 +31,9 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  // SMTP Settings (Heteml)
-  const host = (process.env.SMTP_HOST || 'smtp.heteml.jp').replace(/\s+/g, '');
+  // SMTP Settings (Heteml/Hetemail)
+  // Remove ALL spaces (not just leading/trailing) from user and pass
+  const host = (process.env.SMTP_HOST || 'smtp.hetemail.jp').replace(/\s+/g, '');
   const port = parseInt((process.env.SMTP_PORT || '465').replace(/\s+/g, ''));
   const user = (process.env.SMTP_USER || '').replace(/\s+/g, '');
   const pass = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
