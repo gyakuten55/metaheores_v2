@@ -32,11 +32,14 @@ export default async function handler(req, res) {
   }
 
   // SMTP Settings (Heteml)
-  // Remove ALL spaces (not just leading/trailing) from user and pass
-  const host = (process.env.SMTP_HOST || 'smtp.heteml.jp').trim();
-  const port = parseInt((process.env.SMTP_PORT || '465').trim());
+  const host = (process.env.SMTP_HOST || 'smtp.heteml.jp').replace(/\s+/g, '');
+  const port = parseInt((process.env.SMTP_PORT || '465').replace(/\s+/g, ''));
   const user = (process.env.SMTP_USER || '').replace(/\s+/g, '');
   const pass = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
+
+  if (!user || !pass) {
+    return res.status(500).json({ error: 'Server configuration error: Missing credentials' });
+  }
 
   const transporter = nodemailer.createTransport({
     host: host,
@@ -46,19 +49,17 @@ export default async function handler(req, res) {
       user: user,
       pass: pass,
     },
-    // SSLの証明書エラーを回避するためのオプション（念のため）
+    debug: true, // Enable debug output
+    logger: true, // Log to console
     tls: {
       rejectUnauthorized: false
     }
   });
 
   try {
-    // Verify connection configuration
-    await transporter.verify();
-
     // 1. Send to Admin
     await transporter.sendMail({
-      from: `"MetaHeroes Website" <${user}>`,
+      from: `"MetaHeroes" <${user}>`,
       to: 'contact@meta-heroes.io',
       replyTo: email,
       subject: `【お問い合わせ】${categoryLabel} - ${name}様`,
