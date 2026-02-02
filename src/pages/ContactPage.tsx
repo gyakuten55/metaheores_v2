@@ -70,14 +70,15 @@ export const ContactPage: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('送信に失敗しました。');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.details || errorData.error || '送信に失敗しました。');
       }
 
       setStep('complete');
       window.scrollTo(0, 0);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Submission error:', error);
-      alert('申し訳ありません。送信中にエラーが発生しました。時間をおいて再度お試しいただくか、直接メールにてお問い合わせください。');
+      alert(`送信エラーが発生しました：\n${error.message}\n\n※このエラーメッセージの内容を教えていただけますか？`);
     } finally {
       setIsSubmitting(false);
     }
