@@ -14,7 +14,7 @@ export const GlobalHeroSummitPage: React.FC = () => {
       try {
         const newsData = await getBlogs(4, undefined, { categoryId: 'GLOBAL HERO SUMMIT' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { categoryId: 'イベント実績' });
+        const worksData = await getBlogs(4, undefined, { categoryId: ['イベント実績', 'GLOBAL HERO SUMMIT'] });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);

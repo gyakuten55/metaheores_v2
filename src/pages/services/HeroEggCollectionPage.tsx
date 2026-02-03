@@ -12,9 +12,9 @@ export const HeroEggCollectionPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const newsData = await getBlogs(4, undefined, { categoryId: 'news' });
+        const newsData = await getBlogs(4, undefined, { categoryId: 'Hero Egg' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { categoryId: 'case-study' });
+        const worksData = await getBlogs(4, undefined, { categoryId: 'Hero Egg 実績' });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);

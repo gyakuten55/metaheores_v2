@@ -16,7 +16,7 @@ export const HeroEggPage: React.FC = () => {
         setNews(newsData.contents);
         
         // Fetch Works/Case Study for Hero Egg
-        const worksData = await getBlogs(4, undefined, { categoryId: 'Hero Egg 実績' });
+        const worksData = await getBlogs(4, undefined, { categoryId: ['Hero Egg 実績', '事業領域 [ 教育 ]'] });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);

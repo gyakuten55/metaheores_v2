@@ -14,7 +14,7 @@ export const BousaiExpoPage: React.FC = () => {
       try {
         const newsData = await getBlogs(4, undefined, { categoryId: '防災万博 / こども防災万博' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { categoryId: 'イベント実績' });
+        const worksData = await getBlogs(4, undefined, { categoryId: ['イベント実績', '防災万博 / こども防災万博'] });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);

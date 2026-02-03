@@ -14,7 +14,7 @@ export const BousaiMetaversePage: React.FC = () => {
       try {
         const newsData = await getBlogs(4, undefined, { categoryId: '防災メタバース' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { categoryId: '事業領域 [ 防災 ]' });
+        const worksData = await getBlogs(4, undefined, { categoryId: ['防災メタバース', '事業領域 [ 防災 ]'] });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);

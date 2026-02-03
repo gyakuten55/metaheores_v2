@@ -14,7 +14,7 @@ export const GameEventPage: React.FC = () => {
       try {
         const newsData = await getBlogs(4, undefined, { categoryId: 'ゲーム × イベント' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { categoryId: 'イベント実績' });
+        const worksData = await getBlogs(4, undefined, { categoryId: ['イベント実績', 'ゲーム × イベント'] });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);

@@ -163,7 +163,7 @@ export const getBlogs = async (
   limit: number = 10,
   _memberId?: string, // 互換性のために残しています
   filters?: {
-    categoryId?: string;
+    categoryId?: string | string[];
     excludeCategoryId?: string;
     year?: string;
     keyword?: string;
@@ -179,7 +179,14 @@ export const getBlogs = async (
   const filterConditions: string[] = [];
 
   if (filters?.categoryId) {
-    filterConditions.push(`category_new[contains]${filters.categoryId}`);
+    if (Array.isArray(filters.categoryId)) {
+      const orConditions = filters.categoryId
+        .map(id => `category_new[contains]${id}`)
+        .join('[or]');
+      filterConditions.push(`(${orConditions})`);
+    } else {
+      filterConditions.push(`category_new[contains]${filters.categoryId}`);
+    }
   }
 
   if (filters?.excludeCategoryId) {

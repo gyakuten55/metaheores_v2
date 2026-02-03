@@ -14,7 +14,7 @@ export const AiMondayPage: React.FC = () => {
       try {
         const newsData = await getBlogs(4, undefined, { categoryId: 'AI MONDAY' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { categoryId: 'AI / 開発 実績' });
+        const worksData = await getBlogs(4, undefined, { categoryId: ['AI / 開発 実績', 'AI MONDAY'] });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);

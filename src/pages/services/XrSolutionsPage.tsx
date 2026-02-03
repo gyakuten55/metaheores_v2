@@ -14,7 +14,7 @@ export const XrSolutionsPage: React.FC = () => {
       try {
         const newsData = await getBlogs(4, undefined, { categoryId: 'XRソリューション' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { categoryId: 'メタバース開発実績' });
+        const worksData = await getBlogs(4, undefined, { categoryId: ['XRソリューション', 'メタバース開発実績'] });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);

@@ -14,7 +14,7 @@ export const EggJamPage: React.FC = () => {
       try {
         const newsData = await getBlogs(4, undefined, { categoryId: 'EGG JAM' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { categoryId: 'Hero Egg 実績' });
+        const worksData = await getBlogs(4, undefined, { categoryId: ['Hero Egg 実績', 'EGG JAM'] });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);

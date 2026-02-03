@@ -14,7 +14,7 @@ export const AiTrainingPage: React.FC = () => {
       try {
         const newsData = await getBlogs(4, undefined, { categoryId: 'AI人材育成研修' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { categoryId: 'AI / 開発 実績' });
+        const worksData = await getBlogs(4, undefined, { categoryId: ['AI / 開発 実績', 'AI人材育成研修'] });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);
