@@ -5,16 +5,18 @@ import { getBlogs, Blog } from '../../lib/microcms';
 import { ServiceIntroBanner } from '../../components/ServiceIntroBanner';
 
 export const HeroEggPage: React.FC = () => {
-// ... (state and fetch)
   const [news, setNews] = useState<Blog[]>([]);
   const [works, setWorks] = useState<Blog[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const newsData = await getBlogs(4, undefined, { categoryId: 'news' });
+        // Fetch News for Hero Egg
+        const newsData = await getBlogs(4, undefined, { categoryId: 'Hero Egg' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { categoryId: 'case-study' });
+        
+        // Fetch Works/Case Study for Hero Egg
+        const worksData = await getBlogs(4, undefined, { categoryId: 'Hero Egg 実績' });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);
@@ -31,14 +33,14 @@ export const HeroEggPage: React.FC = () => {
   return (
     <main className="min-h-screen bg-white font-sans text-gray-800">
       <PageHero 
-        titleEn="SOCIAL & EDUCATION" 
+        titleEn="TECHNOLOGY & EDUCATION" 
         titleJa="Hero Egg"
       />
 
       <ServiceIntroBanner 
         image="/assets/services/hero-egg/hero-thumbnail.png"
         title="Society5.0やSDGsなどの国の政策に基づく、子どもから大人まで学べるDX教育施設。"
-        websiteUrl="https://meta-heroes.co.jp"
+        websiteUrl="https://heroegg.com"
       />
 
       {/* Concept Section - Full Width Gray Background */}
@@ -52,7 +54,7 @@ export const HeroEggPage: React.FC = () => {
             <div className="w-full h-px bg-gray-200 mt-10" />
           </div>
           <p className="text-sm md:text-base text-gray-600 leading-[2.2] font-medium max-w-3xl mx-auto text-justify md:text-center tracking-wide">
-            子どもたちを中心とした、AIやメタバースなどのテクノロジーが学べる。イベントで終わらない、子供たちのクリエイティブな挑戦を日常的に支え、社会とつなげるハブとして機能します。
+            子どもたちを中心とした、AIやメタバースなどのテクノロジーが学べる、イベントで終わらない、子供たちのクリエイティブな挑戦を日常的に支え、社会とつなげるハブとして機能します。DXの力で地域の活性化と次世代人材の育成を同時に実現します。
           </p>
         </div>
       </section>
@@ -80,17 +82,17 @@ export const HeroEggPage: React.FC = () => {
               { 
                 title: 'DX教育循環モデル', 
                 icon: '/assets/services/hero-egg/icon-cycle.png', 
-                desc: '子どものDX教育に無償で提供する社会貢献モデル。' 
+                desc: '子どものDX教育に無償で提供する社会貢献モデル。大人向けの有料スクール収益を子どもに還元する持続可能な仕組み。' 
               },
               { 
                 title: 'デジタル原体験環境', 
                 icon: '/assets/services/hero-egg/icon-experience.png', 
-                desc: '10GBの超高速回線、ハイスペックPCの無料貸出を完備。' 
+                desc: '10GBの超高速回線、ハイスペックPCの無料貸出を完備。最新のメタバースやAI開発をストレスなく学べます。' 
               },
               { 
                 title: '目標の場の提供', 
                 icon: '/assets/services/hero-egg/icon-goal.png', 
-                desc: '大規模なアワードやコンテストなどを定期開催。' 
+                desc: '大規模なアワードやコンテストなどを定期開催。学びを社会に発表し、評価されることで自己肯定感を高めます。' 
               }
             ].map((feature, idx) => (
               <div 
@@ -124,14 +126,14 @@ export const HeroEggPage: React.FC = () => {
           </div>
 
           <p className="mb-12 text-gray-600 leading-relaxed font-medium text-sm md:text-base tracking-wide">
-            子どもから大人まで、年齢やスキルに関係なく最新のAI・XR・DXを学び、共に成長できます。
+            子どもから大人まで、年齢やスキルに関係なく最新のAI・XR・DXを学び、共に成長できる環境を創出します。
           </p>
 
           <div className="space-y-8">
             {[
-              '産官学連携により、子どもたちの自由な発想を地域課題解決へ直結',
-              '不登校や引きこもりの子どもに「居場所」と「挑戦のきっかけ」を提供',
-              '大人の学び直しで、企業のDX推進と社会的責任（CSR）を同時に達成'
+              '産官学連携により、子どもたちの自由な発想を地域課題解決や新ビジネス創出へ直結',
+              '不登校や引きこもりの子どもに「居場所」と「テクノロジーという武器」を提供し、社会復帰を支援',
+              '大人の学び直し（リスキリング）で、地域企業のDX推進と社会的責任（CSR）を同時に達成'
             ].map((item, idx) => (
               <div key={idx} className="flex items-center gap-6">
                 <div className="flex-shrink-0 w-12 h-12 rounded-full bg-white border-2 border-cyan-100 flex items-center justify-center text-cyan-500 font-bold text-xl shadow-[0_4px_10px_rgba(34,211,238,0.2)]">
@@ -246,9 +248,7 @@ export const HeroEggPage: React.FC = () => {
       <section className="bg-gray-50 mt-32">
         <div className="container mx-auto px-4 py-24">
           <div className="flex flex-col md:flex-row justify-center items-stretch gap-6">
-            <a href="https://meta-heroes.co.jp" target="_blank" rel="noopener noreferrer"
-              
-              
+            <a href="https://heroegg.com" target="_blank" rel="noopener noreferrer"
               className="group relative flex items-center justify-between w-full md:w-[320px] px-8 py-5 bg-[#333333] text-white rounded-full overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -275,8 +275,6 @@ export const HeroEggPage: React.FC = () => {
 
             <Link
               to="/contact"
-              
-              
               className="group relative flex items-center justify-between w-full md:w-[320px] px-8 py-5 bg-[#0ea5e9] text-white rounded-full overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-cyan-500/30 hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

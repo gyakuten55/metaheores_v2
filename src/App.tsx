@@ -23,6 +23,8 @@ import { GlobalHeroSummitPage } from './pages/services/GlobalHeroSummitPage';
 import { EggJamPage } from './pages/services/EggJamPage';
 import { AiMondayPage } from './pages/services/AiMondayPage';
 import { GameEventPage } from './pages/services/GameEventPage';
+import { GameMakingCampPage } from './pages/services/GameMakingCampPage';
+import { HeroEggPage } from './pages/services/HeroEggPage';
 import { MetaHeroesGuildPage } from './pages/services/MetaHeroesGuildPage';
 import { CeoMessagePage } from './pages/CeoMessagePage';
 import { CompanyProfilePage } from './pages/CompanyProfilePage';
@@ -138,6 +140,8 @@ function App() {
             <Route path="/services/bousai-metaverse" element={<><SEO title="防災メタバース | 没入型防災教育・訓練シミュレーション | 株式会社MetaHeroes" description="「教えられる防災」から「自ら学ぶ防災」へ。仮想空間での火災・浸水体験を通じ、高い没入感で危機意識を自分事化させる、自治体・教育機関向けの次世代防災教育。" keywords="防災教育, 避難訓練, VR防災, シミュレーション, 自治体DX" /><BousaiMetaversePage /></>} />
             <Route path="/services/bousai-expo" element={<><SEO title="防災万博 | 株式会社MetaHeroes" /><BousaiExpoPage /></>} />
             <Route path="/services/hero-egg-collection" element={<><SEO title="Hero Egg Collection | 株式会社MetaHeroes" /><HeroEggCollectionPage /></>} />
+            <Route path="/services/hero-egg" element={<><SEO title="Hero Egg | 子どもから大人まで学べるDX教育施設 | 株式会社MetaHeroes" description="すべてのこどもに「ヒーロー」の卵を。10GBの超高速回線やハイスペックPCを完備し、次世代のテクノロジーを楽しみながら学べるDX教育プラットフォーム。" keywords="Hero Egg, DX教育, メタバース教育, プログラミング, 子ども教育" /><HeroEggPage /></>} />
+            <Route path="/services/game-making-camp" element={<><SEO title="ゲームメイキングキャンプ | 親子で学ぶゲーム制作体験 | 株式会社MetaHeroes" description="プロの講師から学ぶ、子ども向けゲーム制作ワークショップ。Fortnite（UEFN）やRobloxなどを通じて、論理的思考力とクリエイティビティを育みます。" keywords="ゲーム制作, UEFN, Roblox, プログラミング教室, 夏休みイベント" /><GameMakingCampPage /></>} />
             <Route path="/services/hero-expo" element={<><SEO title="HERO EXPO | 次世代DX体験イベント | 株式会社MetaHeroes" /><HeroExpoPage /></>} />
             <Route path="/services/global-hero-summit" element={<><SEO title="Global Hero Summit | 株式会社MetaHeroes" /><GlobalHeroSummitPage /></>} />
             <Route path="/services/egg-jam" element={<><SEO title="EGG JAM | 株式会社MetaHeroes" /><EggJamPage /></>} />
