@@ -90,7 +90,7 @@ export const getMemberBlogById = async (blogId: string): Promise<Blog> => {
   });
 };
 
-// microCMSの「カテゴリ_new」セレクトフィールドに設定されている全選択肢のマスターリスト
+// microCMSの「category_new」セレクトフィールドに設定されている全選択肢のマスターリスト
 const CATEGORY_MASTER: Category[] = [
   { id: 'ピックアップ', name: 'ピックアップ' },
   { id: 'プレスリリース', name: 'プレスリリース' },
@@ -196,6 +196,11 @@ export const getBlogs = async (
 
   if (filters?.keyword) {
     queries.q = filters.keyword;
+  }
+
+  // Debug: Output filter condition
+  if (queries.filters) {
+    console.log(`[microCMS Fetch] Endpoint: news, Filters: ${queries.filters}`);
   }
 
   return await client.get<BlogResponse>({

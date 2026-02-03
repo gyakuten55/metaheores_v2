@@ -136,7 +136,7 @@ export const DocumentRequestPage: React.FC = () => {
 
   return (
     <main className="min-h-screen bg-white">
-      <PageHero titleEn="DOCUMENT" titleJa="資料請求" />
+      <PageHero titleEn="DOCUMENT" titleJa="お役立ち資料" />
       {renderStepIndicator()}
 
       <section className="py-12 md:py-24">
@@ -360,7 +360,7 @@ export const DocumentRequestPage: React.FC = () => {
                 <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto text-blue-600 mb-8">
                   <CheckCircle2 size={40} />
                 </div>
-                <h2 className="text-3xl font-black text-gray-900 tracking-wider">資料請求ありがとうございます</h2>
+                <h2 className="text-3xl font-black text-gray-900 tracking-wider">ありがとうございます</h2>
                 <div className="space-y-4 text-gray-600 font-bold leading-relaxed max-w-xl mx-auto">
                   <p>ご入力いただいたメールアドレス宛に、資料の案内をお送りいたしました。</p>
                   <p className="text-sm text-gray-400">※メールが届かない場合は、大変お手数ですが迷惑メールフォルダをご確認いただくか、再度お問い合わせください。</p>

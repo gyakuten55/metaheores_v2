@@ -58,9 +58,8 @@ const FOOTER_COLUMNS = [
           path: '#',
           links: [
             { label: 'ニュース一覧', path: '/news' },
-            { label: '採用情報', path: '/recruit' },
             { label: 'お問い合わせ', path: '/contact' },
-            { label: '資料請求', path: '/document-request' },
+            { label: 'お役立ち資料', path: '/document-request' },
             { label: '代理店専用', path: '/agency-login' },
           ]
         }
@@ -118,12 +117,6 @@ const FOOTER_COLUMNS = [
                                 ) : (
                                   <Link 
                                     to={link.path}
-                                    onClick={(e) => {
-                                      if (link.path === '/recruit') {
-                                        e.preventDefault();
-                                        alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
-                                      }
-                                    }}
                                     className={`text-xs font-bold transition-colors block pl-4 ${
                                       link.label === '代理店専用' 
                                         ? 'text-blue-600 hover:text-gray-500' 
@@ -159,12 +152,6 @@ const FOOTER_COLUMNS = [
                             ) : (
                               <Link 
                                 to={link.path}
-                                onClick={(e) => {
-                                  if (link.path === '/recruit') {
-                                    e.preventDefault();
-                                    alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
-                                  }
-                                }}
                                 className={`text-[13px] font-bold transition-colors block ${
                                   link.label === '代理店専用' 
                                     ? 'text-blue-600 hover:text-gray-500' 

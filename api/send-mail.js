@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     other: 'その他'
   };
 
-  const categoryLabel = isDocumentRequest ? '資料請求' : (categoryLabels[category] || category);
+  const categoryLabel = isDocumentRequest ? 'お役立ち資料' : (categoryLabels[category] || category);
 
   // Validation
   if (!name || !email) {
@@ -116,7 +116,7 @@ ${content}
       autoReplyText = `
 ${name} 様
 
-この度は資料請求をいただき、誠にありがとうございます。
+この度はお役立ち資料（お役立ち資料）をいただき、誠にありがとうございます。
 ご請求いただいた資料のダウンロードURLをお送りいたします。
 
 以下のURLより資料をダウンロードいただけます：
@@ -167,7 +167,7 @@ URL: https://meta-heroes.co.jp/
     await transporter.sendMail({
       from: `"株式会社MetaHeroes" <${user}>`,
       to: email,
-      subject: `【株式会社MetaHeroes】${isDocumentRequest ? '資料請求' : 'お問い合わせ'}ありがとうございます`,
+      subject: `【株式会社MetaHeroes】${isDocumentRequest ? 'お役立ち資料' : 'お問い合わせ'}ありがとうございます`,
       text: autoReplyText,
     });
 

@@ -68,11 +68,6 @@ const NAV_ITEMS: NavItem[] = [
     en: 'NEWS',
     path: '/news',
   },
-  {
-    label: '採用情報',
-    en: 'RECRUIT',
-    path: '/recruit',
-  },
 ];
 
 export const Header: React.FC = () => {
@@ -162,12 +157,6 @@ export const Header: React.FC = () => {
                 <Link 
                   to={item.path} 
                   className="relative block px-3 z-10 h-7 overflow-hidden"
-                  onClick={(e) => {
-                    if (item.path === '/recruit') {
-                      e.preventDefault();
-                      alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
-                    }
-                  }}
                 >
                   <div className="flex flex-col transition-transform duration-700 ease-[0.19,1,0.22,1] group-hover:-translate-y-1/2">
                     {/* Japanese */}
@@ -258,7 +247,7 @@ export const Header: React.FC = () => {
                 <div className="relative z-10 h-6 overflow-hidden w-full text-center">
                   <div className="flex flex-col transition-all duration-500 ease-[0.23,1,0.32,1] group-hover:-translate-y-1/2">
                     <span className="flex items-center justify-center gap-1 h-6">
-                      資料請求
+                      お役立ち資料
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5 transition-colors duration-300">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" stroke="url(#nav-gradient)" className="group-hover:stroke-white" />
                       </svg>
@@ -381,14 +370,7 @@ export const Header: React.FC = () => {
                       ) : (
                         <Link
                           to={item.path}
-                          onClick={(e) => {
-                            if (item.path === '/recruit') {
-                              e.preventDefault();
-                              alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
-                            } else {
-                              setIsMobileMenuOpen(false);
-                            }
-                          }}
+                          onClick={() => setIsMobileMenuOpen(false)}
                           className="flex flex-col items-start py-2 group"
                         >
                           <span className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
@@ -427,7 +409,7 @@ export const Header: React.FC = () => {
                     className="group w-full flex items-center justify-between px-6 py-4 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md active:scale-[0.98] transition-all duration-300"
                   >
                     <div className="flex flex-col items-start">
-                      <span className="text-lg font-bold text-gray-900 tracking-wide">資料請求</span>
+                      <span className="text-lg font-bold text-gray-900 tracking-wide">お役立ち資料</span>
                       <span className="text-[10px] font-black text-gray-400 tracking-[0.2em] uppercase">Document</span>
                     </div>
                     <div className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center group-hover:bg-gray-100 transition-colors">

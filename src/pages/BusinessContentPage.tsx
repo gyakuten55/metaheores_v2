@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom';
 type BusinessType = 'metaverse' | 'ai' | 'event' | 'vacant-facility';
 
 const CATEGORY_MAP: Record<BusinessType, string> = {
-  metaverse: 'metaverse_case_studies_achievement',
-  ai: 'ai_case_studies_achievement',
-  event: 'event_case_studies_achievement',
-  'vacant-facility': 'free_facility_conjugation_case_studies_achievement',
+  metaverse: 'メタバース開発実績',
+  ai: 'AI / 開発 実績',
+  event: 'イベント実績',
+  'vacant-facility': 'Hero Egg 実績',
 };
 
 const BUSINESS_TABS = [

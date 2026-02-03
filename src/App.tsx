@@ -44,6 +44,7 @@ import { MemberBlogPage } from './pages/MemberBlogPage';
 import LoginPage from './pages/agency/LoginPage';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
+import { Breadcrumbs } from './components/Breadcrumbs';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import AgencyLayout from './pages/agency/AgencyLayout';
@@ -62,7 +63,14 @@ function App() {
     <AuthProvider>
       <div className="flex flex-col min-h-screen">
         <ScrollToTop />
-        {!isAgencyPage && <Header />}
+        {!isAgencyPage && (
+          <>
+            <Header />
+            <div className="pt-16 sm:pt-20 lg:pt-24 absolute top-0 left-0 right-0 z-[100]">
+              <Breadcrumbs />
+            </div>
+          </>
+        )}
         <div className="flex-grow">
           <Routes>
             <Route path="/" element={
@@ -129,7 +137,7 @@ function App() {
             <Route path="/gallery" element={<><SEO title="ギャラリー | 株式会社MetaHeroes" /><GalleryPage /></>} />
             <Route path="/contact/privacy" element={<><SEO title="個人情報の取り扱いについて | 株式会社MetaHeroes" /><ContactPrivacyPage /></>} />
             <Route path="/contact" element={<><SEO title="お問い合わせ | 株式会社MetaHeroes" /><ContactPage /></>} />
-            <Route path="/document-request" element={<><SEO title="資料請求 | 株式会社MetaHeroes" /><DocumentRequestPage /></>} />
+            <Route path="/document-request" element={<><SEO title="お役立ち資料 | 株式会社MetaHeroes" /><DocumentRequestPage /></>} />
             <Route path="/recruit" element={<><SEO title="採用情報 | 株式会社MetaHeroes" description="次世代の社会基盤を創るHEROを募集しています。メタバース・AIの力で世界をワクワクさせませんか？" /><RecruitPage /></>} />
             <Route path="/faq" element={<><SEO title="よくある質問 | 株式会社MetaHeroes" /><FAQPage /></>} />
             <Route path="/services" element={<><SEO title="サービス一覧 | 株式会社MetaHeroes" /><ServicesPage /></>} />

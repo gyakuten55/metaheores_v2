@@ -12,9 +12,9 @@ export const GameMakingCampPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const newsData = await getBlogs(4, undefined, { categoryId: 'news' });
+        const newsData = await getBlogs(4, undefined, { categoryId: 'ゲームメイキングキャンプ' });
         setNews(newsData.contents);
-        const worksData = await getBlogs(4, undefined, { categoryId: 'case-study' });
+        const worksData = await getBlogs(4, undefined, { categoryId: '事業領域 [ 教育 ]' });
         setWorks(worksData.contents);
       } catch (error) {
         console.error('Failed to fetch data:', error);
@@ -265,7 +265,7 @@ export const GameMakingCampPage: React.FC = () => {
               className="group relative flex items-center justify-between w-full md:w-[320px] px-8 py-5 bg-[#3b82f6] text-white rounded-full overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/30 hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <span className="relative z-10 text-lg font-black tracking-wider">資料請求</span>
+              <span className="relative z-10 text-lg font-black tracking-wider">お役立ち資料</span>
               <div className="relative z-10 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
