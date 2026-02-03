@@ -42,7 +42,7 @@ const NAV_ITEMS: NavItem[] = [
     path: '/services',
     children: [
       { label: 'デジタルソリューション', path: '/services#digital' },
-      { label: '防災・教育・次世代育成', path: '/services#social' },
+      { label: '教育×テクノロジー', path: '/services#social' },
       { label: '共創・コミュニティ', path: '/services#community' },
     ]
   },

@@ -95,13 +95,13 @@ export const MovieSection: React.FC = () => {
         
         <div className="container mx-auto px-4 relative z-10">
           {/* Header */}
-          <div className="text-center mb-4 md:mb-10">
-            <span className="text-[11px] font-bold tracking-[0.1em] block mb-3 uppercase text-gray-400 font-sans">
+          <div className="text-center mb-16">
+            <span className="text-[10px] font-bold tracking-[0.4em] text-gray-400 block mb-1 uppercase font-sans">
               MOVIE
             </span>
-            <div className="flex flex-col items-center gap-4">
-              <h2 className="text-2xl md:text-[28px] font-bold text-gray-800 tracking-wide">ムービー</h2>
-              <div className="w-10 h-[3px] bg-[#5DBCF5]" />
+            <div className="flex flex-col items-center">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">動画</h2>
+              <div className="w-8 h-0.5 bg-blue-600" />
             </div>
           </div>
 

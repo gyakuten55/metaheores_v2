@@ -37,10 +37,9 @@ const FOOTER_COLUMNS = [
       title: 'サービス',
       path: '/services',
       links: [
-        { label: 'デジタルソリューション', path: '/services#digital' },
-        { label: '防災・教育・次世代育成', path: '/services#social' },
-        { label: '共創・コミュニティ', path: '/services#community' },
-      ]
+              { label: 'デジタルソリューション', path: '/services#digital' },
+              { label: '教育×テクノロジー', path: '/services#social' },
+              { label: '共創・コミュニティ', path: '/services#community' },      ]
     }
   ],
   // Column 3: Works & Others (2 + 1 + 2 = 5 items)

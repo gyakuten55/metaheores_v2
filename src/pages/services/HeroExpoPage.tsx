@@ -31,7 +31,7 @@ export const HeroExpoPage: React.FC = () => {
   return (
     <main className="min-h-screen bg-white font-sans text-gray-800">
       <PageHero 
-        titleEn="SOCIAL & EDUCATION" 
+        titleEn="COMMUNITY&CO-CREATION" 
         titleJa="HERO EXPO"
       />
 
@@ -52,7 +52,7 @@ export const HeroExpoPage: React.FC = () => {
             <div className="w-full h-px bg-gray-200 mt-10" />
           </div>
           <p className="text-sm md:text-base text-gray-600 leading-[2.2] font-medium max-w-3xl mx-auto text-justify md:text-center tracking-wide">
-            XR、AI、次世代育成、地方創生。これからの日本をアップデートする技術やプロジェクトが一堂に会するショーケース。単なる展示ではなく、新しいコラボレーションがその場で生まれる熱狂の場です。
+            XR、AI、共創・コミュニティ、地方創生。これからの日本をアップデートする技術やプロジェクトが一堂に会するショーケース。単なる展示ではなく、新しいコラボレーションがその場で生まれる熱狂の場です。
           </p>
         </div>
       </section>

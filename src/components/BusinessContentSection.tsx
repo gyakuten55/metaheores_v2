@@ -47,10 +47,13 @@ export const BusinessContentSection: React.FC = () => {
       <div className="container mx-auto px-4 relative z-10 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] block mb-2 uppercase text-gray-400">
+          <span className="text-[10px] md:text-xs font-bold tracking-[0.4em] block mb-1 uppercase text-gray-400">
             BUSINESS
           </span>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900">事業内容</h2>
+          <div className="flex flex-col items-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">事業内容</h2>
+            <div className="w-8 h-0.5 bg-blue-600" />
+          </div>
         </div>
 
         {/* List */}

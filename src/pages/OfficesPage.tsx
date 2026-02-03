@@ -86,8 +86,8 @@ export const OfficesPage: React.FC = () => {
               </div>
             </div>
 
-                        {/* Visual Grid: Map and Photo */}
-                        <div className="flex flex-col md:flex-row gap-4 mb-12 h-auto md:h-[400px]">
+                        {/* Visual Grid: Map and Photo (Photo on top for mobile) */}
+                        <div className="flex flex-col-reverse md:flex-row gap-4 mb-12 h-auto md:h-[400px]">
                           {/* Map - Wider (approx 65%) */}
                           <div className="w-full md:w-[65%] h-[300px] md:h-full rounded-sm overflow-hidden shadow-sm border border-gray-100">
                             <iframe 

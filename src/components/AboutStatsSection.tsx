@@ -33,10 +33,10 @@ export const AboutStatsSection: React.FC = () => {
           ].map((item, idx) => (
             <div key={`p-${idx}`} className="bg-white rounded-xl p-4 md:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 relative overflow-hidden group hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-300 flex flex-col justify-between h-full min-h-[140px] md:min-h-[160px]">
               <div className="relative z-10">
-                <p className="text-[10px] md:text-xs font-bold text-gray-500 mb-1 leading-tight whitespace-pre-line">{item.label}</p>
+                <p className="text-xs md:text-sm font-bold text-gray-500 mb-1 leading-tight whitespace-pre-line">{item.label}</p>
                 <div className="flex items-baseline gap-0.5 md:gap-1 mt-1">
-                  <span className="text-3xl md:text-5xl font-black text-gray-800 tracking-tighter">{item.value}</span>
-                  <span className="text-xs md:text-sm font-bold text-gray-400">{item.suffix}</span>
+                  <span className="text-4xl md:text-6xl font-black text-gray-800 tracking-tighter">{item.value}</span>
+                  <span className="text-sm md:text-base font-bold text-gray-400">{item.suffix}</span>
                 </div>
               </div>
               
@@ -53,7 +53,7 @@ export const AboutStatsSection: React.FC = () => {
           {/* Secondary Stats (Company Info) */}
           {[
             { label: '設立年', value: '2021', suffix: '年', icon: '/assets/about/stats_year_icon.png' },
-            { label: '従業員数', value: '17', suffix: '名', icon: '/assets/about/stats_employees_icon.png' },
+            { label: '従業員数', value: '47', suffix: '名', icon: '/assets/about/stats_employees_icon.png' },
             { label: '平均年齢', value: '29.1', suffix: '歳', icon: '/assets/about/stats_age_icon.png' },
           ].map((item, idx) => (
             <div key={`s-${idx}`} className="bg-white rounded-xl p-4 md:p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-gray-100 flex flex-col items-center justify-center text-center gap-1 md:gap-2 hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-300 h-full min-h-[140px] md:min-h-[160px]">
@@ -61,10 +61,10 @@ export const AboutStatsSection: React.FC = () => {
                 <img src={item.icon} alt="" className="w-full h-full object-contain" />
               </div>
               <div className="flex items-baseline justify-center">
-                <span className="text-2xl md:text-4xl font-black text-gray-800 tracking-tighter">{item.value}</span>
-                <span className="text-[10px] md:text-xs font-bold text-gray-400 ml-0.5">{item.suffix}</span>
+                <span className="text-3xl md:text-5xl font-black text-gray-800 tracking-tighter">{item.value}</span>
+                <span className="text-xs md:text-sm font-bold text-gray-400 ml-0.5">{item.suffix}</span>
               </div>
-              <p className="text-[10px] font-bold text-gray-400">{item.label}</p>
+              <p className="text-xs font-bold text-gray-400">{item.label}</p>
             </div>
           ))}
         </div>

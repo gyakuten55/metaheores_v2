@@ -197,15 +197,17 @@ export const TopPage: React.FC = () => {
 
       {/* Catchphrase Section - HERO100つくる */}
       <section className="pt-2 pb-2 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 text-center md:text-left">
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="inline-flex flex-col items-center md:items-start"
           >
-            <div className="inline-block text-xl md:text-5xl font-black tracking-tight leading-none bg-gradient-to-r from-[#2563eb] to-[#06b6d4] bg-clip-text text-transparent">
+            <div className="text-xl md:text-5xl font-black tracking-tight leading-none bg-gradient-to-r from-[#2563eb] to-[#06b6d4] bg-clip-text text-transparent">
               HERO100つくる
             </div>
+            <div className="w-8 h-0.5 bg-blue-600 mt-2" />
           </motion.div>
         </div>
       </section>

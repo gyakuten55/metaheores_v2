@@ -24,7 +24,7 @@ const SERVICES: ServiceItem[] = [
   { id: 'hero-aivo', section: 'digital', type: 'ai', category: 'AI特化型Web制作・運用', title: 'HERO AIVO', description: '生成AI(LLM)に最適化された最新のWebサイト制作・運用サービスです。', image: '/assets/services/first-view/hero_aivo_logo.png', path: '/services/hero-aivo' },
   { id: 'ai-training', section: 'digital', type: 'ai', category: 'AI企業研修', title: 'AI 人材育成研修', description: '企業・団体向けのAIリテラシー向上および実践的な活用研修サービスです。', image: '/assets/services/first-view/ai_training.png', path: '/services/ai-training' },
 
-  // Social & Education
+  // Community&Co-creation (Social)
   { id: 'bousai-meta', section: 'social', type: 'metaverse', category: 'メタバース', title: '防災メタバース', description: '仮想空間や複合現実を用いた、没入感のある最先端の防災訓練サービスです。', image: '/assets/services/first-view/bousai_metaverse.png', path: '/services/bousai-metaverse' },
   { id: 'bousai-expo', section: 'social', type: 'event', category: 'イベント', title: '防災万博/こども防災万博', description: '家族・コミュニティ・学校で楽しく防災を学べる、体験型の大規模イベントです。', image: '/assets/services/first-view/bousai_expo_logo.png', path: '/services/bousai-expo' },
   { id: 'hero-egg-col', section: 'social', type: 'event', category: 'イベント', title: 'Hero Egg COLLECTION', description: 'こどもたちの自由なアイデアをビジネスの種へと育てる公募イベントです。', image: '/assets/services/first-view/hec_logo.png', path: '/services/hero-egg-collection' },
@@ -32,7 +32,7 @@ const SERVICES: ServiceItem[] = [
   { id: 'game-making', section: 'social', type: 'event', category: 'ゲームクリエイター体験会', title: 'ゲームメイキングキャンプ', description: 'プロから学ぶ、こども向けゲーム制作ワークショップ・体験会です。', image: '/assets/services/first-view/game_making_camp.png', path: '/services/game-making-camp' },
   { id: 'hero-egg', section: 'social', type: 'vacant-facility', category: 'DX教室施設運用', title: 'Hero Egg', description: '子どもから大人まで学べるDX教育施設。子どもたちは無料でテクノロジーを学べます。', image: '/assets/services/first-view/hero_egg_logo.png', path: '/services/hero-egg' },
 
-  // Community & Co-creation
+  // Community&Co-creation (Community)
   { id: 'ghs', section: 'community', type: 'event', category: 'イベント', title: 'GLOBAL HERO SUMMIT', description: '企業やクリエイターが集まり、新たな価値を創造するカンファレンスです。', image: '/assets/services/first-view/ghs_logo.png', path: '/services/global-hero-summit' },
   { id: 'egg-jam', section: 'community', type: 'event', category: 'オンラインコミュニティ', title: 'EGG JAM', description: '挑戦する人を応援し、交流を深めるオンラインコミュニティです。', image: '/assets/services/first-view/egg_jam_logo.png', path: '/services/egg-jam' },
   { id: 'ai-monday', section: 'community', type: 'ai', category: 'ハイブリッドコミュニティ', title: 'AI MONDAY', description: 'AIの最新トレンドを共有し、学び合う専門コミュニティです。', image: '/assets/services/first-view/ai_monday_logo.png', path: '/services/ai-monday' },
@@ -120,8 +120,8 @@ export const ServicesPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
             {[
               { id: 'digital', label: 'デジタルソリューション', en: 'XR & AI Solutions', image: '/assets/services/top/container_digital.png', icon: '/assets/services/top/icon_digital.png' },
-              { id: 'social', label: '防災・教育・次世代育成', en: 'Social & Education', image: '/assets/services/top/container_social.png', icon: '/assets/services/top/icon_social.png' },
-              { id: 'community', label: '共創・コミュニティ', en: 'Community & Co-creation', image: '/assets/services/top/container_community.png', icon: '/assets/services/top/icon_community.png' },
+              { id: 'social', label: '教育×テクノロジー', en: 'Technology & Education', image: '/assets/services/top/container_social.png', icon: '/assets/services/top/icon_social.png' },
+              { id: 'community', label: '共創・コミュニティ', en: 'Community&Co-creation', image: '/assets/services/top/container_community.png', icon: '/assets/services/top/icon_community.png' },
             ].map((cat) => (
               <button 
                 key={cat.id} 
@@ -177,8 +177,8 @@ export const ServicesPage: React.FC = () => {
       <div className="container mx-auto px-4 max-w-6xl space-y-40">
         {[
           { id: 'digital', title: 'デジタルソリューション', en: 'XR & AI SOLUTIONS', data: digitalServices },
-          { id: 'social', title: '防災・教育・次世代育成', en: 'SOCIAL & EDUCATION', data: socialServices },
-          { id: 'community', title: '共創・コミュニティ', en: 'COMMUNITY & CO-CREATION', data: communityServices },
+          { id: 'social', title: '教育×テクノロジー', en: 'TECHNOLOGY & EDUCATION', data: socialServices },
+          { id: 'community', title: '共創・コミュニティ', en: 'COMMUNITY&CO-CREATION', data: communityServices },
         ].map(section => section.data.length > 0 && (
           <section key={section.id} id={section.id}>
             <div className="mb-16">

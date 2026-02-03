@@ -14,7 +14,7 @@ const SERVICES = [
   },
   {
     id: 'education',
-    subLabel: '教育 × テクノロジー',
+    subLabel: '教育×テクノロジー',
     title: 'Technology & Education',
     tags: ['Hero Egg', 'ゲームクリエイター体験会', '防災万博'],
     bgImage: '/assets/top/service_bg_techedu.png',
@@ -24,7 +24,7 @@ const SERVICES = [
   {
     id: 'community',
     subLabel: '共創・コミュニティ',
-    title: 'Community & Co-creation',
+    title: 'Community&Co-creation',
     tags: ['イベント開催', '講演会', 'オープンイノベーション'],
     bgImage: '/assets/top/service_bg_community.png',
     link: '/services#community',
@@ -37,19 +37,26 @@ export const ServiceSection: React.FC = () => {
     <section className="py-12 bg-white">
       <div className="container mx-auto px-4 mb-12">
         <div className="text-center">
-          <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] block mb-2 uppercase text-gray-400">
+          <span className="text-[10px] md:text-xs font-bold tracking-[0.4em] block mb-1 uppercase text-gray-400">
             SERVICE
           </span>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900">サービス</h2>
+          <div className="flex flex-col items-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">サービス</h2>
+            <div className="w-8 h-0.5 bg-blue-600" />
+          </div>
         </div>
       </div>
 
       <div className="flex flex-col">
-        {SERVICES.map((service) => (
+        {SERVICES.map((service, index) => (
           <Link 
             key={service.id} 
             to={service.link}
-            className="group relative w-full h-[250px] md:h-[350px] overflow-hidden flex items-center"
+            className={`group relative w-full overflow-hidden flex items-center ${
+              index === SERVICES.length - 1 
+                ? 'h-[300px] md:h-[450px]' 
+                : 'h-[250px] md:h-[350px]'
+            }`}
           >
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
@@ -74,11 +81,11 @@ export const ServiceSection: React.FC = () => {
                 <h3 className="text-2xl md:text-5xl font-black italic tracking-tight">
                   {service.title}
                 </h3>
-                <div className="flex flex-wrap gap-2 pt-2">
+                <div className="flex flex-wrap gap-2 md:gap-3 pt-2">
                   {service.tags.map((tag) => (
                     <span 
                       key={tag} 
-                      className="px-3 py-1 bg-white/10 backdrop-blur-md border border-white/30 rounded-full text-[10px] md:text-xs font-bold"
+                      className="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/30 rounded-full text-xs md:text-sm font-bold"
                     >
                       {tag}
                     </span>

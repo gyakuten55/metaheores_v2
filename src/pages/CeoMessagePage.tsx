@@ -22,7 +22,7 @@ export const CeoMessagePage: React.FC = () => {
         {/* Catchphrase & Profile */}
         <div className="mb-20">
           <h2 className="text-2xl md:text-3xl font-black text-gray-800 mb-12 leading-tight tracking-tight">
-            境界線を超えて、<br />誰もがHEROになれる世界へ
+            100人のヒーローを生み出す、<br />「ナンバーゼロ」としての挑戦。
           </h2>
           
           <div className="border-t border-gray-100 pt-12">
@@ -59,14 +59,14 @@ export const CeoMessagePage: React.FC = () => {
           <section>
             <div className="flex flex-col gap-8">
               <div className="flex flex-col items-start">
-                <h4 className="text-2xl font-black text-gray-800">引きこもり支援とデジタルの可能性</h4>
+                <h4 className="text-2xl font-black text-gray-800">19歳の誓い。100人のヒーローを生むための「2,500の挑戦」</h4>
                 <div className="w-full h-px bg-gray-100 relative mt-4">
                   <div className="absolute top-0 left-0 w-12 h-1 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
                 </div>
               </div>
-              <div className="text-gray-700 leading-[1.8] space-y-8 text-[15px] font-medium tracking-widest">
-                <p>社会には、部屋から出られないことで「孤立」していると感じている人たちがいます。しかし、私には彼らが、誰よりも深い集中力と、想像力を秘めたクリエイターに感じます。</p>
-                <p>Meta Heroesの原点は、彼らに「活躍できる場所（ステージ）」を用意すること。部屋にいながら、世界を感動させる。アバターを通じて、国境を越えた友と笑い合う。それはもはや「避難場所」ではなく、新しい時代の「最前線」です。</p>
+              <div className="text-gray-700 leading-[1.8] space-y-8 text-[15px] font-medium tracking-widest text-justify">
+                <p>私の原点は、熊本で母がトリプルワークをこなす姿を見て育った幼少期にあります。19歳の時にノートに記したビジョンは「世界で活躍するヒーローを100人育てる」こと。その実現には、圧倒的な挑戦の数が必要です。</p>
+                <p>たとえ成功率が数％でも、2,500の事業を立ち上げることで、社会を動かす一握りの才能が生まれる土壌を創り続けます。「やってみたい」を形にする仕組みこそが、停滞する日本を突破する鍵になると確信しています。</p>
               </div>
             </div>
           </section>
@@ -74,14 +74,14 @@ export const CeoMessagePage: React.FC = () => {
           <section>
             <div className="flex flex-col gap-8">
               <div className="flex flex-col items-start">
-                <h4 className="text-2xl font-black text-gray-800">テクノロジーを社会に実装</h4>
+                <h4 className="text-2xl font-black text-gray-800">「ナンバーワンを創るナンバーゼロ」としての覚悟</h4>
                 <div className="w-full h-px bg-gray-100 relative mt-4">
                   <div className="absolute top-0 left-0 w-12 h-1 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
                 </div>
               </div>
-              <div className="text-gray-700 leading-[1.8] space-y-8 text-[15px] font-medium tracking-widest">
-                <p>私たちが作るメタバースは、単なる仮想空間ではありません。それは、人の成長を促し、地方の課題を解決し、災害から命を守るための「社会装置」です。</p>
-                <p>作るのは、未来のHEROたち。最新の技術を武器に、私たちは社会課題に立ち向かっています。「和を以て貴しとなす」。リアルとデジタル、人と技術が調和し、誰も取り残さない社会。それを実装するのが私たちの仕事です。</p>
+              <div className="text-gray-700 leading-[1.8] space-y-8 text-[15px] font-medium tracking-widest text-justify">
+                <p>私は自分が一番になることより、誰かを輝かせる「ナンバーゼロ」の存在でありたいと考えています。わずか50万円の自己資金からスタートしたのは、特別な才能がなくても工夫次第で誰でも挑戦できると証明したかったからです。</p>
+                <p>失敗しても「30秒だけ落ち込む」と決めて前を向く。何でもできる「出木杉くん」ではなく、失敗しながらも立ち上がる「のび太くん」が主役になれる、そんな誠実なチームで大きな夢を現実にしていきます。</p>
               </div>
             </div>
           </section>
@@ -89,14 +89,14 @@ export const CeoMessagePage: React.FC = () => {
           <section>
             <div className="flex flex-col gap-8">
               <div className="flex flex-col items-start">
-                <h4 className="text-2xl font-black text-gray-800">100のHEROと共に創る未来</h4>
+                <h4 className="text-2xl font-black text-gray-800">Meta Heroesが拓く、誰もが輝ける社会の実装へ</h4>
                 <div className="w-full h-px bg-gray-100 relative mt-4">
                   <div className="absolute top-0 left-0 w-12 h-1 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
                 </div>
               </div>
-              <div className="text-gray-700 leading-[1.8] space-y-8 text-[15px] font-medium tracking-widest">
-                <p>19歳の時、私は「2044年までに100のHEROを創る」と誓いました。私一人がヒーローになる必要はありません。100人の次世代のリーダーたちが、それぞれの色で輝く未来を創ります。</p>
-                <p>さあ、次はあなたの番です。この無限の可能性を秘めた空間で、一緒に新しい物語を始めましょう。</p>
+              <div className="text-gray-700 leading-[1.8] space-y-8 text-[15px] font-medium tracking-widest text-justify">
+                <p>Meta Heroesのミッションは、最新技術を誇示することではなく「人の価値を証明すること」にあります。テクノロジーは人間の代替ではなく、地方や未経験といった壁を越え、個人の可能性を拡張する最高のパートナーです。</p>
+                <p>私たちは、AIやメタバースを誰もが使える武器に変え、「普通の人がすごくなれる社会」を実装します。次世代の挑戦を称える文化を創り、一人ひとりがヒーローとして羽ばたける未来を切り拓いていきます。</p>
               </div>
             </div>
           </section>

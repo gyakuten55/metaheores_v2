@@ -14,7 +14,9 @@ export default async function handler(req, res) {
     occupation, 
     content,
     confirm_email_field, // Honeypot
-    _t // Timestamp
+    _t, // Timestamp
+    type, // 'document_request' or undefined
+    documentFiles // Array of filenames for documents
   } = req.body;
 
   // 1. Honeypot check: If filled, it's a bot
@@ -33,6 +35,9 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: 'Access denied' });
   }
 
+  const isDocumentRequest = type === 'document_request';
+  const siteUrl = 'https://meta-heroes.co.jp';
+
   const categoryLabels = {
     business: '事業に関するお問い合わせ',
     service: 'サービスに関するお問い合わせ',
@@ -42,10 +47,10 @@ export default async function handler(req, res) {
     other: 'その他'
   };
 
-  const categoryLabel = categoryLabels[category] || category;
+  const categoryLabel = isDocumentRequest ? '資料請求' : (categoryLabels[category] || category);
 
   // Validation
-  if (!name || !email || !content) {
+  if (!name || !email) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
@@ -81,12 +86,12 @@ export default async function handler(req, res) {
   try {
     // 1. Send to Admin
     await transporter.sendMail({
-      from: `"MetaHeroes" <${user}>`,
+      from: `"MetaHeroes Website" <${user}>`,
       to: 'contact@meta-heroes.io',
       replyTo: email,
-      subject: `【お問い合わせ】${categoryLabel} - ${name}様`,
+      subject: `【${categoryLabel}】${name}様`,
       text: `
-ウェブサイトから新しいお問い合わせがありました。
+ウェブサイトから${categoryLabel}がありました。
 
 【項目】: ${categoryLabel}
 【会社名】: ${company || '---'}
@@ -101,11 +106,39 @@ ${content}
     });
 
     // 2. Send Auto-reply to User
-    await transporter.sendMail({
-      from: `"株式会社MetaHeroes" <${user}>`,
-      to: email,
-      subject: `【株式会社MetaHeroes】お問い合わせありがとうございます`,
-      text: `
+    let autoReplyText = '';
+    if (isDocumentRequest && documentFiles && documentFiles.length > 0) {
+      const links = documentFiles.map(file => {
+        // Encode URI because filenames have Japanese/spaces
+        return `${siteUrl}/assets/documents/${encodeURIComponent(file)}`;
+      }).join('\n');
+
+      autoReplyText = `
+${name} 様
+
+この度は資料請求をいただき、誠にありがとうございます。
+ご請求いただいた資料のダウンロードURLをお送りいたします。
+
+以下のURLより資料をダウンロードいただけます：
+
+${links}
+
+※ダウンロード期限はございませんが、お早めにご確認ください。
+また、内容についてご不明な点や、より詳細な説明が必要な場合は、
+本メールへの返信、またはお問い合わせフォームよりお気軽にご連絡ください。
+
+--------------------------------------------------
+【ご請求内容】
+
+お名前: ${name}
+会社名: ${company || '---'}
+--------------------------------------------------
+
+株式会社MetaHeroes
+URL: https://meta-heroes.co.jp/
+      `;
+    } else {
+      autoReplyText = `
 ${name} 様
 
 この度はお問い合わせいただき、誠にありがとうございます。
@@ -128,7 +161,14 @@ ${content}
 
 株式会社MetaHeroes
 URL: https://meta-heroes.co.jp/
-      `,
+      `;
+    }
+
+    await transporter.sendMail({
+      from: `"株式会社MetaHeroes" <${user}>`,
+      to: email,
+      subject: `【株式会社MetaHeroes】${isDocumentRequest ? '資料請求' : 'お問い合わせ'}ありがとうございます`,
+      text: autoReplyText,
     });
 
     return res.status(200).json({ success: true });

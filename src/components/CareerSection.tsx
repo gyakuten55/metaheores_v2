@@ -17,8 +17,8 @@ export const CareerSection = ({ career }: CareerSectionProps) => {
   };
 
   return (
-    <section className="bg-gray-100 py-24">
-      <div className="container mx-auto px-8 lg:px-24 max-w-6xl">
+    <section className="bg-gray-100 py-16 md:py-24">
+      <div className="container mx-auto px-4 md:px-8 lg:px-24 max-w-6xl">
         {/* ラベル */}
         <div className="flex items-center gap-2 mb-4">
           <span className="w-4 h-4 bg-cyan-500 rounded-full"></span>
@@ -26,16 +26,16 @@ export const CareerSection = ({ career }: CareerSectionProps) => {
         </div>
 
         {/* タイトル */}
-        <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-16">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-12 md:mb-16">
           これまでの歩み
         </h2>
 
         {/* カードスライダー */}
-        <div className="relative">
+        <div className="relative overflow-visible">
           {/* 左矢印 */}
           <button
             onClick={goToPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 text-cyan-500 hover:text-cyan-600 transition-colors disabled:opacity-30"
+            className="absolute left-[-10px] md:left-0 top-1/2 -translate-y-1/2 z-20 text-cyan-500 hover:text-cyan-600 transition-colors disabled:opacity-0"
             aria-label="前へ"
             disabled={activeIndex === 0}
           >
@@ -45,42 +45,46 @@ export const CareerSection = ({ career }: CareerSectionProps) => {
               viewBox="0 0 24 24"
               strokeWidth={3}
               stroke="currentColor"
-              className="w-8 h-8"
+              className="w-8 h-8 md:w-10 md:h-10"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
           </button>
 
           {/* カードコンテナ */}
-          <div className="overflow-hidden mx-12">
+          <div className="overflow-hidden mx-8 md:mx-12">
             <div
-              className="flex items-center gap-8 transition-transform duration-500 ease-out"
+              className="flex items-center gap-4 md:gap-8 transition-transform duration-500 ease-out py-10"
               style={{
-                transform: `translateX(calc(50% - ${activeIndex * (450 + 32)}px - 225px))`,
-              }}
+                transform: `translateX(calc(50% - (var(--card-width) / 2) - (${activeIndex} * (var(--card-width) + var(--card-gap)))))`,
+                // Define variables based on screen size
+                '--card-width': window.innerWidth < 768 ? 'min(80vw, 300px)' : '450px',
+                '--card-gap': window.innerWidth < 768 ? '16px' : '32px'
+              } as React.CSSProperties}
             >
               {career.map((item, index) => (
                 <div
                   key={index}
-                  className={`flex-shrink-0 w-[450px] transition-all duration-300 ${
+                  className={`flex-shrink-0 transition-all duration-300 ${
                     index === activeIndex
                       ? 'scale-100 opacity-100 z-10'
-                      : 'scale-75 opacity-50'
+                      : 'scale-90 md:scale-75 opacity-40'
                   }`}
+                  style={{ width: 'var(--card-width)' }}
                 >
                   {/* ラベル */}
-                  <span className="text-cyan-500 font-bold text-5xl block relative z-10 ml-4">
+                  <span className="text-cyan-500 font-bold text-3xl md:text-5xl block relative z-10 ml-4">
                     {item.label}
                   </span>
 
                   {/* カード */}
-                  <div className="bg-white rounded-3xl p-10 shadow-lg min-h-[400px] -mt-6">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  <div className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-10 shadow-lg min-h-[300px] md:min-h-[400px] -mt-4 md:-mt-6">
+                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">
                       {item.title}
                     </h3>
-                    <div className="space-y-4">
+                    <div className="space-y-3 md:space-y-4">
                       {item.description.map((text, i) => (
-                        <p key={i} className="text-gray-600 text-lg leading-relaxed">
+                        <p key={i} className="text-gray-600 text-sm md:text-lg leading-relaxed">
                           {text}
                         </p>
                       ))}
@@ -94,7 +98,7 @@ export const CareerSection = ({ career }: CareerSectionProps) => {
           {/* 右矢印 */}
           <button
             onClick={goToNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 text-cyan-500 hover:text-cyan-600 transition-colors disabled:opacity-30"
+            className="absolute right-[-10px] md:right-0 top-1/2 -translate-y-1/2 z-20 text-cyan-500 hover:text-cyan-600 transition-colors disabled:opacity-0"
             aria-label="次へ"
             disabled={activeIndex === career.length - 1}
           >
@@ -104,7 +108,7 @@ export const CareerSection = ({ career }: CareerSectionProps) => {
               viewBox="0 0 24 24"
               strokeWidth={3}
               stroke="currentColor"
-              className="w-8 h-8"
+              className="w-8 h-8 md:w-10 md:h-10"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
             </svg>
