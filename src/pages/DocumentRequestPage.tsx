@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { PageHero } from '../components/PageHero';
 import { PdfThumbnail } from '../components/PdfThumbnail';
-import { ChevronRight, CheckCircle2, ChevronLeft, Download, Check } from 'lucide-react';
+import { ChevronRight, CheckCircle2, ChevronLeft, Check } from 'lucide-react';
 
 type FormStep = 'select' | 'input' | 'confirm' | 'complete';
 
@@ -65,7 +65,6 @@ export const DocumentRequestPage: React.FC = () => {
   const [step, setStep] = useState<FormStep>('select');
   const [agreed, setAgreed] = useState(false);
   const [formData, setFormData] = useState<FormData>(INITIAL_DATA);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -90,46 +89,11 @@ export const DocumentRequestPage: React.FC = () => {
     }));
   };
 
-  const goToInput = () => {
-    if (formData.selectedDocIds.length === 0) {
-      alert('資料を1つ以上選択してください。');
-      return;
-    }
-    setStep('input');
-    window.scrollTo(0, 0);
-  };
-
   const goToConfirm = (e: React.FormEvent) => {
     e.preventDefault();
     if (!agreed) return;
     setStep('confirm');
     window.scrollTo(0, 0);
-  };
-
-  const handleFinalSubmit = async () => {
-    setIsSubmitting(true);
-    try {
-      const response = await fetch('/api/send-mail', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          category: '資料請求',
-          content: `【請求資料】\n${formData.selectedDocIds.map(id => DOCUMENTS.find(d => d.id === id)?.title).join('\n')}\n\n【お問い合わせ内容】\n${formData.content}`,
-          type: 'document_request',
-          documentFiles: formData.selectedDocIds.map(id => DOCUMENTS.find(d => d.id === id)?.fileName)
-        }),
-      });
-
-      if (!response.ok) throw new Error('送信に失敗しました');
-
-      setStep('complete');
-      window.scrollTo(0, 0);
-    } catch (error) {
-      alert('送信中にエラーが発生しました。お手数ですがしばらく時間をおいてから再度お試しください。');
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   const renderStepIndicator = () => (
