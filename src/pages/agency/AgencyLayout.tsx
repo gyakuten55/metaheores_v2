@@ -109,7 +109,9 @@ const AgencyLayout: React.FC = () => {
         {isSidebarOpen && (
           <div className="p-4 border-b border-slate-100">
             <div className="min-w-0">
-              <p className="text-sm font-medium text-slate-800 truncate">{profile?.full_name || 'User'}</p>
+              <p className="text-sm font-medium text-slate-800 truncate">
+                {profile?.company_name || profile?.full_name || 'User'}
+              </p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium uppercase tracking-wider ${
                   role === 'admin' ? 'bg-purple-100 text-purple-700' :

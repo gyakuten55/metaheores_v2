@@ -203,9 +203,22 @@ const DocumentsPage: React.FC = () => {
               {(!isEditing && !isAddModalOpen && selectedDoc?.file_url) && (
                 <div className="flex-[1.5] bg-slate-100 p-4 border-r border-slate-200 overflow-y-auto min-h-[30vh]">
                   {selectedDoc.file_type?.toLowerCase() === 'pdf' ? (
-                    <iframe src={`${previewUrl}#toolbar=0`} className="w-full h-[40vh] md:h-[70vh] rounded border border-slate-200 bg-white" title="Preview" />
+                    previewUrl ? (
+                      <iframe src={`${previewUrl}#toolbar=0`} className="w-full h-[40vh] md:h-[70vh] rounded border border-slate-200 bg-white" title="Preview" />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center h-full gap-3">
+                        <Loader2 className="animate-spin text-slate-300" size={32} />
+                        <p className="text-[10px] font-bold text-slate-400">プレビューを読み込み中...</p>
+                      </div>
+                    )
                   ) : ['jpg','jpeg','png','webp'].includes(selectedDoc.file_type?.toLowerCase() || '') ? (
-                    <img src={previewUrl!} className="max-w-full h-auto rounded shadow-sm border border-slate-200" alt="Preview" />
+                    previewUrl ? (
+                      <img src={previewUrl} className="max-w-full h-auto rounded shadow-sm border border-slate-200" alt="Preview" />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center h-full gap-3">
+                        <Loader2 className="animate-spin text-slate-300" size={32} />
+                      </div>
+                    )
                   ) : <div className="text-[10px] font-bold text-slate-400 text-center p-10">プレビュー非対応</div>}
                 </div>
               )}
