@@ -329,7 +329,7 @@ export const BusinessContentPage: React.FC = () => {
           </div>
           <div className="space-y-12">
             <p className="text-gray-600 leading-[1.8] font-medium text-base tracking-wider">
-              私たちMeta Heroesは、教育・防災・地方創生をテーマにした社会課題を、テクノロジー開発とリアルの場でのイベントや施設運営を通じて解決へと導きます。
+              私たちMeta Heroesは、ウェルビーイング社会を目指して、教育・防災・地方創生をテーマにした社会課題を、テクノロジー開発とリアルの場でのイベントや施設運営を通じて解決へと導きます。
             </p>
             <div className="py-8 flex justify-center">
               <img src="/assets/business-content/focus_areas.png" alt="Focus Areas" className="w-full max-w-3xl h-auto" />

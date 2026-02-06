@@ -32,7 +32,7 @@ export const AboutCompanyPage: React.FC = () => {
           
                         <p className="text-gray-600 leading-[1.8] font-medium text-base tracking-wider">
           
-                          私たちMeta Heroesは、教育・防災・地方創生などの様々な分野で抱える社会課題を、テクノロジー開発とリアルの場でのイベントを通じた、社会課題を解決するソーシャルイノベーターです。
+                          私たちMeta Heroesは、ウェルビーイング社会を目指して、教育・防災・地方創生などの様々な分野で抱える社会課題を、テクノロジー開発とリアルの場でのイベントを通じた、社会課題を解決するソーシャルイノベーターです。
           
                         </p>
           
