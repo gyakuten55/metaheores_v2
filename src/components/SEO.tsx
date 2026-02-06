@@ -11,17 +11,26 @@ interface SEOProps {
   schema?: object;
 }
 
+const SITE_URL = "https://meta-heroes.co.jp";
+const DEFAULT_OGP_IMAGE = `${SITE_URL}/assets/MH_OGP.png`;
+
 export const SEO = ({ 
   title, 
   description = "株式会社MetaHeroesは、メタバース・AI・XRで社会課題を解決するインパクト・ビジネスを展開しています。教育、防災、地方創生の3本柱を軸に、日本の未来をワクワクさせるHEROを創出します。", 
   keywords = "MetaHeroes, メタバース, AI, XR, 社会課題解決, 地方創生, 防災, 教育, Hero Egg, UEFN, Society 5.0",
-  image = "https://meta-heroes.co.jp/assets/og-image.png", // Replace with actual OG image path
+  image,
   url,
   type = 'website',
   schema
 }: SEOProps) => {
   const location = useLocation();
-  const currentUrl = url || `https://meta-heroes.co.jp${location.pathname}`;
+  const currentUrl = url || `${SITE_URL}${location.pathname}`;
+
+  // 画像URLを決定（未指定・null・空文字の場合はデフォルトを使用）
+  const finalImage = image || DEFAULT_OGP_IMAGE;
+
+  // 画像URLを絶対パスに変換
+  const ogImage = finalImage.startsWith('http') ? finalImage : `${SITE_URL}${finalImage.startsWith('/') ? '' : '/'}${finalImage}`;
 
   useEffect(() => {
     // 1. Title
@@ -36,14 +45,14 @@ export const SEO = ({
     updateMetaTag('og:description', description, 'property');
     updateMetaTag('og:url', currentUrl, 'property');
     updateMetaTag('og:type', type, 'property');
-    updateMetaTag('og:image', image, 'property');
+    updateMetaTag('og:image', ogImage, 'property');
     updateMetaTag('og:site_name', '株式会社MetaHeroes', 'property');
 
     // 4. Twitter Card Tags
     updateMetaTag('twitter:card', 'summary_large_image');
     updateMetaTag('twitter:title', title);
     updateMetaTag('twitter:description', description);
-    updateMetaTag('twitter:image', image);
+    updateMetaTag('twitter:image', ogImage);
 
     // 5. Canonical Link
     let canonical = document.querySelector('link[rel="canonical"]');

@@ -67,7 +67,6 @@ export const MemberPage = () => {
       <SEO 
         title={`${member.name} | メンバー紹介 | 株式会社MetaHeroes`}
         description={`${member.name}のプロフィール、経歴、哲学について。株式会社MetaHeroesのプロフェッショナルメンバーをご紹介します。`}
-        image={member.heroImage}
         schema={{
           "@context": "https://schema.org",
           "@type": "Person",
