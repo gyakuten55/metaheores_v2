@@ -35,6 +35,8 @@ export const AdminPage: React.FC = () => {
   // Modals
   const [selectedUser, setSelectedUser] = useState<ProfileWithEmail | null>(null);
   const [isEditingUser, setIsEditingUser] = useState(false);
+  const [isAddingUser, setIsAddingUser] = useState(false);
+  const [newUserForm, setNewUserForm] = useState({ email: '', password: '', company_name: '', role: 'agent' as any });
   const [editForm, setEditForm] = useState({ company_name: '', role: 'agent' as any });
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [newPassword, setNewPassword] = useState('');
@@ -65,6 +67,30 @@ export const AdminPage: React.FC = () => {
       console.error('Error fetching data:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAddUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newUserForm.email || !newUserForm.password || !newUserForm.company_name) return;
+    setIsSubmitting(true);
+    try {
+      const { data, error: funcError } = await supabase.functions.invoke('manage-users', {
+        body: { 
+          action: 'create', 
+          ...newUserForm
+        }
+      });
+      if (funcError || data?.error) throw new Error(data?.error || 'アカウント作成に失敗しました');
+      
+      setIsAddingUser(false);
+      setNewUserForm({ email: '', password: '', company_name: '', role: 'agent' });
+      fetchData();
+      alert('アカウントを作成しました。');
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -183,6 +209,12 @@ export const AdminPage: React.FC = () => {
                 <Users size={16} className="text-slate-400" />
                 登録アカウント一覧
               </h2>
+              <button 
+                onClick={() => setIsAddingUser(true)}
+                className="px-3 py-1.5 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-widest rounded hover:bg-blue-700 transition-all flex items-center gap-1.5"
+              >
+                <Plus size={12} /> アカウント追加
+              </button>
             </div>
             
             <div className="overflow-x-auto">
@@ -275,6 +307,82 @@ export const AdminPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Add User Modal */}
+      {isAddingUser && (
+        <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+              <h2 className="font-bold text-slate-800 text-sm">新規アカウント作成</h2>
+              <button onClick={() => setIsAddingUser(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X size={20} /></button>
+            </div>
+            <form onSubmit={handleAddUser} className="p-6 space-y-4">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">メールアドレス</label>
+                <input 
+                  type="email" 
+                  required 
+                  value={newUserForm.email} 
+                  onChange={(e) => setNewUserForm({ ...newUserForm, email: e.target.value })}
+                  className="w-full px-3 py-2 border border-slate-200 rounded text-sm outline-none focus:ring-2 focus:ring-blue-100"
+                  placeholder="example@meta-heroes.co.jp"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">パスワード</label>
+                <input 
+                  type="password" 
+                  required 
+                  value={newUserForm.password} 
+                  onChange={(e) => setNewUserForm({ ...newUserForm, password: e.target.value })}
+                  className="w-full px-3 py-2 border border-slate-200 rounded text-sm outline-none focus:ring-2 focus:ring-blue-100"
+                  placeholder="6文字以上"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">会社名</label>
+                <input 
+                  type="text" 
+                  required 
+                  value={newUserForm.company_name} 
+                  onChange={(e) => setNewUserForm({ ...newUserForm, company_name: e.target.value })}
+                  className="w-full px-3 py-2 border border-slate-200 rounded text-sm outline-none focus:ring-2 focus:ring-blue-100"
+                  placeholder="株式会社XXX"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">ロール</label>
+                <select 
+                  value={newUserForm.role}
+                  onChange={(e) => setNewUserForm({ ...newUserForm, role: e.target.value as any })}
+                  className="w-full px-3 py-2 border border-slate-200 rounded text-sm outline-none bg-white focus:ring-2 focus:ring-blue-100"
+                >
+                  <option value="agent">AGENT (代理店)</option>
+                  <option value="admin">ADMIN (管理者)</option>
+                  <option value="guest">GUEST (ゲスト)</option>
+                </select>
+              </div>
+              <div className="pt-4 flex gap-3">
+                <button 
+                  type="button" 
+                  onClick={() => setIsAddingUser(false)}
+                  className="flex-1 px-4 py-2 border border-slate-200 text-slate-600 rounded text-xs font-bold hover:bg-slate-50"
+                >
+                  キャンセル
+                </button>
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded text-xs font-bold hover:bg-blue-700 disabled:opacity-50 flex justify-center items-center gap-2"
+                >
+                  {isSubmitting ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />} 
+                  作成
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* User Detail Modal */}
       {selectedUser && (
