@@ -440,19 +440,13 @@ export const TopPage: React.FC = () => {
             {[
               { label: '企業情報', iconPath: '/assets/top/company_icon.png', image: '/assets/recruit/about_meta_heroes.png', path: '/about' },
               { label: 'サービス', iconPath: '/assets/top/service_icon.png', image: '/assets/recruit/services.png', path: '/services' },
-              { label: '採用', iconPath: '/assets/top/recruit_icon.png', image: '/assets/recruit/recruit_top.jpg', path: '/recruit' },
+              { label: '採用', iconPath: '/assets/top/recruit_icon.png', image: '/assets/recruit/recruit_hero.jpg', path: '/recruit' },
               { label: 'ブログ', iconPath: '/assets/top/blog_icon.png', image: '/assets/top/business_bg.png', path: '/news' },
             ].map((cat, idx) => (
               <Link 
                 key={idx} 
                 to={cat.path} 
                 className="relative group aspect-square md:aspect-[3/4] rounded-2xl md:rounded-[2rem] overflow-hidden shadow-xl"
-                onClick={(e) => {
-                  if (cat.path === '/recruit') {
-                    e.preventDefault();
-                    alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
-                  }
-                }}
               >
                 <img src={cat.image} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:from-black/60 transition-colors" />
