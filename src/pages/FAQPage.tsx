@@ -67,6 +67,11 @@ const FAQ_DATA: FAQCategory[] = [
 export const FAQPage: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<string | null>('0-0');
 
+  React.useEffect(() => {
+    alert('FAQページは現在準備中です。');
+    window.location.href = '/recruit';
+  }, []);
+
   const toggleFAQ = (catIdx: number, itemIdx: number) => {
     const key = `${catIdx}-${itemIdx}`;
     setOpenIndex(openIndex === key ? null : key);
