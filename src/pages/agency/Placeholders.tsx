@@ -15,7 +15,9 @@ import {
   Calendar,
   RefreshCw,
   KeyRound,
-  Edit3
+  Edit3,
+  Plus,
+  Check
 } from 'lucide-react';
 
 type Service = Database['public']['Tables']['services']['Row'];
