@@ -65,10 +65,6 @@ export const RecruitPage: React.FC = () => {
   const blogScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Show 'Under Construction' notification and redirect
-    alert('採用情報は現在準備中です。最新の募集情報はIndeedをご確認ください。');
-    window.location.href = '/';
-
     const fetchBlogs = async () => {
       try {
         const response = await getMemberBlogs(8);
@@ -115,7 +111,7 @@ export const RecruitPage: React.FC = () => {
       {/* Video Section */}
       <div className="w-full">
         <video 
-          src="/assets/recruit/brand-movie.mp4" 
+          src="/assets/recruit/brand_movie.mp4" 
           className="w-full h-auto" 
           autoPlay 
           muted 
@@ -159,149 +155,96 @@ export const RecruitPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Corporate Section */}
-      <section id="corporate" className="py-12 md:py-32 bg-white w-full overflow-hidden">
-        <div className="w-full">
-          <div className="grid grid-cols-2 gap-0">
-            {/* Left Column */}
-            <div className="flex flex-col items-start">
-              <div className="w-full h-32 md:h-[23.81vw] pr-4 md:pr-16 flex flex-col justify-center items-end">
-                <h2 className="text-2xl md:text-6xl font-black text-primary-blue mb-1 md:mb-2 tracking-tight">Corporate</h2>
-                <p className="text-[10px] md:text-sm font-bold text-gray-600 tracking-widest">会社を知る</p>
+      {/* Knowledge Sections - Unified 3-Card Layout */}
+      <section className="py-20 md:py-32 bg-white">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
+            {/* Corporate Card */}
+            <div className="flex flex-col rounded-[2rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-gray-100 h-full">
+              <div className="relative h-48 md:h-56 overflow-hidden">
+                <img src="/assets/recruit/company_intro.png" alt="Corporate" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white">
+                  <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] mb-1 opacity-80 uppercase">Corporate</span>
+                  <h3 className="text-xl md:text-2xl font-black tracking-widest">会社を知る</h3>
+                </div>
               </div>
-              
-              <div className="w-full self-start rounded-r-2xl md:rounded-r-[40px] overflow-hidden shadow-xl md:shadow-2xl">
-                <Link to="/about/company" className="group relative block w-full">
-                  <div className="aspect-[4/3] md:aspect-[21/10] w-full bg-gray-50">
-                    <img 
-                      src="/assets/recruit/about_meta_heroes.png" 
-                      alt="Meta Heroesについて" 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="absolute bottom-3 right-4 md:bottom-8 md:right-12 bg-white px-4 py-2 md:px-8 md:py-3.5 rounded-full shadow-md z-10">
-                    <span className="text-[10px] md:text-sm font-black text-gray-800 tracking-wider">Meta Heroesについて</span>
-                  </div>
-                </Link>
-              </div>
-            </div>
-
-            {/* Right Column */}
-            <div className="flex flex-col items-end">
-              <div className="w-full rounded-l-2xl md:rounded-l-[40px] overflow-hidden shadow-xl md:shadow-2xl">
-                <Link to="/about/mission" className="group relative block w-full">
-                  <div className="aspect-[4/3] md:aspect-[21/10] w-full bg-gray-50">
-                    <img 
-                      src="/assets/recruit/mission.png" 
-                      alt="Meta Heroesの使命" 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="absolute bottom-3 left-4 md:bottom-8 md:left-12 bg-white px-4 py-2 md:px-8 md:py-3.5 rounded-full shadow-md z-10">
-                    <span className="text-[10px] md:text-sm font-black text-gray-800 tracking-wider">Meta Heroesの使命</span>
-                  </div>
-                </Link>
-              </div>
-
-              <div className="hidden md:block w-full h-[23.81vw]" />
-
-              <div className="w-full rounded-l-2xl md:rounded-l-[40px] overflow-hidden shadow-xl md:shadow-2xl mt-4 md:mt-0">
-                <Link to="/ceo-message" className="group relative block w-full">
-                  <div className="aspect-[4/3] md:aspect-[21/10] w-full bg-gray-50">
-                    <img 
-                      src="/assets/recruit/ceo_message.png" 
-                      alt="代表メッセージ" 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="absolute bottom-3 left-4 md:bottom-8 md:left-12 bg-white px-4 py-2 md:px-8 md:py-3.5 rounded-full shadow-md z-10">
-                    <span className="text-[10px] md:text-sm font-black text-gray-800 tracking-wider">代表メッセージ</span>
-                  </div>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Business Content Section */}
-      <section id="business" className="pt-12 md:pt-20 pb-0 bg-gradient-to-r from-blue-500 to-cyan-400 w-full">
-        <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-          <div className="flex justify-center mb-12">
-            <span className="bg-white text-black text-lg font-bold px-16 py-3 rounded-full shadow-lg tracking-widest">
-              事業内容
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-6">
-            <Link to="/business#metaverse" className="group flex flex-col h-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="bg-white py-1.5 md:py-4 text-center border-b border-gray-100">
-                <span className="text-blue-600 font-bold tracking-widest text-[10px] md:text-lg">メタバース事業</span>
-              </div>
-              <div className="relative aspect-square md:aspect-[9/16] w-full overflow-hidden bg-gray-200">
-                <img src="/assets/recruit/metaverse.png" alt="メタバース事業" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              </div>
-            </Link>
-            <Link to="/business#ai" className="group flex flex-col h-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="bg-white py-1.5 md:py-4 text-center border-b border-gray-100">
-                <span className="text-blue-600 font-bold tracking-widest text-[10px] md:text-lg">AI事業</span>
-              </div>
-              <div className="relative aspect-square md:aspect-[9/16] w-full overflow-hidden bg-gray-200">
-                <img src="/assets/recruit/ai_business.png" alt="AI事業" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              </div>
-            </Link>
-            <Link to="/business#event" className="group flex flex-col h-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="bg-white py-1.5 md:py-4 text-center border-b border-gray-100">
-                <span className="text-blue-600 font-bold tracking-widest text-[10px] md:text-lg">イベント事業</span>
-              </div>
-              <div className="relative aspect-square md:aspect-[9/16] w-full overflow-hidden bg-gray-200">
-                <img src="/assets/recruit/event_business.png" alt="イベント事業" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              </div>
-            </Link>
-            <Link to="/business#facility" className="group flex flex-col h-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-              <div className="bg-white py-1.5 md:py-4 text-center border-b border-gray-100">
-                <span className="text-blue-600 font-bold tracking-widest text-[10px] md:text-lg">空きスペース事業</span>
-              </div>
-              <div className="relative aspect-square md:aspect-[9/16] w-full overflow-hidden bg-gray-200">
-                <img src="/assets/recruit/vacant_facility.png" alt="空きスペース事業" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Work Section */}
-      <section id="work" className="py-12 md:py-32 bg-white w-full">
-        <div className="container mx-auto px-4 md:px-12 max-w-7xl">
-          <div className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-24">
-            <div className="flex flex-col items-center">
-              <div className="w-full rounded-2xl md:rounded-[40px] overflow-hidden shadow-xl md:shadow-2xl">
-                <Link to="/about/company" className="group relative block w-full">
-                  <div className="aspect-[16/9] w-full bg-gray-50">
-                    <img src="/assets/recruit/services.png" alt="数字で見るMeta Heroes" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                  </div>
-                  <div className="absolute bottom-3 right-4 md:bottom-8 md:right-12 bg-white px-4 py-2 md:px-8 md:py-3.5 rounded-full shadow-md z-10 text-center">
-                    <span className="text-[10px] md:text-sm font-black text-gray-800 tracking-wider">数字で見るMeta Heroes</span>
-                  </div>
-                </Link>
+              <div className="bg-white p-8 flex-grow">
+                <ul className="space-y-0 divide-y divide-gray-100">
+                  {[
+                    { label: '代表メッセージ', to: '/ceo-message' },
+                    { label: 'Meta Heroesの使命', to: '/about/mission' },
+                    { label: 'Meta Heroesについて', to: '/about/company' },
+                    { label: '数字で見るMeta Heroes', to: '/about/company' },
+                  ].map((link) => (
+                    <li key={link.label}>
+                      <Link to={link.to} className="flex items-center justify-between py-5 group hover:bg-gray-50 transition-colors px-2">
+                        <span className="text-sm font-bold text-gray-700 tracking-wider">{link.label}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 text-cyan-500 group-hover:translate-x-1 transition-transform">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
-            <div className="flex flex-col items-center">
-              <div className="w-full mb-6 md:mb-16 mt-0 md:mt-0 flex flex-col items-end">
-                <h2 className="text-2xl md:text-6xl font-black text-blue-600 mb-1 md:mb-2 tracking-tight">Work</h2>
-                <p className="text-[10px] md:text-sm font-bold text-gray-600 tracking-widest">働き方を知る</p>
+            {/* Business Card */}
+            <div className="flex flex-col rounded-[2rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-gray-100 h-full">
+              <div className="relative h-48 md:h-56 overflow-hidden">
+                <img src="/assets/recruit/business_intro.png" alt="Business" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white">
+                  <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] mb-1 opacity-80 uppercase">Business</span>
+                  <h3 className="text-xl md:text-2xl font-black tracking-widest">事業を知る</h3>
+                </div>
               </div>
+              <div className="bg-white p-8 flex-grow">
+                <ul className="space-y-0 divide-y divide-gray-100">
+                  {[
+                    { label: 'メタバース事業', to: '/business#metaverse' },
+                    { label: 'AI事業', to: '/business#ai' },
+                    { label: 'イベント事業', to: '/business#event' },
+                    { label: '施設運営事業', to: '/business#facility' },
+                  ].map((link) => (
+                    <li key={link.label}>
+                      <Link to={link.to} className="flex items-center justify-between py-5 group hover:bg-gray-50 transition-colors px-2">
+                        <span className="text-sm font-bold text-gray-700 tracking-wider">{link.label}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 text-cyan-500 group-hover:translate-x-1 transition-transform">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
 
-              <div className="w-full md:mt-12 rounded-2xl md:rounded-[40px] overflow-hidden shadow-xl md:shadow-2xl">
-                <Link to="/about/offices" className="group relative block w-full">
-                  <div className="aspect-[16/9] w-full bg-gray-50">
-                    <img src="/assets/recruit/offices.png" alt="オフィス・施設" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                  </div>
-                  <div className="absolute bottom-3 left-4 md:bottom-8 md:left-12 bg-white px-4 py-2 md:px-8 md:py-3.5 rounded-full shadow-md z-10 text-center">
-                    <span className="text-[10px] md:text-sm font-black text-gray-800 tracking-wider">オフィス・施設</span>
-                  </div>
-                </Link>
+            {/* Work Card */}
+            <div className="flex flex-col rounded-[2rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-gray-100 h-full">
+              <div className="relative h-48 md:h-56 overflow-hidden">
+                <img src="/assets/recruit/work_intro.png" alt="Work" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white">
+                  <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] mb-1 opacity-80 uppercase">Work</span>
+                  <h3 className="text-xl md:text-2xl font-black tracking-widest">仕事を知る</h3>
+                </div>
+              </div>
+              <div className="bg-white p-8 flex-grow">
+                <ul className="space-y-0 divide-y divide-gray-100">
+                  {[
+                    { label: 'サービス', to: '/services' },
+                    { label: '事業所・施設', to: '/about/offices' },
+                    { label: '行動規範', to: '/about/conduct' },
+                  ].map((link) => (
+                    <li key={link.label}>
+                      <Link to={link.to} className="flex items-center justify-between py-5 group hover:bg-gray-50 transition-colors px-2">
+                        <span className="text-sm font-bold text-gray-700 tracking-wider">{link.label}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 text-cyan-500 group-hover:translate-x-1 transition-transform">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
@@ -426,7 +369,7 @@ export const RecruitPage: React.FC = () => {
           <div id="blog" className="mt-32">
             <div className="flex justify-center mb-16">
               <span className="bg-[#2563eb] text-white text-lg font-bold px-24 py-2.5 rounded-full shadow-lg tracking-widest">
-                ブログ
+                メンバーブログ
               </span>
             </div>
 
