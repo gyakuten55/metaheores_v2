@@ -2,8 +2,8 @@ import { createClient } from 'microcms-js-sdk';
 
 // 既存のアカウント (ニュース・実績)
 export const client = createClient({
-  serviceDomain: 'g07uki3u26',
-  apiKey: 'cONapSqFkKcDF9MqPltOcuntceBifMmKQqQi',
+  serviceDomain: import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN || 'g07uki3u26',
+  apiKey: import.meta.env.VITE_MICROCMS_API_KEY || 'apdNtrwXnGxRIg7IgDTmfRsgn6YYfg8J2RFt',
 });
 
 // メンバーブログ用のアカウント

@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 const MICROCMS_SERVICE_DOMAIN = 'g07uki3u26';
-const MICROCMS_API_KEY = 'cONapSqFkKcDF9MqPltOcuntceBifMmKQqQi';
+const MICROCMS_API_KEY = 'apdNtrwXnGxRIg7IgDTmfRsgn6YYfg8J2RFt';
 
 async function main() {
     console.log("--- Checking MicroCMS Categories ---");

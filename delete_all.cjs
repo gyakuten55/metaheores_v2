@@ -1,6 +1,6 @@
 const axios = require('axios');
 const MICROCMS_SERVICE_DOMAIN = 'g07uki3u26';
-const MICROCMS_API_KEY = 'cONapSqFkKcDF9MqPltOcuntceBifMmKQqQi';
+const MICROCMS_API_KEY = 'apdNtrwXnGxRIg7IgDTmfRsgn6YYfg8J2RFt';
 
 async function main() {
   const { data } = await axios.get(`https://${MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/blogs?limit=100`, {

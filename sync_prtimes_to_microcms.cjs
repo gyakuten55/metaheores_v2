@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 const MICROCMS_SERVICE_DOMAIN = 'g07uki3u26';
-const MICROCMS_API_KEY = 'cONapSqFkKcDF9MqPltOcuntceBifMmKQqQi';
+const MICROCMS_API_KEY = 'apdNtrwXnGxRIg7IgDTmfRsgn6YYfg8J2RFt';
 const MICROCMS_ENDPOINT = 'news';
 const PR_TIMES_COMPANY_ID = '94539';
 const CATEGORY_ID = 'OsYRoqcaY-'; // カテゴリ_new (PRtimes)

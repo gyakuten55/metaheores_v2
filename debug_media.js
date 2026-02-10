@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const MICROCMS_SERVICE_DOMAIN = 'g07uki3u26';
-const MICROCMS_API_KEY = 'cONapSqFkKcDF9MqPltOcuntceBifMmKQqQi';
+const MICROCMS_API_KEY = 'apdNtrwXnGxRIg7IgDTmfRsgn6YYfg8J2RFt';
 
 async function testUpload() {
     const imageUrl = 'https://prcdn.freetls.fastly.net/release_image/94539/295/94539-295-6fd2cd4294ccaea231338599277ea16d-3900x2925.jpg';

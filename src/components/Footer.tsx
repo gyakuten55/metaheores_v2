@@ -58,6 +58,7 @@ const FOOTER_COLUMNS = [
           path: '#',
           links: [
             { label: 'ニュース一覧', path: '/news' },
+            { label: '採用情報', path: '/recruit' },
             { label: 'お問い合わせ', path: '/contact' },
             { label: 'お役立ち資料', path: '/document-request' },
             { label: '代理店専用', path: '/agency-login' },
