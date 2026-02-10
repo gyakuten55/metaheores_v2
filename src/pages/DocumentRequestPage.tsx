@@ -41,7 +41,7 @@ export const DocumentRequestPage: React.FC = () => {
         const container = document.getElementById('hubspot-form-container');
 
         if (hbspt && container) {
-          container.innerHTML = ''; // Clear existing
+          container.innerHTML = '';
           try {
             hbspt.forms.create({
               region: "na2",
@@ -50,40 +50,53 @@ export const DocumentRequestPage: React.FC = () => {
               target: "#hubspot-form-container",
               onFormReady: () => {
                 setLoadingForm(false);
-              },
-              onFormSubmitted: ($form: any) => {
-                // Background email sender
-                const email = $form.find('input[name="email"]').val();
-                const firstName = $form.find('input[name="firstname"]').val() || '';
-                const lastName = $form.find('input[name="lastname"]').val() || '';
-                const company = $form.find('input[name="company"]').val() || '';
-                
-                const selectedFiles = DOCUMENTS
-                  .filter(doc => selectedDocIds.includes(doc.id))
-                  .map(doc => doc.fileName);
-
-                if (email && selectedFiles.length > 0) {
-                  fetch('/api/send-mail', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      type: 'document_request',
-                      name: `${lastName} ${firstName}`.trim() || 'お客様',
-                      email: email,
-                      company: company,
-                      documentFiles: selectedFiles,
-                      content: `HubSpot資料請求（サイト連携送信）\n資料: ${selectedFiles.join(', ')}`
-                    })
-                  }).catch(err => console.error('Email send failed:', err));
-                }
               }
             });
+
+            // Listen for HubSpot message indicating successful submission
+            const handleMessage = (event: MessageEvent) => {
+              if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
+                if (event.data.id === '5e03bb7b-49a7-43cb-8644-9fa906c55a3a') {
+                  // Extract values from event data
+                  const submission = event.data.data;
+                  const emailField = submission.find((f: any) => f.name === 'email');
+                  const firstNameField = submission.find((f: any) => f.name === 'firstname');
+                  const lastNameField = submission.find((f: any) => f.name === 'lastname');
+                  const companyField = submission.find((f: any) => f.name === 'company');
+
+                  const email = emailField?.value;
+                  const fullName = `${lastNameField?.value || ''} ${firstNameField?.value || ''}`.trim() || 'お客様';
+                  const company = companyField?.value || '';
+
+                  const selectedFiles = DOCUMENTS
+                    .filter(doc => selectedDocIds.includes(doc.id))
+                    .map(doc => doc.fileName);
+
+                  if (email && selectedFiles.length > 0) {
+                    fetch('/api/send-mail', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        type: 'document_request',
+                        name: fullName,
+                        email: email,
+                        company: company,
+                        documentFiles: selectedFiles,
+                        content: `HubSpot資料請求（サイト連携）\n資料: ${selectedFiles.join(', ')}`
+                      })
+                    }).catch(err => console.error('Email trigger failed:', err));
+                  }
+                }
+              }
+            };
+
+            window.addEventListener('message', handleMessage);
+            return () => window.removeEventListener('message', handleMessage);
           } catch (e) {
             console.error('HubSpot Error:', e);
             setLoadingForm(false);
           }
         } else {
-          // If container or hbspt not ready, retry in 100ms
           setTimeout(initForm, 100);
         }
       };
