@@ -31,88 +31,66 @@ export const DocumentRequestPage: React.FC = () => {
   const [selectedDocIds, setSelectedDocIds] = useState<string[]>([]);
   const [loadingForm, setLoadingForm] = useState(false);
 
-  // Robust Script & Form Loader
+  // Form Loader
   useEffect(() => {
     if (step === 'input') {
       setLoadingForm(true);
       
-      const loadHubSpot = () => {
-        const scriptId = 'hubspot-forms-script-v2';
-        
-        // 1. Create Script if not exists
-        if (!document.getElementById(scriptId)) {
-          const script = document.createElement('script');
-          script.id = scriptId;
-          script.src = 'https://js-na2.hsforms.net/forms/embed/v2.js';
-          script.charset = 'utf-8';
-          script.type = 'text/javascript';
-          script.async = true;
-          script.onload = createForm;
-          document.body.appendChild(script);
-        } else if ((window as any).hbspt) {
-          createForm();
-        } else {
-          // Script exists but hbspt not yet ready (rare)
-          const checkReady = setInterval(() => {
-            if ((window as any).hbspt) {
-              clearInterval(checkReady);
-              createForm();
-            }
-          }, 100);
-        }
-      };
-
-      const createForm = () => {
+      const initForm = () => {
+        const hbspt = (window as any).hbspt;
         const container = document.getElementById('hubspot-form-container');
-        if (!container || !(window as any).hbspt) return;
 
-        container.innerHTML = ''; // Clear container
-        
-        try {
-          (window as any).hbspt.forms.create({
-            region: "na2",
-            portalId: "243129625",
-            formId: "5e03bb7b-49a7-43cb-8644-9fa906c55a3a",
-            target: "#hubspot-form-container",
-            onFormReady: () => {
-              setLoadingForm(false);
-            },
-            onFormSubmitted: async ($form: any) => {
-              // Extract values for our own email sender
-              const email = $form.find('input[name="email"]').val();
-              const firstName = $form.find('input[name="firstname"]').val() || '';
-              const lastName = $form.find('input[name="lastname"]').val() || '';
-              const company = $form.find('input[name="company"]').val() || '';
-              
-              const selectedFiles = DOCUMENTS
-                .filter(doc => selectedDocIds.includes(doc.id))
-                .map(doc => doc.fileName);
+        if (hbspt && container) {
+          container.innerHTML = ''; // Clear existing
+          try {
+            hbspt.forms.create({
+              region: "na2",
+              portalId: "243129625",
+              formId: "5e03bb7b-49a7-43cb-8644-9fa906c55a3a",
+              target: "#hubspot-form-container",
+              onFormReady: () => {
+                setLoadingForm(false);
+              },
+              onFormSubmitted: ($form: any) => {
+                // Background email sender
+                const email = $form.find('input[name="email"]').val();
+                const firstName = $form.find('input[name="firstname"]').val() || '';
+                const lastName = $form.find('input[name="lastname"]').val() || '';
+                const company = $form.find('input[name="company"]').val() || '';
+                
+                const selectedFiles = DOCUMENTS
+                  .filter(doc => selectedDocIds.includes(doc.id))
+                  .map(doc => doc.fileName);
 
-              if (email && selectedFiles.length > 0) {
-                fetch('/api/send-mail', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    type: 'document_request',
-                    name: `${lastName} ${firstName}`.trim() || 'お客様',
-                    email: email,
-                    company: company,
-                    documentFiles: selectedFiles,
-                    content: `HubSpot資料請求（サイト連携）\n選択資料: ${selectedFiles.join(', ')}`
-                  })
-                }).catch(e => console.error('Silent email error:', e));
+                if (email && selectedFiles.length > 0) {
+                  fetch('/api/send-mail', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      type: 'document_request',
+                      name: `${lastName} ${firstName}`.trim() || 'お客様',
+                      email: email,
+                      company: company,
+                      documentFiles: selectedFiles,
+                      content: `HubSpot資料請求（サイト連携送信）\n資料: ${selectedFiles.join(', ')}`
+                    })
+                  }).catch(err => console.error('Email send failed:', err));
+                }
               }
-            }
-          });
-        } catch (err) {
-          console.error('HubSpot form creation failed:', err);
-          setLoadingForm(false);
+            });
+          } catch (e) {
+            console.error('HubSpot Error:', e);
+            setLoadingForm(false);
+          }
+        } else {
+          // If container or hbspt not ready, retry in 100ms
+          setTimeout(initForm, 100);
         }
       };
 
-      loadHubSpot();
+      initForm();
     }
-  }, [step]); // Only trigger on step change
+  }, [step, selectedDocIds]);
 
   const toggleDocument = (id: string) => {
     setSelectedDocIds(prev => prev.includes(id)
@@ -248,14 +226,14 @@ export const DocumentRequestPage: React.FC = () => {
                   <p className="text-sm text-gray-500 font-bold">以下のフォームに入力後、送信してください。</p>
                 </div>
                 
-                <div className="bg-gray-50 p-6 md:p-12 rounded-3xl border border-gray-100 shadow-inner min-h-[400px] relative">
+                <div className="bg-gray-50 p-6 md:p-12 rounded-3xl border border-gray-100 shadow-inner min-h-[400px] relative flex flex-col items-center justify-center">
                   {loadingForm && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gray-50/80 z-10">
+                    <div className="flex flex-col items-center justify-center py-20 gap-4">
                       <Loader2 className="animate-spin text-blue-600" size={40} />
                       <p className="text-sm font-bold text-gray-400">フォームを読み込んでいます...</p>
                     </div>
                   )}
-                  <div id="hubspot-form-container" className="w-full min-h-[300px]"></div>
+                  <div id="hubspot-form-container" className={`w-full ${loadingForm ? 'hidden' : 'block'}`}></div>
                 </div>
 
                 <div className="mt-12 text-center">
