@@ -12,6 +12,8 @@ type Event = {
   content: string | null;
   url: string | null;
   event_dates: string[] | null;
+  event_time_start: string | null;
+  event_time_end: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -22,6 +24,7 @@ const EventsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list');
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [selectedDateEvents, setSelectedDateEvents] = useState<{ date: Date; events: Event[] } | null>(null);
 
   // Management States
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -31,7 +34,9 @@ const EventsPage: React.FC = () => {
     title: '',
     content: '',
     url: '',
-    dates: [] as string[]
+    dates: [] as string[],
+    timeStart: '',
+    timeEnd: ''
   });
   const [tempDate, setTempDate] = useState('');
 
@@ -57,7 +62,7 @@ const EventsPage: React.FC = () => {
   };
 
   const resetForm = () => {
-    setEventForm({ title: '', content: '', url: '', dates: [] });
+    setEventForm({ title: '', content: '', url: '', dates: [], timeStart: '', timeEnd: '' });
     setTempDate('');
     setIsEditing(false);
     setSelectedEvent(null);
@@ -73,6 +78,8 @@ const EventsPage: React.FC = () => {
         content: eventForm.content,
         url: eventForm.url,
         event_dates: eventForm.dates.length > 0 ? eventForm.dates : null,
+        event_time_start: eventForm.timeStart || null,
+        event_time_end: eventForm.timeEnd || null,
         updated_at: new Date().toISOString()
       };
 
@@ -110,7 +117,9 @@ const EventsPage: React.FC = () => {
       title: event.title,
       content: event.content || '',
       url: event.url || '',
-      dates: event.event_dates || []
+      dates: event.event_dates || [],
+      timeStart: event.event_time_start || '',
+      timeEnd: event.event_time_end || ''
     });
     setIsEditing(true);
     setIsAddModalOpen(true);
@@ -164,13 +173,23 @@ const EventsPage: React.FC = () => {
     });
   };
 
-  const formatDates = (dates: string[] | null) => {
-    if (!dates || dates.length === 0) return '日時未定';
+  const formatDates = (event: Event) => {
+    const dates = event.event_dates;
+    const timeRange = event.event_time_start ? ` (${event.event_time_start.slice(0, 5)}〜${event.event_time_end?.slice(0, 5) || ''})` : '';
+    
+    if (!dates || dates.length === 0) return '日時未定' + timeRange;
     const sortedDates = [...dates].sort();
     if (sortedDates.length <= 3) {
-      return sortedDates.map(d => new Date(d).toLocaleDateString()).join(', ');
+      return sortedDates.map(d => new Date(d).toLocaleDateString()).join(', ') + timeRange;
     }
-    return `${sortedDates[0] ? new Date(sortedDates[0]).toLocaleDateString() : ''} ...他${sortedDates.length - 1}日`;
+    return `${sortedDates[0] ? new Date(sortedDates[0]).toLocaleDateString() : ''} ...他${sortedDates.length - 1}日` + timeRange;
+  };
+
+  const handleDateClick = (date: Date) => {
+    const dayEvents = getEventsForDate(date);
+    if (dayEvents.length > 0) {
+      setSelectedDateEvents({ date, events: dayEvents });
+    }
   };
 
   return (
@@ -228,7 +247,7 @@ const EventsPage: React.FC = () => {
                           {event.title}
                         </h2>
                         <div className="text-[10px] sm:text-xs font-mono text-slate-400 mt-1">
-                          {formatDates(event.event_dates)}
+                          {formatDates(event)}
                         </div>
                       </div>
                     </div>
@@ -272,11 +291,15 @@ const EventsPage: React.FC = () => {
                   const dayEvents = getEventsForDate(date);
                   const isToday = new Date().toDateString() === date.toDateString();
                   return (
-                    <div key={i} className={`min-h-[80px] border rounded-lg p-1 relative flex flex-col items-center justify-start ${isToday ? 'border-blue-500 bg-blue-50/30' : 'border-slate-100'}`}>
+                    <div 
+                      key={i} 
+                      onClick={() => handleDateClick(date)}
+                      className={`min-h-[80px] border rounded-lg p-1 relative flex flex-col items-center justify-start cursor-pointer transition-all hover:shadow-md hover:border-blue-200 ${isToday ? 'border-blue-500 bg-blue-50/30' : 'border-slate-100'}`}
+                    >
                       <span className={`text-[10px] font-medium mb-1 ${isToday ? 'text-blue-600' : 'text-slate-500'}`}>{date.getDate()}</span>
                       <div className="flex flex-col gap-1 w-full px-0.5 overflow-y-auto max-h-[60px] scrollbar-none">
                         {dayEvents.map(event => (
-                          <button key={event.id} onClick={() => setSelectedEvent(event)} className="w-full text-[8px] bg-blue-100 text-blue-700 rounded px-1 py-0.5 truncate text-left hover:bg-blue-200 transition-colors">{event.title}</button>
+                          <div key={event.id} className="w-full text-[8px] bg-blue-100 text-blue-700 rounded px-1 py-0.5 truncate text-left">{event.title}</div>
                         ))}
                       </div>
                     </div>
@@ -287,6 +310,30 @@ const EventsPage: React.FC = () => {
           )}
         </>
       )}
+
+      {/* Daily Events List Modal */}
+      <AnimatePresence>
+        {selectedDateEvents && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4" onClick={() => setSelectedDateEvents(null)}>
+            <motion.div initial={{ scale: 0.98, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.98, opacity: 0 }} className="bg-white rounded-lg shadow-xl overflow-hidden w-full max-w-md max-h-[80vh] flex flex-col border border-slate-200" onClick={e => e.stopPropagation()}>
+              <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between shrink-0 bg-slate-50">
+                <h3 className="font-bold text-slate-700">{selectedDateEvents.date.toLocaleDateString()} のイベント</h3>
+                <button onClick={() => setSelectedDateEvents(null)} className="text-slate-400 hover:text-slate-600"><X size={20} /></button>
+              </div>
+              <div className="overflow-y-auto p-4 space-y-3">
+                {selectedDateEvents.events.map(event => (
+                  <button key={event.id} onClick={() => { setSelectedEvent(event); setSelectedDateEvents(null); }} className="w-full p-4 rounded-lg border border-slate-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all text-left group">
+                    <h4 className="font-bold text-slate-800 group-hover:text-blue-600 transition-colors">{event.title}</h4>
+                    {event.event_time_start && (
+                      <p className="text-[10px] text-blue-500 font-bold mt-1 uppercase tracking-wider">{event.event_time_start.slice(0, 5)} 〜 {event.event_time_end?.slice(0, 5)}</p>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Simple Modal */}
       <AnimatePresence>
@@ -302,7 +349,7 @@ const EventsPage: React.FC = () => {
               </div>
               <div className="p-6 overflow-y-auto space-y-6">
                 <div className="space-y-2">
-                  <div className="inline-block px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded border border-slate-200 font-mono">{formatDates(selectedEvent.event_dates)}</div>
+                  <div className="inline-block px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded border border-slate-200 font-mono">{formatDates(selectedEvent)}</div>
                   <h2 className="text-xl font-bold text-slate-800 leading-snug">{selectedEvent.title}</h2>
                 </div>
                 {selectedEvent.content && <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-wrap bg-slate-50 p-4 rounded border border-slate-100">{selectedEvent.content}</div>}
@@ -322,11 +369,23 @@ const EventsPage: React.FC = () => {
               <h2 className="font-bold text-slate-800 text-sm">{isEditing ? 'イベントを編集' : '新規イベント登録'}</h2>
               <button onClick={() => { setIsAddModalOpen(false); resetForm(); }} className="text-slate-400 hover:text-slate-600"><X size={20} /></button>
             </div>
-            <form onSubmit={handleSave} className="p-6 space-y-4">
+            <form onSubmit={handleSave} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
               <div>
                 <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">イベント名</label>
                 <input type="text" required value={eventForm.title} onChange={(e)=>setEventForm({...eventForm, title: e.target.value})} className="w-full px-3 py-2 border border-slate-200 rounded text-sm outline-none focus:ring-2 focus:ring-slate-100" />
               </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">開始時間</label>
+                  <input type="time" value={eventForm.timeStart} onChange={(e)=>setEventForm({...eventForm, timeStart: e.target.value})} className="w-full px-3 py-2 border border-slate-200 rounded text-sm outline-none focus:ring-2 focus:ring-slate-100" />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">終了時間</label>
+                  <input type="time" value={eventForm.timeEnd} onChange={(e)=>setEventForm({...eventForm, timeEnd: e.target.value})} className="w-full px-3 py-2 border border-slate-200 rounded text-sm outline-none focus:ring-2 focus:ring-slate-100" />
+                </div>
+              </div>
+
               <div>
                 <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">開催日設定</label>
                 <div className="flex gap-2 mb-2">
