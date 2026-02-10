@@ -56,17 +56,41 @@ export const DocumentRequestPage: React.FC = () => {
             // Listen for HubSpot message indicating successful submission
             const handleMessage = (event: MessageEvent) => {
               if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
-                if (event.data.id === '5e03bb7b-49a7-43cb-8644-9fa906c55a3a') {
-                  // Extract values from event data
-                  const submission = event.data.data;
-                  const emailField = submission.find((f: any) => f.name === 'email');
-                  const firstNameField = submission.find((f: any) => f.name === 'firstname');
-                  const lastNameField = submission.find((f: any) => f.name === 'lastname');
-                  const companyField = submission.find((f: any) => f.name === 'company');
+                console.log('HubSpot Form Submitted:', event.data);
 
-                  const email = emailField?.value;
-                  const fullName = `${lastNameField?.value || ''} ${firstNameField?.value || ''}`.trim() || 'お客様';
-                  const company = companyField?.value || '';
+                if (event.data.id === '5e03bb7b-49a7-43cb-8644-9fa906c55a3a') {
+                  // Extract values robustly
+                  const data = event.data.data;
+                  let email = '';
+                  let firstName = '';
+                  let lastName = '';
+                  let company = '';
+
+                  // Handle different data structures
+                  if (data.submissionValues) {
+                    // Pattern 1: submissionValues object
+                    email = data.submissionValues.email;
+                    firstName = data.submissionValues.firstname;
+                    lastName = data.submissionValues.lastname;
+                    company = data.submissionValues.company;
+                  } else if (Array.isArray(data)) {
+                    // Pattern 2: Array of { name, value }
+                    const getVal = (name: string) => data.find((f: any) => f.name === name)?.value;
+                    email = getVal('email');
+                    firstName = getVal('firstname');
+                    lastName = getVal('lastname');
+                    company = getVal('company');
+                  } else {
+                    // Pattern 3: Direct object
+                    email = data.email;
+                    firstName = data.firstname;
+                    lastName = data.lastname;
+                    company = data.company;
+                  }
+
+                  const fullName = `${lastName || ''} ${firstName || ''}`.trim() || 'お客様';
+                  
+                  console.log('Extracted Data:', { email, fullName, company });
 
                   const selectedFiles = DOCUMENTS
                     .filter(doc => selectedDocIds.includes(doc.id))
@@ -84,7 +108,14 @@ export const DocumentRequestPage: React.FC = () => {
                         documentFiles: selectedFiles,
                         content: `HubSpot資料請求（サイト連携）\n資料: ${selectedFiles.join(', ')}`
                       })
-                    }).catch(err => console.error('Email trigger failed:', err));
+                    })
+                    .then(res => {
+                        if (res.ok) console.log('Email API triggered successfully');
+                        else console.error('Email API returned error', res.status);
+                    })
+                    .catch(err => console.error('Email trigger failed:', err));
+                  } else {
+                      console.warn('Missing email or no files selected', { email, files: selectedFiles.length });
                   }
                 }
               }
