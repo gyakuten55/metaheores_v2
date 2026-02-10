@@ -7,7 +7,14 @@ import {
   Plus, Search, Download, Trash2, X, Loader2, Tag, AlignLeft, Edit3, Eye 
 } from 'lucide-react';
 
-type Document = Database['public']['Tables']['documents']['Row'];
+type Document = Database['public']['Tables']['documents']['Row'] & {
+  document_files?: {
+    id: string;
+    file_url: string;
+    file_type: string | null;
+    file_name: string | null;
+  }[];
+};
 type Category = Database['public']['Tables']['categories']['Row'];
 type Service = Database['public']['Tables']['services']['Row'];
 type UserRole = Database['public']['Enums']['user_role'];
@@ -25,12 +32,12 @@ const DocumentsPage: React.FC = () => {
   
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrls, setPreviewUrls] = useState<{ id: string; url: string }[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const [docForm, setDocForm] = useState({ title: '', description: '', content: '', categoryId: '', serviceId: '', allowedRoles: ['admin', 'agent'] as UserRole[] });
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   useEffect(() => { fetchData(); }, []);
 
@@ -48,21 +55,26 @@ const DocumentsPage: React.FC = () => {
       const [catRes, serRes, docRes] = await Promise.all([
         supabase.from('categories').select('*').order('display_order', { ascending: true }).order('name', { ascending: true }),
         supabase.from('services').select('*').order('name', { ascending: true }),
-        supabase.from('documents').select('*').order('created_at', { ascending: false })
+        supabase.from('documents').select('*, document_files(*)').order('created_at', { ascending: false })
       ]);
       if (catRes.data) setCategories(catRes.data);
       if (serRes.data) setServices(serRes.data);
-      if (docRes.data) setDocuments(docRes.data);
+      if (docRes.data) setDocuments(docRes.data as Document[]);
     } catch (error) { console.error(error); } finally { setLoading(false); }
   };
 
   const handleDocClick = async (doc: Document) => {
     setSelectedDoc(doc);
     setIsEditing(false);
-    setPreviewUrl(null);
-    if (doc.file_url) {
-      const { data } = await supabase.storage.from('documents').createSignedUrl(doc.file_url, 3600);
-      if (data) setPreviewUrl(data.signedUrl);
+    setPreviewUrls([]);
+    if (doc.document_files && doc.document_files.length > 0) {
+      const urls = await Promise.all(
+        doc.document_files.map(async (file) => {
+          const { data } = await supabase.storage.from('documents').createSignedUrl(file.file_url, 3600);
+          return data ? { id: file.id, url: data.signedUrl } : null;
+        })
+      );
+      setPreviewUrls(urls.filter((u): u is { id: string; url: string } => u !== null));
     }
   };
 
@@ -76,35 +88,77 @@ const DocumentsPage: React.FC = () => {
     if (!docForm.title || !docForm.categoryId) return;
     setIsSubmitting(true);
     try {
-      let filePath = selectedDoc?.file_url || null;
-      let fileType = selectedDoc?.file_type || null;
-      if (selectedFile) {
-        if (selectedDoc?.file_url) await supabase.storage.from('documents').remove([selectedDoc.file_url]);
-        const fileExt = selectedFile.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
-        filePath = `uploads/${fileName}`;
-        fileType = fileExt || null;
-        await supabase.storage.from('documents').upload(filePath, selectedFile);
+      const payload: any = { 
+        title: docForm.title, 
+        description: docForm.description, 
+        content: docForm.content, 
+        category_id: docForm.categoryId, 
+        service_id: docForm.serviceId || null, 
+        allowed_roles: docForm.allowedRoles, 
+        updated_at: new Date().toISOString() 
+      };
+
+      let docId = selectedDoc?.id;
+
+      if (selectedDoc) { 
+        await supabase.from('documents').update(payload).eq('id', selectedDoc.id); 
+      } else { 
+        const { data, error } = await supabase.from('documents').insert({ 
+          ...payload, 
+          created_by: (await supabase.auth.getUser()).data.user?.id 
+        }).select(); 
+        if (data && data[0]) docId = data[0].id;
+        if (error) throw error;
       }
-      const payload: any = { title: docForm.title, description: docForm.description, content: docForm.content, category_id: docForm.categoryId, service_id: docForm.serviceId || null, file_url: filePath, file_type: fileType, allowed_roles: docForm.allowedRoles, updated_at: new Date().toISOString() };
-      if (selectedDoc) { await supabase.from('documents').update(payload).eq('id', selectedDoc.id); }
-      else { await supabase.from('documents').insert({ ...payload, created_by: (await supabase.auth.getUser()).data.user?.id }); }
+
+      if (docId && selectedFiles.length > 0) {
+        for (const file of selectedFiles) {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+          const filePath = `uploads/${fileName}`;
+          
+          await supabase.storage.from('documents').upload(filePath, file);
+          
+          await supabase.from('document_files').insert({
+            document_id: docId,
+            file_url: filePath,
+            file_type: fileExt || null,
+            file_name: file.name
+          });
+        }
+      }
+
       setIsAddModalOpen(false); setIsEditing(false); setSelectedDoc(null); resetForm(); fetchData();
     } catch (error) { console.error(error); } finally { setIsSubmitting(false); }
   };
 
-  const resetForm = () => { setDocForm({ title: '', description: '', content: '', categoryId: '', serviceId: '', allowedRoles: ['admin', 'agent'] }); setSelectedFile(null); };
+  const resetForm = () => { 
+    setDocForm({ title: '', description: '', content: '', categoryId: '', serviceId: '', allowedRoles: ['admin', 'agent'] }); 
+    setSelectedFiles([]); 
+  };
 
-  const handleDownload = async (doc: Document) => {
-    if (!doc.file_url) return;
-    const { data } = await supabase.storage.from('documents').createSignedUrl(doc.file_url, 60);
+  const handleDownload = async (fileUrl: string) => {
+    const { data } = await supabase.storage.from('documents').createSignedUrl(fileUrl, 60);
     if (data) window.open(data.signedUrl, '_blank');
   };
 
-  const handleDelete = async (id: string, fileUrl: string | null) => {
-    if (!window.confirm('削除しますか？')) return;
+  const handleDeleteFile = async (fileId: string, fileUrl: string) => {
+    if (!window.confirm('ファイルを削除しますか？')) return;
+    await supabase.from('document_files').delete().eq('id', fileId);
+    await supabase.storage.from('documents').remove([fileUrl]);
+    fetchData();
+    if (selectedDoc) {
+      const updatedFiles = selectedDoc.document_files?.filter(f => f.id !== fileId) || [];
+      setSelectedDoc({ ...selectedDoc, document_files: updatedFiles });
+    }
+  };
+
+  const handleDelete = async (id: string, files?: Document['document_files']) => {
+    if (!window.confirm('資料を削除しますか？')) return;
     await supabase.from('documents').delete().eq('id', id);
-    if (fileUrl) await supabase.storage.from('documents').remove([fileUrl]);
+    if (files && files.length > 0) {
+      await supabase.storage.from('documents').remove(files.map(f => f.file_url));
+    }
     setSelectedDoc(null); fetchData();
   };
 
@@ -154,7 +208,7 @@ const DocumentsPage: React.FC = () => {
               <tr>
                 <th className="px-4 py-2">資料タイトル</th>
                 <th className="px-4 py-2">カテゴリ / サービス</th>
-                <th className="px-4 py-2 text-right">形式</th>
+                <th className="px-4 py-2 text-right">添付</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50 text-xs">
@@ -167,7 +221,7 @@ const DocumentsPage: React.FC = () => {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">
                       <div className="p-1.5 rounded bg-slate-100 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-all">
-                        {doc.file_url ? <Eye size={12} /> : <AlignLeft size={12} />}
+                        {doc.document_files && doc.document_files.length > 0 ? <Eye size={12} /> : <AlignLeft size={12} />}
                       </div>
                       <div>
                         <div className="font-bold text-slate-700 group-hover:text-blue-600 truncate max-w-[180px] sm:max-w-xs">{doc.title}</div>
@@ -182,7 +236,7 @@ const DocumentsPage: React.FC = () => {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <span className="text-[8px] font-black px-1.5 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-400 uppercase">{doc.file_type || 'TXT'}</span>
+                    <span className="text-[8px] font-black px-1.5 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-400 uppercase">{doc.document_files?.length || 0} Files</span>
                   </td>
                 </tr>
               ))}
@@ -194,32 +248,36 @@ const DocumentsPage: React.FC = () => {
       {/* Detail Modal */}
       {(selectedDoc || isAddModalOpen) && (
         <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-2 sm:p-4 backdrop-blur-sm">
-          <div className={`bg-white rounded shadow-2xl overflow-hidden flex flex-col w-full max-h-[95vh] ${(!isEditing && !isAddModalOpen && selectedDoc?.file_url) ? 'max-w-5xl' : 'max-w-xl'}`}>
+          <div className={`bg-white rounded shadow-2xl overflow-hidden flex flex-col w-full max-h-[95vh] ${(!isEditing && !isAddModalOpen && selectedDoc?.document_files && selectedDoc.document_files.length > 0) ? 'max-w-5xl' : 'max-w-xl'}`}>
             <div className="px-4 py-3 border-b border-slate-100 bg-slate-50 flex items-center justify-between shrink-0">
               <h2 className="font-black text-slate-800 text-[10px] uppercase tracking-widest">{isAddModalOpen ? '新規資料登録' : isEditing ? '資料編集' : '資料プレビュー'}</h2>
               <button onClick={() => { setSelectedDoc(null); setIsAddModalOpen(false); setIsEditing(false); resetForm(); }} className="text-slate-400 hover:text-slate-600"><X size={18} /></button>
             </div>
             <div className="flex flex-col md:flex-row overflow-hidden">
-              {(!isEditing && !isAddModalOpen && selectedDoc?.file_url) && (
+              {(!isEditing && !isAddModalOpen && selectedDoc?.document_files && selectedDoc.document_files.length > 0) && (
                 <div className="flex-[1.5] bg-slate-100 p-4 border-r border-slate-200 overflow-y-auto min-h-[30vh]">
-                  {selectedDoc.file_type?.toLowerCase() === 'pdf' ? (
-                    previewUrl ? (
-                      <iframe src={`${previewUrl}#toolbar=0`} className="w-full h-[40vh] md:h-[70vh] rounded border border-slate-200 bg-white" title="Preview" />
-                    ) : (
-                      <div className="flex flex-col items-center justify-center h-full gap-3">
-                        <Loader2 className="animate-spin text-slate-300" size={32} />
-                        <p className="text-[10px] font-bold text-slate-400">プレビューを読み込み中...</p>
-                      </div>
-                    )
-                  ) : ['jpg','jpeg','png','webp'].includes(selectedDoc.file_type?.toLowerCase() || '') ? (
-                    previewUrl ? (
-                      <img src={previewUrl} className="max-w-full h-auto rounded shadow-sm border border-slate-200" alt="Preview" />
-                    ) : (
-                      <div className="flex flex-col items-center justify-center h-full gap-3">
-                        <Loader2 className="animate-spin text-slate-300" size={32} />
-                      </div>
-                    )
-                  ) : <div className="text-[10px] font-bold text-slate-400 text-center p-10">プレビュー非対応</div>}
+                  <div className="grid grid-cols-1 gap-4">
+                    {selectedDoc.document_files.map((file) => {
+                      const pUrl = previewUrls.find(u => u.id === file.id)?.url;
+                      return (
+                        <div key={file.id} className="bg-white rounded border border-slate-200 p-2 space-y-2">
+                          <div className="flex items-center justify-between px-2">
+                            <span className="text-[10px] font-bold text-slate-600 truncate max-w-[200px]">{file.file_name || 'File'}</span>
+                            <button onClick={() => handleDownload(file.file_url)} className="text-blue-600 hover:text-blue-700 p-1"><Download size={14} /></button>
+                          </div>
+                          {file.file_type?.toLowerCase() === 'pdf' ? (
+                            pUrl ? (
+                              <iframe src={`${pUrl}#toolbar=0`} className="w-full h-[40vh] md:h-[60vh] rounded border border-slate-100" title={file.file_name || 'Preview'} />
+                            ) : <div className="h-20 flex items-center justify-center"><Loader2 className="animate-spin text-slate-200" /></div>
+                          ) : ['jpg','jpeg','png','webp'].includes(file.file_type?.toLowerCase() || '') ? (
+                            pUrl ? (
+                              <img src={pUrl} className="max-w-full h-auto rounded mx-auto" alt="Preview" />
+                            ) : <div className="h-20 flex items-center justify-center"><Loader2 className="animate-spin text-slate-200" /></div>
+                          ) : <div className="text-[9px] font-bold text-slate-300 text-center py-4 italic">No Preview for {file.file_type}</div>}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
               <div className="flex-1 overflow-y-auto p-6 sm:p-8">
@@ -240,7 +298,6 @@ const DocumentsPage: React.FC = () => {
                       </div>
                     </div>
                     
-                    {/* Allowed Roles Selection */}
                     <div className="space-y-1">
                       <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">公開範囲 (Allowed Roles)</label>
                       <div className="flex flex-wrap gap-3 p-2 border border-slate-200 rounded bg-slate-50/50">
@@ -249,7 +306,7 @@ const DocumentsPage: React.FC = () => {
                             <input
                               type="checkbox"
                               checked={docForm.allowedRoles.includes(roleOption)}
-                              disabled={roleOption === 'admin'} // Admin is always required/included
+                              disabled={roleOption === 'admin'}
                               onChange={(e) => {
                                 const currentRoles = docForm.allowedRoles;
                                 if (e.target.checked) {
@@ -264,7 +321,6 @@ const DocumentsPage: React.FC = () => {
                           </label>
                         ))}
                       </div>
-                      <p className="text-[9px] text-slate-400">* Admin is always included by default.</p>
                     </div>
 
                     <div className="space-y-1">
@@ -275,9 +331,24 @@ const DocumentsPage: React.FC = () => {
                       <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">内容</label>
                       <textarea value={docForm.content} onChange={(e) => setDocForm({...docForm, content: e.target.value})} className="w-full h-32 px-3 py-1.5 border border-slate-200 rounded text-xs outline-none resize-none" />
                     </div>
+
+                    {isEditing && selectedDoc?.document_files && selectedDoc.document_files.length > 0 && (
+                      <div className="space-y-2">
+                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">現在のファイル</label>
+                        <div className="space-y-1">
+                          {selectedDoc.document_files.map(file => (
+                            <div key={file.id} className="flex items-center justify-between p-2 bg-slate-50 border border-slate-100 rounded">
+                              <span className="text-[10px] text-slate-600 truncate max-w-[150px]">{file.file_name}</span>
+                              <button type="button" onClick={() => handleDeleteFile(file.id, file.file_url)} className="text-red-400 hover:text-red-600"><Trash2 size={12} /></button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     <div className="p-3 bg-slate-50 rounded border border-dashed border-slate-200 text-center">
-                      <label className="text-[9px] font-black text-slate-400 uppercase block mb-1">添付ファイル</label>
-                      <input type="file" onChange={(e) => setSelectedFile(e.target.files?.[0] || null)} className="text-[10px] text-slate-500 w-full" />
+                      <label className="text-[9px] font-black text-slate-400 uppercase block mb-1">新規ファイル追加 (複数可)</label>
+                      <input type="file" multiple onChange={(e) => setSelectedFiles(Array.from(e.target.files || []))} className="text-[10px] text-slate-500 w-full" />
                     </div>
                     <div className="pt-2 flex gap-2">
                       <button type="button" onClick={() => { setIsEditing(false); setIsAddModalOpen(false); resetForm(); }} className="flex-1 px-3 py-2 border border-slate-200 text-slate-500 rounded text-[10px] font-black uppercase hover:bg-slate-50">キャンセル</button>
@@ -293,12 +364,27 @@ const DocumentsPage: React.FC = () => {
                     <h3 className="text-base font-bold text-slate-900 leading-tight">{selectedDoc.title}</h3>
                     {selectedDoc.description && <p className="text-[11px] text-slate-500 leading-relaxed">{selectedDoc.description}</p>}
                     {selectedDoc.content && <div className="bg-slate-50 border border-slate-100 rounded p-4 text-[11px] text-slate-700 whitespace-pre-wrap leading-relaxed">{selectedDoc.content}</div>}
+                    
+                    {selectedDoc.document_files && selectedDoc.document_files.length > 0 && (
+                      <div className="space-y-2">
+                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">添付ファイル ({selectedDoc.document_files.length})</label>
+                        <div className="grid grid-cols-1 gap-2">
+                          {selectedDoc.document_files.map(file => (
+                            <div key={file.id} className="flex items-center justify-between p-2 bg-white border border-slate-200 rounded hover:border-blue-200 transition-colors">
+                              <div className="flex items-center gap-2 overflow-hidden">
+                                <span className="text-[8px] font-black px-1 py-0.5 bg-slate-100 rounded uppercase">{file.file_type}</span>
+                                <span className="text-[10px] text-slate-600 truncate">{file.file_name}</span>
+                              </div>
+                              <button onClick={() => handleDownload(file.file_url)} className="text-blue-600 p-1"><Download size={12} /></button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                       <div className="text-[9px] font-bold text-slate-300 uppercase">Updated: {new Date(selectedDoc.updated_at).toLocaleDateString()}</div>
-                      <div className="flex gap-2">
-                        {selectedDoc.file_url && <button onClick={() => handleDownload(selectedDoc)} className="px-3 py-1.5 bg-blue-600 text-white text-[10px] font-black uppercase rounded shadow-sm hover:bg-blue-700 flex items-center gap-1.5"><Download size={12} /> ダウンロード</button>}
-                        {role === 'admin' && <button onClick={() => handleDelete(selectedDoc.id, selectedDoc.file_url)} className="text-slate-300 hover:text-red-500 transition-colors"><Trash2 size={14} /></button>}
-                      </div>
+                      {role === 'admin' && <button onClick={() => handleDelete(selectedDoc.id, selectedDoc.document_files)} className="text-slate-300 hover:text-red-500 transition-colors"><Trash2 size={14} /></button>}
                     </div>
                   </div>
                 )}
