@@ -31,6 +31,11 @@ export const DocumentRequestPage: React.FC = () => {
   const [selectedDocIds, setSelectedDocIds] = useState<string[]>([]);
   const [loadingForm, setLoadingForm] = useState(false);
 
+  useEffect(() => {
+    alert('お役立ち資料ページは現在準備中です。');
+    window.location.href = '/';
+  }, []);
+
   // Form Loader
   useEffect(() => {
     if (step === 'input') {
