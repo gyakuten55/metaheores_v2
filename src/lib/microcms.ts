@@ -1,9 +1,12 @@
 import { createClient } from 'microcms-js-sdk';
 
 // 既存のアカウント (ニュース・実績)
+const SERVICE_DOMAIN = import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN || 'g07uki3u26';
+const API_KEY = import.meta.env.VITE_MICROCMS_API_KEY || 'apdNtrwXnGxRIg7IgDTmfRsgn6YYfg8J2RFt';
+
 export const client = createClient({
-  serviceDomain: import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN || 'g07uki3u26',
-  apiKey: import.meta.env.VITE_MICROCMS_API_KEY || 'apdNtrwXnGxRIg7IgDTmfRsgn6YYfg8J2RFt',
+  serviceDomain: SERVICE_DOMAIN.trim(),
+  apiKey: API_KEY.trim(),
 });
 
 // メンバーブログ用のアカウント
