@@ -33,11 +33,11 @@ const SERVICES: ServiceItem[] = [
   { id: 'hero-egg', section: 'social', type: 'vacant-facility', category: 'DX教室施設運用', title: 'Hero Egg', description: '子どもから大人まで学べるDX教育施設。子どもたちは無料でテクノロジーを学べます。', image: '/assets/services/first-view/hero_egg_thumb.png', path: '/services/hero-egg' },
 
   // Community&Co-creation (Community)
-  { id: 'ghs', section: 'community', type: 'event', category: 'イベント', title: 'GLOBAL HERO SUMMIT', description: '企業やクリエイターが集まり、新たな価値を創造するカンファレンスです。', image: '/assets/services/first-view/ghs_thumb.png', path: '/services/global-hero-summit' },
+  { id: 'ghs', section: 'community', type: 'event', category: 'イベント', title: 'GLOBAL HERO SUMMIT', description: '企業やクリエイターが集まり、新たな価値を創造するカンファレンスです。', image: '/assets/services/first-view/ghs_first_thumb.png', path: '/services/global-hero-summit' },
   { id: 'egg-jam', section: 'community', type: 'event', category: 'オンラインコミュニティ', title: 'EGG JAM', description: '挑戦する人を応援し、交流を深めるオンラインコミュニティです。', image: '/assets/services/first-view/egg_jam_thumb.png', path: '/services/egg-jam' },
   { id: 'ai-monday', section: 'community', type: 'ai', category: 'ハイブリッドコミュニティ', title: 'AI MONDAY', description: 'AIの最新トレンドを共有し、学び合う専門コミュニティです。', image: '/assets/services/first-view/ai_monday_thumb.png', path: '/services/ai-monday' },
   { id: 'game-event', section: 'community', type: 'metaverse', category: 'メタバース×イベント', title: 'ゲーム × イベント', description: 'ゲームの力を活用し、地域や企業イベントを盛り上げる企画運営です。', image: '/assets/services/first-view/game_event_thumb.png', path: '/services/game-event' },
-  { id: 'mh-guild', section: 'community', type: 'vacant-facility', category: 'コミュニティスペース', title: 'Meta Heroes Guild', description: '特定のテーマで、飲食ができるコミュニティスペースです。', image: '/assets/services/first-view/mhg_thumb.png', path: '/services/meta-heroes-guild' },
+  { id: 'mh-guild', section: 'community', type: 'vacant-facility', category: 'コミュニティスペース', title: 'Meta Heroes Guild', description: '特定のテーマで、飲食ができるコミュニティスペースです。', image: '/assets/services/first-view/mhg_first_thumb.png', path: '/services/meta-heroes-guild' },
 ];
 
 export const ServicesPage: React.FC = () => {
