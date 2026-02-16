@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getPickups, getBlogs, Blog } from '../lib/microcms';
+import { getPickups, getBlogs, Blog, getMemberBlogs } from '../lib/microcms';
 import { BusinessContentSection } from '../components/BusinessContentSection';
 import { ServiceSection } from '../components/ServiceSection';
 import { MovieSection } from '../components/MovieSection';
@@ -38,16 +38,17 @@ const PLACEHOLDER_IMAGE = '/assets/top/business_bg.png';
 
 export const TopPage: React.FC = () => {
   const [banners, setBanners] = useState<any[]>(STATIC_BANNERS);
-  const [newsItems, setNewsItems] = useState<Blog[]>([]);
+  const [newsItems, setNewsItems] = useState<(Blog & { isMemberBlog?: boolean })[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [bannersData, newsData] = await Promise.all([
+        const [bannersData, newsData, memberBlogsData] = await Promise.all([
           getPickups(),
           getBlogs(20, undefined, { excludeCategoryId: 'announcement' }),
+          getMemberBlogs(20)
         ]);
 
         if (bannersData.contents.length > 0) {
@@ -55,7 +56,13 @@ export const TopPage: React.FC = () => {
           setCurrentIndex(0);
         }
 
-        setNewsItems(newsData.contents);
+        // ニュースとメンバーブログを結合して日付順にソート
+        const combined = [
+          ...newsData.contents.map(item => ({ ...item, isMemberBlog: false })),
+          ...memberBlogsData.contents.map(item => ({ ...item, isMemberBlog: true }))
+        ].sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+
+        setNewsItems(combined);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       }
@@ -66,10 +73,10 @@ export const TopPage: React.FC = () => {
   // Filter news based on tab
   const filteredNews = newsItems.filter(item => {
     if (activeTab === 'all') return true;
-    if (activeTab === 'news_release') return item.category_new?.some(c => c === 'PRtimes' || c === 'press' || c === 'ニュースリリース');
-    if (activeTab === 'information') return item.category_new?.some(c => c === 'info' || c === 'information' || c === 'インフォメーション' || c === 'お知らせ');
-    if (activeTab === 'knowledge') return item.category_new?.some(c => c === 'knowledge' || c === 'ナレッジ');
-    if (activeTab === 'blog') return item.category_new?.some(c => c === 'blog' || c === 'ブログ');
+    if (activeTab === 'news_release') return !item.isMemberBlog && item.category_new?.some(c => c === 'PRtimes' || c === 'press' || c === 'ニュースリリース');
+    if (activeTab === 'information') return !item.isMemberBlog && item.category_new?.some(c => c === 'info' || c === 'information' || c === 'インフォメーション' || c === 'お知らせ');
+    if (activeTab === 'knowledge') return !item.isMemberBlog && item.category_new?.some(c => c === 'knowledge' || c === 'ナレッジ');
+    if (activeTab === 'blog') return item.isMemberBlog;
     return true;
   });
 
@@ -406,15 +413,31 @@ export const TopPage: React.FC = () => {
             {filteredNews.length > 0 ? (
               <div className="divide-y divide-gray-100">
                 {filteredNews.slice(0, 5).map((item) => (
-                  <Link key={item.id} to={`/news/${item.id}`} className="group flex flex-col md:flex-row md:items-center gap-2 md:gap-4 py-4 md:py-3 hover:bg-gray-50/50 transition-all px-2 -mx-2 rounded-lg">
+                  <Link 
+                    key={item.id} 
+                    to={item.isMemberBlog ? `/member-blog/${item.id}` : `/news/${item.id}`} 
+                    className="group flex flex-col md:flex-row md:items-center gap-2 md:gap-4 py-4 md:py-3 hover:bg-gray-50/50 transition-all px-2 -mx-2 rounded-lg"
+                  >
                     <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
                       <time className="text-[11px] md:text-[13px] font-bold text-gray-900 font-mono w-auto md:w-24">
                         {formatDate(item.publishedAt)}
                       </time>
+                      {item.isMemberBlog && (
+                        <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[9px] font-black tracking-widest uppercase rounded border border-blue-100 md:hidden">
+                          BLOG
+                        </span>
+                      )}
                     </div>
-                    <h3 className="text-sm md:text-[14px] font-bold text-gray-700 group-hover:text-blue-600 transition-colors line-clamp-2 md:line-clamp-1 flex-grow leading-relaxed md:leading-normal">
-                      {item.title}
-                    </h3>
+                    <div className="flex items-center gap-3 flex-grow min-w-0">
+                      {item.isMemberBlog && (
+                        <span className="hidden md:inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-[9px] font-black tracking-widest uppercase rounded border border-blue-100 flex-shrink-0">
+                          BLOG
+                        </span>
+                      )}
+                      <h3 className="text-sm md:text-[14px] font-bold text-gray-700 group-hover:text-blue-600 transition-colors line-clamp-2 md:line-clamp-1 flex-grow leading-relaxed md:leading-normal">
+                        {item.title}
+                      </h3>
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -426,7 +449,10 @@ export const TopPage: React.FC = () => {
           </div>
           
           <div className="mt-10 text-center">
-             <Link to="/news" className="text-[10px] font-bold text-gray-400 hover:text-blue-600 transition-colors tracking-[0.2em] border-b border-gray-100 hover:border-blue-600 pb-1">
+             <Link 
+               to={activeTab === 'blog' ? "/members/blog" : "/news"} 
+               className="text-[10px] font-bold text-gray-400 hover:text-blue-600 transition-colors tracking-[0.2em] border-b border-gray-100 hover:border-blue-600 pb-1"
+             >
                VIEW ALL
              </Link>
           </div>
@@ -441,7 +467,7 @@ export const TopPage: React.FC = () => {
               { label: '企業情報', iconPath: '/assets/top/company_icon.png', image: '/assets/recruit/about_meta_heroes.png', path: '/about' },
               { label: 'サービス', iconPath: '/assets/top/service_icon.png', image: '/assets/recruit/services.png', path: '/services' },
               { label: '採用', iconPath: '/assets/top/recruit_icon.png', image: '/assets/recruit/recruit_hero.jpg', path: '/recruit' },
-              { label: 'ブログ', iconPath: '/assets/top/blog_icon.png', image: '/assets/top/business_bg.png', path: '/news' },
+              { label: 'ブログ', iconPath: '/assets/top/blog_icon.png', image: '/assets/top/business_bg.png', path: '/members/blog' },
             ].map((cat, idx) => (
               <Link 
                 key={idx} 
