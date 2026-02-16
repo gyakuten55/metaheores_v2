@@ -19,25 +19,25 @@ interface ServiceItem {
 
 const SERVICES: ServiceItem[] = [
   // Digital Solution
-  { id: 'xr-sol', section: 'digital', type: 'metaverse', category: 'メタバース', title: 'XRソリューション', description: '仮想現実(VR)や拡張現実(AR)を用いた総合的なソリューションをご提供します。', image: '/assets/services/first-view/XRソリューション.png', path: '/services/xr' },
+  { id: 'xr-sol', section: 'digital', type: 'metaverse', category: 'メタバース', title: 'XRソリューション', description: '仮想現実(VR)や拡張現実(AR)を用いた総合的なソリューションをご提供します。', image: '/assets/services/first-view/xr_solutions_thumb.png', path: '/services/xr' },
   { id: 'holoshare', section: 'digital', type: 'metaverse', category: 'メタバース', title: 'holoshare', description: '持ち運び困難な製品を目の前に。商談を円滑にする営業特化型VRツールです。', image: '/assets/services/first-view/holoshare_thumb.png', path: '/services/holoshare' },
-  { id: 'hero-aivo', section: 'digital', type: 'ai', category: 'AI特化型Web制作・運用', title: 'HERO AIVO', description: '生成AI(LLM)に最適化された最新のWebサイト制作・運用サービスです。', image: '/assets/services/first-view/HERO AIVO_thumb.png', path: '/services/hero-aivo' },
-  { id: 'ai-training', section: 'digital', type: 'ai', category: 'AI企業研修', title: 'AI 人材育成研修', description: '企業・団体向けのAIリテラシー向上および実践的な活用研修サービスです。', image: '/assets/services/first-view/AI人材育成研修.png', path: '/services/ai-training' },
+  { id: 'hero-aivo', section: 'digital', type: 'ai', category: 'AI特化型Web制作・運用', title: 'HERO AIVO', description: '生成AI(LLM)に最適化された最新のWebサイト制作・運用サービスです。', image: '/assets/services/first-view/hero_aivo_thumb.png', path: '/services/hero-aivo' },
+  { id: 'ai-training', section: 'digital', type: 'ai', category: 'AI企業研修', title: 'AI 人材育成研修', description: '企業・団体向けのAIリテラシー向上および実践的な活用研修サービスです。', image: '/assets/services/first-view/ai_training_thumb.png', path: '/services/ai-training' },
 
   // Community&Co-creation (Social)
-  { id: 'bousai-meta', section: 'social', type: 'metaverse', category: 'メタバース', title: '防災メタバース', description: '仮想空間や複合現実を用いた、没入感のある最先端の防災訓練サービスです。', image: '/assets/services/first-view/防災メタバース.png', path: '/services/bousai-metaverse' },
-  { id: 'bousai-expo', section: 'social', type: 'event', category: 'イベント', title: '防災万博/こども防災万博', description: '家族・コミュニティ・学校で楽しく防災を学べる、体験型の大規模イベントです。', image: '/assets/services/first-view/防災万博_thumb.png', path: '/services/bousai-expo' },
-  { id: 'hero-egg-col', section: 'social', type: 'event', category: 'イベント', title: 'Hero Egg COLLECTION', description: 'こどもたちの自由なアイデアをビジネスの種へと育てる公募イベントです。', image: '/assets/services/first-view/Hero Egg COLLECTION_thumb.png', path: '/services/hero-egg-collection' },
-  { id: 'hero-expo', section: 'social', type: 'event', category: 'イベント', title: 'HERO EXPO', description: 'メタバースやXRなどの先端技術を活用し、未来の防災を考えるイベントです。', image: '/assets/services/first-view/HERO EXPO_thumb.png', path: '/services/hero-expo' },
-  { id: 'game-making', section: 'social', type: 'event', category: 'ゲームクリエイター体験会', title: 'ゲームメイキングキャンプ', description: 'プロから学ぶ、こども向けゲーム制作ワークショップ・体験会です。', image: '/assets/services/first-view/ゲームメイキングキャンプ.png', path: '/services/game-making-camp' },
-  { id: 'hero-egg', section: 'social', type: 'vacant-facility', category: 'DX教室施設運用', title: 'Hero Egg', description: '子どもから大人まで学べるDX教育施設。子どもたちは無料でテクノロジーを学べます。', image: '/assets/services/first-view/Hero Egg_thumb.png', path: '/services/hero-egg' },
+  { id: 'bousai-meta', section: 'social', type: 'metaverse', category: 'メタバース', title: '防災メタバース', description: '仮想空間や複合現実を用いた、没入感のある最先端の防災訓練サービスです。', image: '/assets/services/first-view/bousai_metaverse_thumb.png', path: '/services/bousai-metaverse' },
+  { id: 'bousai-expo', section: 'social', type: 'event', category: 'イベント', title: '防災万博/こども防災万博', description: '家族・コミュニティ・学校で楽しく防災を学べる、体験型の大規模イベントです。', image: '/assets/services/first-view/bousai_expo_thumb.png', path: '/services/bousai-expo' },
+  { id: 'hero-egg-col', section: 'social', type: 'event', category: 'イベント', title: 'Hero Egg COLLECTION', description: 'こどもたちの自由なアイデアをビジネスの種へと育てる公募イベントです。', image: '/assets/services/first-view/hero_egg_collection_thumb.png', path: '/services/hero-egg-collection' },
+  { id: 'hero-expo', section: 'social', type: 'event', category: 'イベント', title: 'HERO EXPO', description: 'メタバースやXRなどの先端技術を活用し、未来の防災を考えるイベントです。', image: '/assets/services/first-view/hero_expo_thumb.png', path: '/services/hero-expo' },
+  { id: 'game-making', section: 'social', type: 'event', category: 'ゲームクリエイター体験会', title: 'ゲームメイキングキャンプ', description: 'プロから学ぶ、こども向けゲーム制作ワークショップ・体験会です。', image: '/assets/services/first-view/game_making_camp_thumb.png', path: '/services/game-making-camp' },
+  { id: 'hero-egg', section: 'social', type: 'vacant-facility', category: 'DX教室施設運用', title: 'Hero Egg', description: '子どもから大人まで学べるDX教育施設。子どもたちは無料でテクノロジーを学べます。', image: '/assets/services/first-view/hero_egg_thumb.png', path: '/services/hero-egg' },
 
   // Community&Co-creation (Community)
-  { id: 'ghs', section: 'community', type: 'event', category: 'イベント', title: 'GLOBAL HERO SUMMIT', description: '企業やクリエイターが集まり、新たな価値を創造するカンファレンスです。', image: '/assets/services/first-view/GHS_thumb.png', path: '/services/global-hero-summit' },
-  { id: 'egg-jam', section: 'community', type: 'event', category: 'オンラインコミュニティ', title: 'EGG JAM', description: '挑戦する人を応援し、交流を深めるオンラインコミュニティです。', image: '/assets/services/first-view/EGG JAM_thumb.png', path: '/services/egg-jam' },
-  { id: 'ai-monday', section: 'community', type: 'ai', category: 'ハイブリッドコミュニティ', title: 'AI MONDAY', description: 'AIの最新トレンドを共有し、学び合う専門コミュニティです。', image: '/assets/services/first-view/AI MONDAY_thumb.png', path: '/services/ai-monday' },
-  { id: 'game-event', section: 'community', type: 'metaverse', category: 'メタバース×イベント', title: 'ゲーム × イベント', description: 'ゲームの力を活用し、地域や企業イベントを盛り上げる企画運営です。', image: '/assets/services/first-view/ゲーム×イベント.png', path: '/services/game-event' },
-  { id: 'mh-guild', section: 'community', type: 'vacant-facility', category: 'コミュニティスペース', title: 'Meta Heroes Guild', description: '特定のテーマで、飲食ができるコミュニティスペースです。', image: '/assets/services/first-view/MHG_thumb.png', path: '/services/meta-heroes-guild' },
+  { id: 'ghs', section: 'community', type: 'event', category: 'イベント', title: 'GLOBAL HERO SUMMIT', description: '企業やクリエイターが集まり、新たな価値を創造するカンファレンスです。', image: '/assets/services/first-view/ghs_thumb.png', path: '/services/global-hero-summit' },
+  { id: 'egg-jam', section: 'community', type: 'event', category: 'オンラインコミュニティ', title: 'EGG JAM', description: '挑戦する人を応援し、交流を深めるオンラインコミュニティです。', image: '/assets/services/first-view/egg_jam_thumb.png', path: '/services/egg-jam' },
+  { id: 'ai-monday', section: 'community', type: 'ai', category: 'ハイブリッドコミュニティ', title: 'AI MONDAY', description: 'AIの最新トレンドを共有し、学び合う専門コミュニティです。', image: '/assets/services/first-view/ai_monday_thumb.png', path: '/services/ai-monday' },
+  { id: 'game-event', section: 'community', type: 'metaverse', category: 'メタバース×イベント', title: 'ゲーム × イベント', description: 'ゲームの力を活用し、地域や企業イベントを盛り上げる企画運営です。', image: '/assets/services/first-view/game_event_thumb.png', path: '/services/game-event' },
+  { id: 'mh-guild', section: 'community', type: 'vacant-facility', category: 'コミュニティスペース', title: 'Meta Heroes Guild', description: '特定のテーマで、飲食ができるコミュニティスペースです。', image: '/assets/services/first-view/mhg_thumb.png', path: '/services/meta-heroes-guild' },
 ];
 
 export const ServicesPage: React.FC = () => {
