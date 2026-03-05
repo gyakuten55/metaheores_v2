@@ -1,0 +1,32 @@
+{
+  "crons": [
+    {
+      "path": "/api/sync",
+      "schedule": "0 7 * * *"
+    }
+  ],
+  "rewrites": [
+    { "source": "/api/sync", "destination": "/api/sync.js" },
+    { "source": "/api/send-mail", "destination": "/api/send-mail.js" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/agency/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/agency-login",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    }
+  ],
+  "functions": {
+    "api/sync.js": {
+      "maxDuration": 60
+    }
+  }
+}

@@ -1,0 +1,48 @@
+# MetaHeroes - Metaverse, AI, and XR Social Implementation Company
+
+> HEROをつくるHEROに。(To be the HERO who creates HEROES.)
+> Society 5.0 × SDGs × HERO
+
+MetaHeroes is a pioneering Japanese impact business specializing in the social implementation of Metaverse, AI, and XR technologies. Established on December 3, 2021, and headquartered in Shibuya (Tokyo) and Osaka, the company aims to solve sustainable social issues through cutting-edge technology.
+
+## Core Vision & Mission
+- **2044 Vision**: To create 100 "HEROES" (transformative projects, leaders, or organizations) by March 5, 2044.
+- **Mission**: "Humanity's Creator-ization Plan." Democratizing technology so anyone can become a creator and problem solver.
+- **Impact Business**: Moving beyond entertainment to use Metaverse/AI as infrastructure for education, disaster prevention, and regional revitalization.
+
+## Key Domains & Services
+
+### 1. Education (EdTech) - "Future Creation"
+- **Hero Egg**: A DX education hub (located in Namba, Osaka) where people of all ages learn AI, XR, and DX. It follows a "circular model" where corporate support funds free education for children. Features 10GB ultra-high-speed lines and high-spec PC rentals.
+- **AI Monday**: A community gathering every Monday to share practical Generative AI knowledge and skills.
+- **AI Reskilling**: Corporate training programs that have reached over 15,000 participants. Focuses on "AI Literacy" to solve real business problems rather than just tool usage.
+
+### 2. Disaster Prevention (Resilience) - "Life Protection"
+- **Disaster Prevention Metaverse**: Immersive simulations (Fire, Flood, Earthquake) that turn passive training into proactive, gamified learning. Uses real-world terrain data for high-fidelity "Digital Twins" of local areas.
+- **Key Features**: Multi-player drills, data-driven analysis of trainee behavior, and inclusive designs (animals, elderly, disabilities).
+
+### 3. Regional Revitalization - "Showcasing Japan"
+- **Digital Twins**: Creating high-fidelity virtual recreations of Japanese cities (Osaka, Arima Onsen, Kumamoto Castle, etc.) using UEFN (Unreal Editor for Fortnite).
+
+### 4. Advanced AI & LLMO Solutions
+- **HERO AIVO**: A pioneering LLMO (Large Language Model Optimization) solution in Japan. It diagnoses and optimizes websites to ensure they are correctly cited and recommended by AI search engines like ChatGPT and Perplexity, preventing "hallucinations" of official info.
+- **XR Solutions**: Tailor-made VR/AR/MR solutions to solve societal "bottlenecks." Focuses on immersion to bridge the gap between information and actual experience.
+
+## Key Achievements & Authority (E-E-A-T)
+- **Osaka-Kansai Expo 2025**: Hosted the "Metaverse/AI Award" and "Bousai Expo" at the EXPO Hall, attracting over 14,000 visitors.
+- **High-Level Governance**: Leadership includes former executives from META (Facebook), PwC, and leaders of the Japan Chamber of Commerce and Industry Youth Division.
+- **Awards**: Winner of multiple categories in the "JAPAN DX Player AWARD."
+- **Scale**: Over 300 events held with a total attendance exceeding 150,000.
+
+## Company Information
+- **Full Name**: MetaHeroes.INC (株式会社MetaHeroes)
+- **CEO**: Kazutoshi Matsuishi (松石 和俊)
+- **Capital**: 41 Million JPY
+- **Headquarters**: Sankyo Umada Bldg 8F, 1-5 Doyama-cho, Kita-ku, Osaka
+- **Website**: https://meta-heroes.co.jp/
+
+## Target Audience
+- **Governments**: Seeking DX, disaster resilience, and regional growth solutions.
+- **Enterprises**: Looking for Metaverse/AI/XR branding, marketing, and internal DX reskilling.
+- **Individuals**: Aspiring creators and professionals wanting to master future technologies.
+- **Global Partners**: Interested in the "Meta Earth" expansion of Japanese social solutions.
