@@ -24,6 +24,22 @@ const DOCUMENTS: DocumentItem[] = [
     description: '実務に直結するAIリスキリング研修のカリキュラムと導入メリットをまとめた最新資料です。',
     pdfUrl: '/assets/documents/ホワイトペーパー_AI人材育成研修プログラム (1).pdf',
     fileName: 'ホワイトペーパー_AI人材育成研修プログラム (1).pdf'
+  },
+  {
+    id: 'hero-egg',
+    category: 'egg',
+    title: 'Hero Egg ホワイトペーパー',
+    description: 'Hero Eggサービスの概要・導入メリットをまとめたホワイトペーパーです。',
+    pdfUrl: '/assets/documents/hero_egg_whitepaper.pdf',
+    fileName: 'hero_egg_whitepaper.pdf'
+  },
+  {
+    id: 'metaverse',
+    category: 'metaverse',
+    title: 'メタバース事業 ホワイトペーパー',
+    description: 'メタバース・XR事業の概要・活用事例をまとめたホワイトペーパーです。',
+    pdfUrl: '/assets/documents/metaverse_whitepaper.pdf',
+    fileName: 'metaverse_whitepaper.pdf'
   }
 ];
 
