@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PageHero } from '../components/PageHero';
 import { PdfThumbnail } from '../components/PdfThumbnail';
-import { ChevronRight, ChevronLeft, Check, Loader2 } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Check, Loader2, CheckCircle, Mail, Home } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-type FormStep = 'select' | 'input';
+type FormStep = 'select' | 'input' | 'thanks';
 
 interface DocumentItem {
   id: string;
@@ -48,8 +49,12 @@ export const DocumentRequestPage: React.FC = () => {
               portalId: "243129625",
               formId: "5e03bb7b-49a7-43cb-8644-9fa906c55a3a",
               target: "#hubspot-form-container",
+              redirectUrl: '',
               onFormReady: () => {
                 setLoadingForm(false);
+              },
+              onFormSubmitted: () => {
+                // Prevent HubSpot's default redirect
               }
             });
 
@@ -117,6 +122,10 @@ export const DocumentRequestPage: React.FC = () => {
                   } else {
                       console.warn('Missing email or no files selected', { email, files: selectedFiles.length });
                   }
+
+                  // Show thanks page
+                  setStep('thanks');
+                  window.scrollTo(0, 0);
                 }
               }
             };
@@ -147,12 +156,15 @@ export const DocumentRequestPage: React.FC = () => {
     <div className="bg-gray-50 border-b border-gray-200">
       <div className="container mx-auto px-4 max-w-3xl py-8 md:py-12">
         <div className="flex items-center justify-center">
-          {[ 
+          {[
             { id: 'select', step: '01', label: '資料選択' },
-            { id: 'input', step: '02', label: 'お客様情報入力' }
+            { id: 'input', step: '02', label: 'お客様情報入力' },
+            { id: 'thanks', step: '03', label: '送信完了' }
           ].map((item, idx) => {
+            const stepOrder = ['select', 'input', 'thanks'];
+            const currentIdx = stepOrder.indexOf(step);
             const isActive = step === item.id;
-            const isDone = step === 'input' && idx === 0;
+            const isDone = idx < currentIdx;
 
             return (
               <React.Fragment key={item.step}>
@@ -164,7 +176,7 @@ export const DocumentRequestPage: React.FC = () => {
                     {item.label}
                   </span>
                 </div>
-                {idx < 1 && (
+                {idx < 2 && (
                   <div className={`w-12 md:w-24 h-px mx-4 md:mx-8 mt-4 md:mt-5 transition-colors duration-500 ${isDone ? 'bg-blue-600' : 'bg-gray-200'}`} />
                 )}
               </React.Fragment>
@@ -285,6 +297,41 @@ export const DocumentRequestPage: React.FC = () => {
                     ※送信後、ご入力いただいたメールアドレス宛に資料ダウンロードのご案内が自動送信されます。<br/>
                     メールが届かない場合は、大変お手数ですが迷惑メールフォルダをご確認いただくか、お問い合わせください。
                   </p>
+                </div>
+              </motion.div>
+            )}
+
+            {/* STEP 3: THANKS */}
+            {step === 'thanks' && (
+              <motion.div key="thanks" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+                <div className="text-center py-12 md:py-20">
+                  <div className="inline-flex items-center justify-center w-20 h-20 bg-green-50 rounded-full mb-8">
+                    <CheckCircle className="text-green-500" size={48} strokeWidth={2} />
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-4">
+                    送信が完了しました
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-500 font-bold leading-relaxed max-w-xl mx-auto mb-8">
+                    お役立ち資料のご請求ありがとうございます。
+                  </p>
+                  <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 md:p-8 max-w-lg mx-auto mb-12">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                      <Mail className="text-blue-600" size={20} />
+                      <span className="text-sm font-black text-blue-900">メールをご確認ください</span>
+                    </div>
+                    <p className="text-xs md:text-sm text-blue-700 font-bold leading-relaxed">
+                      ご入力いただいたメールアドレス宛に、<br className="hidden md:inline" />
+                      資料を添付したメールをお送りしております。<br />
+                      届かない場合は迷惑メールフォルダをご確認ください。
+                    </p>
+                  </div>
+                  <Link
+                    to="/"
+                    className="inline-flex items-center justify-center gap-2 px-12 py-4 bg-gray-900 text-white text-sm font-black tracking-[0.2em] rounded-full hover:bg-blue-600 transition-all duration-500 shadow-xl"
+                  >
+                    <Home size={16} />
+                    トップページへ戻る
+                  </Link>
                 </div>
               </motion.div>
             )}
