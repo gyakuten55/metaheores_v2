@@ -34,115 +34,118 @@ export const DocumentRequestPage: React.FC = () => {
 
   // Form Loader
   useEffect(() => {
-    if (step === 'input') {
-      setLoadingForm(true);
-      
-      const initForm = () => {
-        const hbspt = (window as any).hbspt;
-        const container = document.getElementById('hubspot-form-container');
+    if (step !== 'input') return;
 
-        if (hbspt && container) {
-          container.innerHTML = '';
-          try {
-            hbspt.forms.create({
-              region: "na2",
-              portalId: "243129625",
-              formId: "5e03bb7b-49a7-43cb-8644-9fa906c55a3a",
-              target: "#hubspot-form-container",
-              redirectUrl: '',
-              onFormReady: () => {
-                setLoadingForm(false);
-              },
-              onFormSubmitted: () => {
-                // Prevent HubSpot's default redirect
-              }
-            });
+    setLoadingForm(true);
 
-            // Listen for HubSpot message indicating successful submission
-            const handleMessage = (event: MessageEvent) => {
-              if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
-                console.log('HubSpot Form Submitted:', event.data);
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
+        console.log('HubSpot Form Submitted:', event.data);
 
-                if (event.data.id === '5e03bb7b-49a7-43cb-8644-9fa906c55a3a') {
-                  // Extract values robustly
-                  const data = event.data.data;
-                  let email = '';
-                  let firstName = '';
-                  let lastName = '';
-                  let company = '';
+        if (event.data.id === '5e03bb7b-49a7-43cb-8644-9fa906c55a3a') {
+          // Extract values robustly
+          const data = event.data.data;
+          let email = '';
+          let firstName = '';
+          let lastName = '';
+          let company = '';
 
-                  // Handle different data structures
-                  if (data.submissionValues) {
-                    // Pattern 1: submissionValues object
-                    email = data.submissionValues.email;
-                    firstName = data.submissionValues.firstname;
-                    lastName = data.submissionValues.lastname;
-                    company = data.submissionValues.company;
-                  } else if (Array.isArray(data)) {
-                    // Pattern 2: Array of { name, value }
-                    const getVal = (name: string) => data.find((f: any) => f.name === name)?.value;
-                    email = getVal('email');
-                    firstName = getVal('firstname');
-                    lastName = getVal('lastname');
-                    company = getVal('company');
-                  } else {
-                    // Pattern 3: Direct object
-                    email = data.email;
-                    firstName = data.firstname;
-                    lastName = data.lastname;
-                    company = data.company;
-                  }
-
-                  const fullName = `${lastName || ''} ${firstName || ''}`.trim() || 'お客様';
-                  
-                  console.log('Extracted Data:', { email, fullName, company });
-
-                  const selectedFiles = DOCUMENTS
-                    .filter(doc => selectedDocIds.includes(doc.id))
-                    .map(doc => doc.fileName);
-
-                  if (email && selectedFiles.length > 0) {
-                    fetch('/api/send-mail', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                        type: 'document_request',
-                        name: fullName,
-                        email: email,
-                        company: company,
-                        documentFiles: selectedFiles,
-                        content: `HubSpot資料請求（サイト連携）\n資料: ${selectedFiles.join(', ')}`
-                      })
-                    })
-                    .then(res => {
-                        if (res.ok) console.log('Email API triggered successfully');
-                        else console.error('Email API returned error', res.status);
-                    })
-                    .catch(err => console.error('Email trigger failed:', err));
-                  } else {
-                      console.warn('Missing email or no files selected', { email, files: selectedFiles.length });
-                  }
-
-                  // Show thanks page
-                  setStep('thanks');
-                  window.scrollTo(0, 0);
-                }
-              }
-            };
-
-            window.addEventListener('message', handleMessage);
-            return () => window.removeEventListener('message', handleMessage);
-          } catch (e) {
-            console.error('HubSpot Error:', e);
-            setLoadingForm(false);
+          // Handle different data structures
+          if (data.submissionValues) {
+            // Pattern 1: submissionValues object
+            email = data.submissionValues.email;
+            firstName = data.submissionValues.firstname;
+            lastName = data.submissionValues.lastname;
+            company = data.submissionValues.company;
+          } else if (Array.isArray(data)) {
+            // Pattern 2: Array of { name, value }
+            const getVal = (name: string) => data.find((f: any) => f.name === name)?.value;
+            email = getVal('email');
+            firstName = getVal('firstname');
+            lastName = getVal('lastname');
+            company = getVal('company');
+          } else {
+            // Pattern 3: Direct object
+            email = data.email;
+            firstName = data.firstname;
+            lastName = data.lastname;
+            company = data.company;
           }
-        } else {
-          setTimeout(initForm, 100);
-        }
-      };
 
-      initForm();
-    }
+          const fullName = `${lastName || ''} ${firstName || ''}`.trim() || 'お客様';
+
+          console.log('Extracted Data:', { email, fullName, company });
+
+          const selectedFiles = DOCUMENTS
+            .filter(doc => selectedDocIds.includes(doc.id))
+            .map(doc => doc.fileName);
+
+          if (email && selectedFiles.length > 0) {
+            fetch('/api/send-mail', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                type: 'document_request',
+                name: fullName,
+                email: email,
+                company: company,
+                documentFiles: selectedFiles,
+                content: `HubSpot資料請求（サイト連携）\n資料: ${selectedFiles.join(', ')}`
+              })
+            })
+            .then(res => {
+                if (res.ok) console.log('Email API triggered successfully');
+                else console.error('Email API returned error', res.status);
+            })
+            .catch(err => console.error('Email trigger failed:', err));
+          } else {
+              console.warn('Missing email or no files selected', { email, files: selectedFiles.length });
+          }
+
+          // Show thanks page
+          setStep('thanks');
+          window.scrollTo(0, 0);
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    const initForm = () => {
+      const hbspt = (window as any).hbspt;
+      const container = document.getElementById('hubspot-form-container');
+
+      if (hbspt && container) {
+        container.innerHTML = '';
+        try {
+          hbspt.forms.create({
+            region: "na2",
+            portalId: "243129625",
+            formId: "5e03bb7b-49a7-43cb-8644-9fa906c55a3a",
+            target: "#hubspot-form-container",
+            inlineMessage: "送信完了",
+            onFormReady: () => {
+              setLoadingForm(false);
+            },
+            onFormSubmitted: () => {
+              setStep('thanks');
+              window.scrollTo(0, 0);
+            }
+          });
+        } catch (e) {
+          console.error('HubSpot Error:', e);
+          setLoadingForm(false);
+        }
+      } else {
+        setTimeout(initForm, 100);
+      }
+    };
+
+    initForm();
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
   }, [step, selectedDocIds]);
 
   const toggleDocument = (id: string) => {
