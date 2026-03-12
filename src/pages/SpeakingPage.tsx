@@ -49,6 +49,26 @@ const PRICING_PLANS = [
   },
 ];
 
+const SPEAKER_IMAGES_ROW1 = [
+  '/assets/services/speaking/speaker/speaker-1.png',
+  '/assets/services/speaking/speaker/speaker-2.png',
+  '/assets/services/speaking/speaker/speaker-3.png',
+  '/assets/services/speaking/speaker/speaker-4.png',
+  '/assets/services/speaking/speaker/speaker-1.png',
+  '/assets/services/speaking/speaker/speaker-2.png',
+  '/assets/services/speaking/speaker/speaker-3.png',
+  '/assets/services/speaking/speaker/speaker-4.png',
+];
+
+const SPEAKER_IMAGES_ROW2 = [
+  '/assets/services/speaking/speaker/speaker-8.png',
+  '/assets/services/speaking/speaker/speaker-9.png',
+  '/assets/services/speaking/speaker/speaker-10.png',
+  '/assets/services/speaking/speaker/speaker-8.png',
+  '/assets/services/speaking/speaker/speaker-9.png',
+  '/assets/services/speaking/speaker/speaker-10.png',
+];
+
 const SPEAKING_PDF_FILENAME = '【be HEROES】講演・登壇パッケージ.pdf';
 
 const STYLE_OPTIONS = ['講演', 'パネルディスカッション', 'セミナー/勉強会', 'ワークショップ', 'フォーラム/シンポジウム', 'オンライン/オフライン/ハイブリッド'];
@@ -312,6 +332,42 @@ export const SpeakingPage: React.FC = () => {
           </div>
         </section>
 
+      </div>
+
+      {/* Speaker Gallery - full width */}
+      <section className="mt-32">
+        <div className="container mx-auto px-4 max-w-5xl mb-12">
+          <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] uppercase block mb-2">SPEAKER</span>
+          <div className="flex flex-col items-start">
+            <h3 className="text-2xl md:text-3xl font-black text-gray-800">登壇者</h3>
+            <div className="w-full h-px bg-gray-100 relative mt-6">
+              <div className="absolute top-0 left-0 w-16 h-1 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full overflow-hidden space-y-2">
+          {/* Row 1: slides from right */}
+          <div className="overflow-hidden">
+            <div className="flex w-max animate-scroll-left">
+              {[...SPEAKER_IMAGES_ROW1, ...SPEAKER_IMAGES_ROW1].map((src, idx) => (
+                <img key={idx} src={src} alt={`登壇写真 ${(idx % SPEAKER_IMAGES_ROW1.length) + 1}`} className="h-[180px] md:h-[240px] w-auto flex-shrink-0 rounded-lg px-1" />
+              ))}
+            </div>
+          </div>
+
+          {/* Row 2: slides from left */}
+          <div className="overflow-hidden">
+            <div className="flex w-max animate-scroll-right">
+              {[...SPEAKER_IMAGES_ROW2, ...SPEAKER_IMAGES_ROW2].map((src, idx) => (
+                <img key={idx} src={src} alt={`登壇写真 ${(idx % SPEAKER_IMAGES_ROW2.length) + 6}`} className="h-[180px] md:h-[240px] w-auto flex-shrink-0 rounded-lg px-1" />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="container mx-auto px-4 max-w-5xl space-y-32 mt-32">
         {/* Pricing */}
         <section>
           <div className="mb-12">
