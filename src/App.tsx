@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Link } from 'react-router-dom';
 import { SEO } from './components/SEO';
 import { ScrollToTop } from './components/ScrollToTop';
 import { BlogDetailPage } from './pages/BlogDetailPage';
@@ -40,6 +40,7 @@ import { DocumentRequestPage } from './pages/DocumentRequestPage';
 import { RecruitPage } from './pages/RecruitPage';
 import { FAQPage } from './pages/FAQPage';
 import { MemberBlogPage } from './pages/MemberBlogPage';
+import { SpeakingPage } from './pages/SpeakingPage';
 
 import LoginPage from './pages/agency/LoginPage';
 import { Footer } from './components/Footer';
@@ -138,6 +139,7 @@ function App() {
             <Route path="/contact/privacy" element={<><SEO title="個人情報の取り扱いについて | 株式会社MetaHeroes" /><ContactPrivacyPage /></>} />
             <Route path="/contact" element={<><SEO title="お問い合わせ | 株式会社MetaHeroes" /><ContactPage /></>} />
             <Route path="/document-request" element={<><SEO title="お役立ち資料 | 株式会社MetaHeroes" /><DocumentRequestPage /></>} />
+            <Route path="/speaking" element={<><SEO title="講演・登壇 | 株式会社MetaHeroes" description="AI・メタバース・XRの最前線で事業を推進するMetaHeroesによる講演・登壇サービス。カンファレンス登壇からワークショップ、イベントプロデュースまで柔軟に対応します。" /><SpeakingPage /></>} />
             <Route path="/recruit" element={<><SEO title="採用情報 | 株式会社MetaHeroes" description="次世代の社会基盤を創るHEROを募集しています。メタバース・AIの力で世界をワクワクさせませんか？" /><RecruitPage /></>} />
             <Route path="/faq" element={<><SEO title="よくある質問 | 株式会社MetaHeroes" /><FAQPage /></>} />
             <Route path="/services" element={<><SEO title="サービス一覧 | 株式会社MetaHeroes" /><ServicesPage /></>} />
@@ -167,6 +169,15 @@ function App() {
           </Routes>
         </div>
         {!isAgencyPage && <Footer />}
+        {!isAgencyPage && (
+          <Link
+            to="/speaking"
+            className="fixed right-0 top-1/2 -translate-y-1/2 z-[99] bg-gradient-to-b from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold text-sm lg:text-base py-3 lg:py-5 px-2 lg:px-3 rounded-l-lg shadow-lg shadow-blue-500/30 transition-all tracking-widest lg:tracking-[0.2em]"
+            style={{ writingMode: 'vertical-rl' }}
+          >
+            講演依頼はこちら
+          </Link>
+        )}
       </div>
     </AuthProvider>
   );

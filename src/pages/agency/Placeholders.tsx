@@ -83,8 +83,12 @@ export const AdminPage: React.FC = () => {
           ...newUserForm
         }
       });
-      if (funcError || data?.error) throw new Error(data?.error || 'アカウント作成に失敗しました');
-      
+      if (funcError) {
+        const errBody = await funcError.context.json().catch(() => null);
+        throw new Error(errBody?.error || 'アカウント作成に失敗しました');
+      }
+      if (data?.error) throw new Error(data.error);
+
       setIsAddingUser(false);
       setNewUserForm({ email: '', password: '', company_name: '', role: 'agent' });
       fetchData();
@@ -151,8 +155,12 @@ export const AdminPage: React.FC = () => {
           password: newPassword 
         }
       });
-      if (funcError || data?.error) throw new Error(data?.error || '再設定に失敗しました');
-      
+      if (funcError) {
+        const errBody = await funcError.context.json().catch(() => null);
+        throw new Error(errBody?.error || '再設定に失敗しました');
+      }
+      if (data?.error) throw new Error(data.error);
+
       alert('パスワードを更新しました。');
       setIsResettingPassword(false);
       setNewPassword('');
@@ -166,11 +174,16 @@ export const AdminPage: React.FC = () => {
   const handleDeleteUser = async (userId: string) => {
     if (!window.confirm('本当に削除しますか？')) return;
     try {
-      await supabase.functions.invoke('manage-users', { body: { action: 'delete', userId } });
+      const { error: funcError, data } = await supabase.functions.invoke('manage-users', { body: { action: 'delete', userId } });
+      if (funcError) {
+        const errBody = await funcError.context.json().catch(() => null);
+        throw new Error(errBody?.error || '削除に失敗しました');
+      }
+      if (data?.error) throw new Error(data.error);
       setSelectedUser(null);
       fetchData();
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      alert(err.message);
     }
   };
 

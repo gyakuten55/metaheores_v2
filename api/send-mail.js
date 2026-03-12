@@ -66,6 +66,7 @@ export default async function handler(req, res) {
     partner: 'パートナーシップ・協業について',
     recruit: '採用に関するお問い合わせ',
     press: '取材・プレスに関するお問い合わせ',
+    speaking: '講演・登壇依頼',
     other: 'その他'
   };
 
