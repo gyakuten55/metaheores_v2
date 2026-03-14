@@ -53,7 +53,11 @@ export default async function handler(req, res) {
     try {
         const resList = await axios.get(`https://${MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/${MICROCMS_ENDPOINT}`, {
             headers: { 'X-MICROCMS-API-KEY': MICROCMS_API_KEY },
-            params: { limit: 10, fields: 'title' }
+            params: {
+                limit: 100,
+                fields: 'title',
+                filters: 'category_new[contains]PRtimes'
+            }
         });
         const existingTitles = new Set(resList.data.contents.map(c => c.title));
 
