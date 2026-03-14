@@ -335,8 +335,8 @@ export const SpeakingPage: React.FC = () => {
       </div>
 
       {/* Speaker Gallery - full width */}
-      <section className="mt-32">
-        <div className="container mx-auto px-4 max-w-5xl mb-12">
+      <section className="mt-20 md:mt-32">
+        <div className="container mx-auto px-4 max-w-5xl mb-8 md:mb-12">
           <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] uppercase block mb-2">SPEAKER</span>
           <div className="flex flex-col items-start">
             <h3 className="text-2xl md:text-3xl font-black text-gray-800">登壇者</h3>
@@ -346,12 +346,14 @@ export const SpeakingPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="w-full overflow-hidden space-y-2">
+        <div className="w-full overflow-hidden space-y-3 md:space-y-4">
           {/* Row 1: slides from right */}
           <div className="overflow-hidden">
             <div className="flex w-max animate-scroll-left">
               {[...SPEAKER_IMAGES_ROW1, ...SPEAKER_IMAGES_ROW1].map((src, idx) => (
-                <img key={idx} src={src} alt={`登壇写真 ${(idx % SPEAKER_IMAGES_ROW1.length) + 1}`} className="h-[180px] md:h-[240px] w-auto flex-shrink-0 rounded-lg px-1" />
+                <div key={idx} className="flex-shrink-0 px-1 md:px-1.5">
+                  <img src={src} alt={`登壇写真 ${(idx % SPEAKER_IMAGES_ROW1.length) + 1}`} className="h-[140px] sm:h-[180px] md:h-[220px] lg:h-[260px] aspect-[4/3] object-cover rounded-md md:rounded-lg" />
+                </div>
               ))}
             </div>
           </div>
@@ -360,7 +362,9 @@ export const SpeakingPage: React.FC = () => {
           <div className="overflow-hidden">
             <div className="flex w-max animate-scroll-right">
               {[...SPEAKER_IMAGES_ROW2, ...SPEAKER_IMAGES_ROW2].map((src, idx) => (
-                <img key={idx} src={src} alt={`登壇写真 ${(idx % SPEAKER_IMAGES_ROW2.length) + 6}`} className="h-[180px] md:h-[240px] w-auto flex-shrink-0 rounded-lg px-1" />
+                <div key={idx} className="flex-shrink-0 px-1 md:px-1.5">
+                  <img src={src} alt={`登壇写真 ${(idx % SPEAKER_IMAGES_ROW2.length) + 6}`} className="h-[140px] sm:h-[180px] md:h-[220px] lg:h-[260px] aspect-[4/3] object-cover rounded-md md:rounded-lg" />
+                </div>
               ))}
             </div>
           </div>
