@@ -147,6 +147,83 @@ export const HeroEggPage: React.FC = () => {
           </div>
         </section>
 
+        {/* Sponsor Plans */}
+        <section>
+          <div className="mb-12">
+            <span className="text-[10px] font-bold text-gray-400 tracking-[0.2em] uppercase block mb-2">SPONSOR PLANS</span>
+            <div className="flex flex-col items-start">
+              <h3 className="text-2xl md:text-3xl font-black text-gray-800">スポンサープラン</h3>
+              <div className="w-full h-px bg-gray-100 relative mt-6">
+                <div className="absolute top-0 left-0 w-16 h-1 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            {/* HEROサロン */}
+            <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+              <div className="bg-gradient-to-r from-yellow-400 to-yellow-300 text-center py-8 px-6">
+                <p className="text-sm font-bold text-gray-800 tracking-wider mb-1">各店舗 100 社まで</p>
+                <h4 className="text-2xl md:text-3xl font-black text-gray-900 mb-2">HEROサロン</h4>
+                <p className="text-sm font-bold text-gray-700">毎月 39,000 円（税別）</p>
+              </div>
+              <div className="p-6 md:p-8 space-y-6">
+                {[
+                  { main: '月例会を月１回実施', sub: '（他の企業様を招待可能）' },
+                  { main: '毎週月曜日にオンラインでAIの勉強会を実施', sub: '（毎月4回90分）' },
+                  { main: 'Hero Eggを無料貸出可能', sub: '（場所によって貸出時間は異なります）' },
+                  { main: '企業ロゴの掲載', sub: '（HP / 施設）' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    <p className="text-sm md:text-base font-bold text-gray-800 leading-relaxed">
+                      {item.main}
+                      {item.sub && <span className="font-medium text-gray-500 block text-xs md:text-sm">{item.sub}</span>}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 施設スポンサー */}
+            <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+              <div className="bg-gradient-to-r from-amber-400 to-orange-400 text-center py-8 px-6">
+                <p className="text-sm font-bold text-white tracking-wider mb-1">1店舗につき1スポンサーまで</p>
+                <h4 className="text-2xl md:text-3xl font-black text-white mb-2">施設スポンサー</h4>
+                <p className="text-sm font-bold text-white/90">お問い合わせください</p>
+              </div>
+              <div className="p-6 md:p-8 space-y-6">
+                {[
+                  { main: 'CSRレポートの提出', sub: '（年1回/Hero Eggの活動を掲載）' },
+                  { main: 'HP・資料・スクリーンへの企業ロゴ掲載', sub: '' },
+                  { main: '大型イベントでの企業ロゴ掲載', sub: '' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    <p className="text-sm md:text-base font-bold text-gray-800 leading-relaxed">
+                      {item.main}
+                      {item.sub && <span className="font-medium text-gray-500 block text-xs md:text-sm">{item.sub}</span>}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <Link to="/contact" className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-cyan-400 to-cyan-500 text-white text-base font-black rounded-full hover:from-cyan-500 hover:to-cyan-600 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+              詳細を問い合わせる
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </Link>
+          </div>
+        </section>
+
         {/* Related News */}
         <section>
           <div className="mb-12">
