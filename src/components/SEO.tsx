@@ -47,6 +47,7 @@ export const SEO = ({
     updateMetaTag('og:type', type, 'property');
     updateMetaTag('og:image', ogImage, 'property');
     updateMetaTag('og:site_name', '株式会社MetaHeroes', 'property');
+    updateMetaTag('og:locale', 'ja_JP', 'property');
 
     // 4. Twitter Card Tags
     updateMetaTag('twitter:card', 'summary_large_image');

@@ -30,20 +30,20 @@ const NAV_ITEMS: NavItem[] = [
     en: 'BUSINESS',
     path: '/business',
     children: [
-      { label: 'メタバース', path: '/business' },
-      { label: 'AI', path: '/business' },
-      { label: 'イベント', path: '/business' },
-      { label: '施設運営事業', path: '/business' },
+      { label: 'XR事業', path: '/business' },
+      { label: 'AI事業', path: '/business' },
+      { label: 'イベント事業', path: '/business' },
+      { label: '施設活用事業', path: '/business' },
     ]
   },
   {
     label: 'サービス',
-    en: 'SERVICES',
+    en: 'SERVICE',
     path: '/services',
     children: [
-      { label: 'デジタルソリューション', path: '/services#digital' },
-      { label: '教育×テクノロジー', path: '/services#social' },
-      { label: '共創・コミュニティ', path: '/services#community' },
+      { label: 'AI・XRソリューション', path: '/services#digital' },
+      { label: '教育×テクノロジー', path: '/services#education' },
+      { label: 'イベント・コミュニティ・共創', path: '/services#community' },
     ]
   },
   {
@@ -51,7 +51,7 @@ const NAV_ITEMS: NavItem[] = [
     en: 'WORKS',
     path: '/works',
     children: [
-      { label: '実績一覧', path: '/works' },
+      { label: '事例・実績', path: '/works' },
       { label: 'ギャラリー', path: '/gallery' },
     ]
   },
@@ -60,6 +60,7 @@ const NAV_ITEMS: NavItem[] = [
     en: 'MEMBERS',
     path: '/members',
     children: [
+      { label: 'メンバー一覧', path: '/members/list' },
       { label: 'メンバーブログ一覧', path: '/members/blog' },
     ]
   },
@@ -67,6 +68,10 @@ const NAV_ITEMS: NavItem[] = [
     label: 'ニュース',
     en: 'NEWS',
     path: '/news',
+    children: [
+      { label: 'ニュース一覧', path: '/news' },
+      { label: 'ナレッジ', path: '/knowledge' },
+    ]
   },
   {
     label: '採用情報',

@@ -32,7 +32,7 @@ export const GlobalHeroSummitPage: React.FC = () => {
     <main className="min-h-screen bg-white font-sans text-gray-800">
       <PageHero 
         titleEn="COMMUNITY & CO-CREATION" 
-        titleJa="GLOBAL HERO SUMMIT"
+        titleJa="THE HERO SUMMIT"
       />
 
       <ServiceIntroBanner 

@@ -201,6 +201,59 @@ export const BlogDetailPage = () => {
           </div>
         )}
 
+        {/* サービスCTA */}
+        {(() => {
+          const categories = blog.category_new || [];
+          const ctas: { label: string; description: string; path: string }[] = [];
+
+          if (categories.some(c => /HERO AIVO|LLMO/i.test(c)) || /LLMO|AI検索|SEO/.test(blog.title)) {
+            ctas.push({ label: 'HERO AIVO', description: 'AI検索最適化（LLMO）で、AIから正しく引用・推奨されるWebサイトへ', path: '/services/hero-aivo' });
+          }
+          if (categories.some(c => /AI人材|研修/i.test(c)) || /AI研修|リスキリング|DX研修/.test(blog.title)) {
+            ctas.push({ label: 'AI人材育成研修', description: '15,000名以上の実績を誇る実践的AI研修プログラム', path: '/services/ai-training' });
+          }
+          if (categories.some(c => /防災/i.test(c)) || /防災/.test(blog.title)) {
+            ctas.push({ label: '防災メタバース', description: '仮想空間での没入型防災教育・訓練シミュレーション', path: '/services/bousai-metaverse' });
+          }
+          if (categories.some(c => /XR|holoshare/i.test(c)) || /XR|VR|AR|MR|メタバース/.test(blog.title)) {
+            ctas.push({ label: 'XRソリューション', description: 'VR/AR/MR技術を駆使した没入型課題解決ソリューション', path: '/services/xr' });
+          }
+          if (categories.some(c => /Hero Egg/i.test(c)) || /Hero Egg/.test(blog.title)) {
+            ctas.push({ label: 'Hero Egg', description: '子どもから大人まで学べるDX教育施設', path: '/services/hero-egg' });
+          }
+
+          // マッチしない場合はお問い合わせへの汎用CTA
+          if (ctas.length === 0) {
+            ctas.push({ label: 'お問い合わせ', description: 'AI・メタバース・XRに関するご相談はお気軽にどうぞ', path: '/contact' });
+            ctas.push({ label: 'お役立ち資料', description: 'MetaHeroesのサービス資料をダウンロード', path: '/document-request' });
+          }
+
+          return (
+            <div className="mt-16 pt-8 border-t border-gray-100">
+              <p className="text-[10px] font-black text-gray-400 tracking-[0.3em] uppercase text-center mb-6">RELATED SERVICES</p>
+              <div className={`grid gap-4 ${ctas.length === 1 ? 'grid-cols-1 max-w-lg mx-auto' : 'grid-cols-1 sm:grid-cols-2'}`}>
+                {ctas.slice(0, 2).map((cta) => (
+                  <Link
+                    key={cta.path}
+                    to={cta.path}
+                    className="group flex items-center gap-4 p-5 border border-gray-100 rounded-xl hover:border-blue-200 hover:bg-blue-50/30 transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 text-white">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                      </svg>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-black text-gray-900 group-hover:text-blue-600 transition-colors">{cta.label}</p>
+                      <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">{cta.description}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+
         {/* ギャラリーボタン */}
         <div className="mt-12 text-center">
           <Link

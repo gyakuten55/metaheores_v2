@@ -4,26 +4,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getBlogs, Blog } from '../lib/microcms';
 import { Link } from 'react-router-dom';
 
-type BusinessType = 'metaverse' | 'ai' | 'event' | 'vacant-facility';
+type BusinessType = 'xr' | 'ai' | 'event' | 'facility';
 
 const CATEGORY_MAP: Record<BusinessType, string> = {
-  metaverse: 'メタバース開発実績',
+  xr: 'メタバース開発実績',
   ai: 'AI / 開発 実績',
   event: 'イベント実績',
-  'vacant-facility': 'Hero Egg 実績',
+  facility: 'Hero Egg 実績',
 };
 
 const BUSINESS_TABS = [
-  { id: 'metaverse' as BusinessType, label: 'メタバース事業', image: '/assets/business-content/metaverce/metaverse_hero.png' },
+  { id: 'xr' as BusinessType, label: 'XR事業', image: '/assets/business-content/metaverce/metaverse_hero.png' },
   { id: 'ai' as BusinessType, label: 'AI事業', image: '/assets/business-content/ai/ai_hero.png' },
   { id: 'event' as BusinessType, label: 'イベント事業', image: '/assets/business-content/event/event_hero.png' },
-  { id: 'vacant-facility' as BusinessType, label: '施設運営事業', image: '/assets/business-content/vacant-facility/vacant_hero.png' },
+  { id: 'facility' as BusinessType, label: '施設活用事業', image: '/assets/business-content/vacant-facility/vacant_hero.png' },
 ];
 
 const CONTENT_DATA = {
-  metaverse: {
-    titleJa: 'メタバース事業',
-    titleEn: 'METAVERSE',
+  xr: {
+    titleJa: 'XR事業',
+    titleEn: 'EXTENDED REALITY',
     heroImage: '/assets/business-content/metaverce/metaverse_hero.png',
     concept: '社会課題をエンタメに翻訳する',
     description: '社会課題を、メタバースだからこそ解決できるサービスとして展開。重い問題を「エンターテインメント」へと翻訳し、参加のハードルを下げます。',
@@ -72,9 +72,9 @@ const CONTENT_DATA = {
       { title: 'イベント出展', text: '国内外の主要な展示会やフェスティバルへの出展を通じて、ブランドの認知度を最大化します。', image: '/assets/business-content/event/event_exhibition.png' },
     ]
   },
-  'vacant-facility': {
-    titleJa: '施設運営事業',
-    titleEn: 'FACILITY REUTILIZATION',
+  facility: {
+    titleJa: '施設活用事業',
+    titleEn: 'FACILITY UTILIZATION',
     heroImage: '/assets/business-content/vacant-facility/vacant_hero.png',
     concept: '眠れる資産を地域の希望へ',
     description: '全国に広がる遊休施設を、最先端のDX教育拠点やコミュニティスペースとして再生。地域に新しい人の流れと雇用を創出します。',
@@ -91,8 +91,37 @@ const CONTENT_DATA = {
   }
 };
 
+interface RelatedService {
+  title: string;
+  category: string;
+  description: string;
+  image: string;
+  path: string;
+}
+
+const RELATED_SERVICES: Record<BusinessType, RelatedService[]> = {
+  xr: [
+    { title: 'AI MONDAY', category: 'ハイブリッドコミュニティ', description: 'AI・XRの最新トレンドを共有し、学び合う専門コミュニティです。', image: '/assets/services/first-view/ai_monday_thumb.png', path: '/services/ai-monday' },
+    { title: 'THE HERO SUMMIT', category: 'イベント', description: '企業やクリエイターが集まり、新たな価値を創造するカンファレンスです。', image: '/assets/services/first-view/ghs_first_thumb.png', path: '/services/global-hero-summit' },
+    { title: 'Hero Egg', category: 'DX教室施設運用', description: '子どもから大人まで学べるDX教育施設。XR体験も提供します。', image: '/assets/services/first-view/hero_egg_thumb.png', path: '/services/hero-egg' },
+  ],
+  ai: [
+    { title: 'AI 人材育成研修', category: 'AI企業研修', description: '企業・団体向けのAIリテラシー向上および実践的な活用研修サービスです。', image: '/assets/services/first-view/ai_training_thumb.png', path: '/services/ai-training' },
+    { title: 'AI MONDAY', category: 'ハイブリッドコミュニティ', description: 'AIの最新トレンドを共有し、学び合う専門コミュニティです。', image: '/assets/services/first-view/ai_monday_thumb.png', path: '/services/ai-monday' },
+  ],
+  event: [
+    { title: 'THE HERO SUMMIT', category: 'イベント', description: '企業やクリエイターが集まり、新たな価値を創造するカンファレンスです。', image: '/assets/services/first-view/ghs_first_thumb.png', path: '/services/global-hero-summit' },
+    { title: 'EGG JAM', category: 'オンラインコミュニティ', description: '挑戦する人を応援し、交流を深めるオンラインコミュニティです。', image: '/assets/services/first-view/egg_jam_thumb.png', path: '/services/egg-jam' },
+    { title: 'AI MONDAY', category: 'ハイブリッドコミュニティ', description: 'AIの最新トレンドを共有し、学び合う専門コミュニティです。', image: '/assets/services/first-view/ai_monday_thumb.png', path: '/services/ai-monday' },
+  ],
+  facility: [
+    { title: 'Hero Egg', category: 'DX教室施設運用', description: '子どもから大人まで学べるDX教育施設。子どもたちは無料でテクノロジーを学べます。', image: '/assets/services/first-view/hero_egg_thumb.png', path: '/services/hero-egg' },
+    { title: 'Meta Heroes Guild', category: 'コミュニティスペース', description: '特定のテーマで、飲食ができるコミュニティスペースです。', image: '/assets/services/first-view/mhg_first_thumb.png', path: '/services/meta-heroes-guild' },
+  ],
+};
+
 export const BusinessContentPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<BusinessType>('metaverse');
+  const [activeTab, setActiveTab] = useState<BusinessType>('xr');
   const [caseStudies, setCaseStudies] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(false);
   const currentContent = CONTENT_DATA[activeTab];
@@ -282,8 +311,8 @@ export const BusinessContentPage: React.FC = () => {
               )}
 
               <div className="text-center mt-16">
-                <Link 
-                  to="/works" 
+                <Link
+                  to="/works"
                   className="inline-flex items-center gap-3 px-10 py-3 bg-gray-800 text-white text-xs font-black rounded-full hover:bg-black transition-all group shadow-lg"
                 >
                   もっと見る
@@ -293,6 +322,57 @@ export const BusinessContentPage: React.FC = () => {
                 </Link>
               </div>
             </section>
+
+            {/* Related Services Section */}
+            {RELATED_SERVICES[activeTab].length > 0 && (
+              <section>
+                <div className="mb-12">
+                  <span className="text-[10px] md:text-xs font-bold text-gray-400 tracking-[0.2em] uppercase block mb-2">RELATED SERVICES</span>
+                  <div className="flex flex-col items-start">
+                    <h2 className="text-2xl md:text-3xl font-black text-gray-800">関連サービス</h2>
+                    <div className="w-full h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 mt-6" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                  {RELATED_SERVICES[activeTab].map((service) => (
+                    <Link key={service.path} to={service.path} className="group flex flex-col h-full">
+                      <div className="relative aspect-video overflow-hidden rounded-xl bg-white border border-gray-100 mb-5">
+                        <img
+                          src={service.image}
+                          alt=""
+                          className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 rounded-full border border-blue-200 flex items-center justify-center flex-shrink-0 mt-1 transition-colors group-hover:bg-blue-600 group-hover:border-blue-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-3 h-3 text-blue-500 group-hover:text-white">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <span className="block text-[10px] text-gray-400 font-bold mb-1 tracking-wider">{service.category}</span>
+                          <h4 className="text-base font-black text-gray-800 mb-2 tracking-wider group-hover:text-blue-600 transition-colors">{service.title}</h4>
+                          <p className="text-xs text-gray-600 leading-[1.8] font-medium tracking-wide">{service.description}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+
+                <div className="text-center mt-16">
+                  <Link
+                    to="/services"
+                    className="inline-flex items-center gap-3 px-10 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-xs font-black rounded-full hover:shadow-lg hover:scale-105 transition-all group"
+                  >
+                    すべてのソリューションを見る
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3 group-hover:translate-x-1 transition-transform">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </Link>
+                </div>
+              </section>
+            )}
           </div>
         </motion.div>
       </AnimatePresence>
@@ -337,6 +417,56 @@ export const BusinessContentPage: React.FC = () => {
           </div>
         </section>
       </div>
+
+      {/* CTA Section */}
+      <section className="mt-32">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-cyan-500 px-6 py-16 md:px-16 md:py-20 shadow-2xl shadow-blue-500/20">
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+              <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white blur-3xl" />
+              <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-white blur-3xl" />
+            </div>
+
+            <div className="relative z-10 text-center mb-10 md:mb-12">
+              <span className="text-[10px] md:text-xs font-black text-white/80 tracking-[0.4em] uppercase block mb-4">CONTACT</span>
+              <h2 className="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight mb-4">
+                事業に関するお問い合わせ
+              </h2>
+              <p className="text-sm md:text-base text-white/90 leading-relaxed font-medium tracking-wider">
+                Meta Heroesの事業について、もっと詳しく知りたい方はお気軽にお問い合わせください。
+              </p>
+            </div>
+
+            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-2xl mx-auto">
+              <Link
+                to="/contact"
+                className="group w-full sm:w-auto inline-flex items-center justify-between gap-4 px-8 py-4 bg-white text-blue-600 text-sm font-black rounded-full hover:shadow-2xl hover:scale-105 transition-all min-w-[260px]"
+              >
+                <span className="flex flex-col items-start">
+                  <span className="tracking-wide">お問い合わせ</span>
+                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-60">Contact</span>
+                </span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4 group-hover:translate-x-1 transition-transform">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </Link>
+
+              <Link
+                to="/document-request"
+                className="group w-full sm:w-auto inline-flex items-center justify-between gap-4 px-8 py-4 bg-white/10 backdrop-blur-md border-2 border-white/40 text-white text-sm font-black rounded-full hover:bg-white/20 hover:scale-105 transition-all min-w-[260px]"
+              >
+                <span className="flex flex-col items-start">
+                  <span className="tracking-wide">お役立ち資料</span>
+                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase opacity-70">Document</span>
+                </span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4 group-hover:translate-x-1 transition-transform">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 };

@@ -72,6 +72,42 @@ export const FAQPage: React.FC = () => {
     window.location.href = '/recruit';
   }, []);
 
+  // FAQPage 構造化データ
+  React.useEffect(() => {
+    const allItems = FAQ_DATA.flatMap(cat => cat.items);
+    // ダミーデータは除外
+    const validItems = allItems.filter(item => !item.question.includes('テキスト'));
+    if (validItems.length === 0) return;
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: validItems.map(item => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    };
+
+    const scriptId = 'json-ld-faq';
+    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+    script.text = JSON.stringify(schema);
+
+    return () => {
+      const el = document.getElementById(scriptId);
+      if (el) el.remove();
+    };
+  }, []);
+
   const toggleFAQ = (catIdx: number, itemIdx: number) => {
     const key = `${catIdx}-${itemIdx}`;
     setOpenIndex(openIndex === key ? null : key);

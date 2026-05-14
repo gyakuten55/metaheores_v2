@@ -27,19 +27,19 @@ const FOOTER_COLUMNS = [
       title: '事業内容',
       path: '/business',
       links: [
-        { label: 'メタバース', path: '/business' },
-        { label: 'AI', path: '/business' },
-        { label: 'イベント', path: '/business' },
-        { label: '施設運営事業', path: '/business' },
+        { label: 'XR事業', path: '/business' },
+        { label: 'AI事業', path: '/business' },
+        { label: 'イベント事業', path: '/business' },
+        { label: '施設活用事業', path: '/business' },
       ]
     },
     {
       title: 'サービス',
       path: '/services',
       links: [
-              { label: 'デジタルソリューション', path: '/services#digital' },
-              { label: '教育×テクノロジー', path: '/services#social' },
-              { label: '共創・コミュニティ', path: '/services#community' },      ]
+              { label: 'AI・XRソリューション', path: '/services#digital' },
+              { label: '教育×テクノロジー', path: '/services#education' },
+              { label: 'イベント・コミュニティ・共創', path: '/services#community' },      ]
     }
   ],
   // Column 3: Works & Others (2 + 1 + 2 = 5 items)
@@ -48,7 +48,7 @@ const FOOTER_COLUMNS = [
       title: '実績・メンバー',
       path: '/works',
       links: [
-        { label: '実績一覧', path: '/works' },
+        { label: '事例・実績', path: '/works' },
         { label: 'ギャラリー', path: '/gallery' },
         { label: 'メンバーブログ', path: '/members/blog' },
       ]

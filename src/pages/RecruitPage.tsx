@@ -4,29 +4,155 @@ import { PageHero } from '../components/PageHero';
 import { allMembers } from '../data/members';
 import { Blog, getMemberBlogs } from '../lib/microcms';
 
+interface JobDetail {
+  label: string;
+  value: string;
+}
+
+interface PositionDetail {
+  name: string;
+  description?: string;
+  details: JobDetail[];
+}
+
 interface JobCategory {
   id: string;
   title: string;
   description?: string;
   positions?: string[];
+  positionDetails?: PositionDetail[];
   link?: string;
+  contactRecruit?: boolean;
+  details?: JobDetail[];
 }
 
 const RECRUITMENT_TYPES: JobCategory[] = [
   {
-    id: 'metaverse',
-    title: 'メタバース・ゲーム',
-    description: `Meta Heroesのメタバース・ゲームの開発に関わるポジションです。
-
-クリエイティブで社会課題解決に興味・関心のある方を募集中です。年間で複数のプロジェクトに関わることができます。`,
-    positions: ['ディレクター', 'アートディレクター', 'プロジェクトマネージャー'],
-    link: '#'
+    id: 'xr',
+    title: 'XR事業',
+    description: `XR（VR・AR・メタバース）技術を活用した法人ソリューションの提案営業をお任せします。企業や自治体が抱える社会課題を、XRのチカラで解決へと導きます。`,
+    positions: ['営業'],
   },
-  { id: 'ai', title: 'AI' },
-  { id: 'sales', title: 'セールス' },
-  { id: 'event', title: 'イベント' },
-  { id: 'heroegg', title: 'Hero Egg' },
-  { id: 'corporate', title: 'コーポレート' },
+  {
+    id: 'ai',
+    title: 'AI事業',
+    description: `AI技術のチカラで、企業や自治体が抱えている課題に寄り添い、解決へと導く提案業務をお任せします。
+
+■ AI研修・AIシステムの提案
+人材育成や研修、業務サポートなどに課題を持つクライアントへ、AIツールを活用したDXソリューションを提供します。セミナーやイベント参加、紹介などから商談アポを取得し、課題をヒアリング。クライアントに応じた最適なAI研修の導入やAIシステムの開発などを提案します。`,
+    positions: ['営業'],
+    details: [
+      { label: '応募資格', value: '学歴不問／業種未経験OK／第二新卒歓迎\n■ 法人向けの営業経験または顧客折衝経験をお持ちの方\n■ AIやメタバースなどの最新技術に興味がある方' },
+      { label: '給与', value: '月給27万円〜50万円＋業績賞与年2回\n想定年収：300万円〜600万円' },
+      { label: '勤務地', value: '大阪府大阪市浪速区難波中2-10-70\nなんばパークス1F eスタジアムなんば本店\n南海電鉄「なんば駅」中央口・南口直結' },
+      { label: '勤務時間', value: '10:00〜19:00（実働8時間）\n残業月20時間程度' },
+      { label: '休日・休暇', value: '年間休日120日／完全週休2日制（土日祝）\n年末年始・GW・夏季休暇・有給休暇・産前産後休暇・育児休暇' },
+      { label: '待遇', value: '社会保険完備／交通費全額支給／服装基本自由・ネイルOK\n昇給年1回／賞与年2回' },
+    ],
+    contactRecruit: true,
+  },
+  {
+    id: 'facility',
+    title: '施設活用事業',
+    description: `Hero Eggをはじめとする施設の運営、イベント企画、教育コンテンツの企画営業に関わるポジションです。地域に根ざしたDX教育拠点を共に育てていきます。`,
+    contactRecruit: true,
+    positionDetails: [
+      {
+        name: '① 店長',
+        description: `HERO 100人を支えるHEROへ！あなたの地域の施設を、店長として盛り上げませんか？`,
+        details: [
+          {
+            label: '業務内容',
+            value: `〈運営管理〉
+・店舗の日々の開閉・設備管理
+・月次KPIの管理と本部への報告
+・施設の箱貸し（スペース貸出）の調整・対応
+・イベントのサポート・対応
+
+〈地域関係構築〉
+・地域の企業／自治体／学校からの問い合わせの窓口（営業部と連動）
+・保護者・子どもたちとの信頼関係の維持
+
+〈情報発信〉
+・SNS運用（Instagram・X・公式LINE等）の管理・イベント告知（本部広報と連携）`,
+          },
+          {
+            label: '勤務地',
+            value: `・大阪なんば店
+・北海道札幌店
+・大阪城東区店
+▶︎各1名ずつ代表募集！`,
+          },
+          {
+            label: '給与',
+            value: `正社員：月給25万円〜
+業務委託：要相談`,
+          },
+        ],
+      },
+      {
+        name: '② コミュニティー運営者',
+        description: `子ども・大人のコミュニティを育て、Hero Eggで「大人のHERO・次世代のHERO」をつくる親方`,
+        details: [
+          {
+            label: '業務内容',
+            value: `〈EGG JAM（子どもコミュニティ）〉
+※基本は子どもたちが主体となりますので、サポート・管理の役割
+・EGG JAMコミュニティーの運営・管理サポート
+・EGG JAMメンバーとの継続的な関係フォロー・コミュニティ育成
+
+〈HEROサロン（大人コミュニティ）〉
+・HEROサロンの運営・管理
+・月に1回の月例会の企画
+
+〈イベント全般〉
+・イベント企画・当日担当（出張／コラボ／自社主催）
+・Hero Eggで行われるイベントだけでなく、毎年開催される大きなイベント「THE HERO SUMMIT」の内部にも関われます`,
+          },
+          {
+            label: '給与',
+            value: `正社員：月給25万円〜
+業務委託：要相談`,
+          },
+        ],
+      },
+      {
+        name: '③ スクール「HERO SCHOOL（ヒロスク）」運営担当',
+        description: `有償スクールの準備・運営・管理を担う役割`,
+        details: [
+          {
+            label: '業務内容',
+            value: `〈スクール準備・運営〉
+・スクールの運営管理
+・当日の教室セッティング
+・当日の進行補助
+・問い合わせ／個別サポート対応
+・本部への活動報告
+
+〈外部パートナー連携〉
+・共創パートナーが提供するスクールコンテンツの調整・連絡窓口`,
+          },
+          {
+            label: '給与',
+            value: `正社員：月給20万円〜
+業務委託：要相談`,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'marketing',
+    title: 'マーケティング',
+    description: `Meta Heroesの全事業を横断し、Webサイト・SNS・広告・コンテンツマーケティング等の戦略立案から実行までを担うポジションです。`,
+    positions: ['デジタルマーケター'],
+  },
+  {
+    id: 'corporate',
+    title: 'コーポレート',
+    description: `総務・労務・経理・人事など、Meta Heroesの組織運営を支えるバックオフィス業務全般をお任せします。`,
+    positions: ['総合事務'],
+  },
 ];
 
 const SELECTION_PROCESS = [
@@ -59,7 +185,7 @@ const SELECTION_PROCESS = [
 ];
 
 export const RecruitPage: React.FC = () => {
-  const [openCategory, setOpenCategory] = useState<string | null>('metaverse');
+  const [openCategory, setOpenCategory] = useState<string | null>('xr');
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const memberScrollRef = useRef<HTMLDivElement>(null);
   const blogScrollRef = useRef<HTMLDivElement>(null);
@@ -201,10 +327,10 @@ export const RecruitPage: React.FC = () => {
               <div className="bg-white p-8 flex-grow">
                 <ul className="space-y-0 divide-y divide-gray-100">
                   {[
-                    { label: 'メタバース事業', to: '/business#metaverse' },
+                    { label: 'XR事業', to: '/business#xr' },
                     { label: 'AI事業', to: '/business#ai' },
                     { label: 'イベント事業', to: '/business#event' },
-                    { label: '施設運営事業', to: '/business#facility' },
+                    { label: '施設活用事業', to: '/business#facility' },
                   ].map((link) => (
                     <li key={link.label}>
                       <Link to={link.to} className="flex items-center justify-between py-5 group hover:bg-gray-50 transition-colors px-2">
@@ -274,7 +400,7 @@ export const RecruitPage: React.FC = () => {
                     <span className="text-lg font-black text-gray-800 tracking-wide">{type.title}</span>
                     <span className="text-2xl font-light text-gray-400 transition-all duration-300">{isOpen ? '－' : '＋'}</span>
                   </button>
-                  <div className={`overflow-hidden transition-[max-height,opacity] duration-500 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100 mb-8' : 'max-h-0 opacity-0'}`}>
+                  <div className={`overflow-hidden transition-[max-height,opacity] duration-500 ease-in-out ${isOpen ? 'max-h-[5000px] opacity-100 mb-8' : 'max-h-0 opacity-0'}`}>
                     <div className="pt-2 pb-4 px-2 md:px-4">
                       {type.description && <p className="text-sm font-medium text-gray-600 leading-relaxed whitespace-pre-line mb-8">{type.description}</p>}
                       {type.positions && (
@@ -286,12 +412,74 @@ export const RecruitPage: React.FC = () => {
                           ))}
                         </div>
                       )}
+                      {type.positionDetails && (
+                        <div className="space-y-10 mb-8">
+                          {type.positionDetails.map((position) => (
+                            <div key={position.name}>
+                              <div className="flex flex-col gap-3 mb-6">
+                                <div className="inline-flex">
+                                  <span className="px-8 py-3 border border-gray-400 text-sm font-bold text-gray-800 rounded bg-white min-w-[240px] text-center">{position.name}</span>
+                                </div>
+                              </div>
+                              {position.description && (
+                                <p className="text-sm font-medium text-gray-600 leading-relaxed whitespace-pre-line mb-6">{position.description}</p>
+                              )}
+                              <div className="border border-gray-200 rounded-lg overflow-hidden">
+                                {position.details.map((detail, i) => (
+                                  <div key={detail.label} className={`flex flex-col sm:flex-row ${i > 0 ? 'border-t border-gray-200' : ''}`}>
+                                    <div className="sm:w-32 flex-shrink-0 bg-gray-50 px-4 py-3 sm:py-4">
+                                      <span className="text-xs font-black text-gray-500 tracking-wider">{detail.label}</span>
+                                    </div>
+                                    <div className="px-4 py-3 sm:py-4 flex-grow">
+                                      <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{detail.value}</p>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {type.details && (
+                        <div className="mb-8 border border-gray-200 rounded-lg overflow-hidden">
+                          {type.details.map((detail, i) => (
+                            <div key={detail.label} className={`flex flex-col sm:flex-row ${i > 0 ? 'border-t border-gray-200' : ''}`}>
+                              <div className="sm:w-32 flex-shrink-0 bg-gray-50 px-4 py-3 sm:py-4">
+                                <span className="text-xs font-black text-gray-500 tracking-wider">{detail.label}</span>
+                              </div>
+                              <div className="px-4 py-3 sm:py-4 flex-grow">
+                                <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{detail.value}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                       {type.link && (
-                        <Link to="/members" className="inline-flex items-center gap-2 group">
-                          <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 text-blue-500"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
-                          </div>
-                          <span className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">チームメンバー紹介</span>
+                        type.link.startsWith('http') ? (
+                          <a href={type.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 group">
+                            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 text-blue-500"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                            </div>
+                            <span className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">求人詳細を見る（doda）</span>
+                          </a>
+                        ) : (
+                          <Link to="/members" className="inline-flex items-center gap-2 group">
+                            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 text-blue-500"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+                            </div>
+                            <span className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">チームメンバー紹介</span>
+                          </Link>
+                        )
+                      )}
+                      {type.contactRecruit && (
+                        <Link
+                          to="/contact?type=recruit"
+                          className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-[#2563eb] to-[#06b6d4] text-white rounded-full shadow-md hover:shadow-lg transition-all group"
+                        >
+                          <span className="text-sm font-bold tracking-wider">採用に関するお問い合わせ</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 group-hover:translate-x-1 transition-transform">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                          </svg>
                         </Link>
                       )}
                     </div>

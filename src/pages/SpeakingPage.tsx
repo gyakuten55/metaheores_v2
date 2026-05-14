@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { PageHero } from '../components/PageHero';
 import { Link } from 'react-router-dom';
 import { getBlogs, Blog } from '../lib/microcms';
@@ -49,21 +49,11 @@ const PRICING_PLANS = [
   },
 ];
 
-const SPEAKER_IMAGES_ROW1 = [
+const SPEAKER_IMAGES = [
   '/assets/services/speaking/speaker/speaker-1.png',
   '/assets/services/speaking/speaker/speaker-2.png',
   '/assets/services/speaking/speaker/speaker-3.png',
   '/assets/services/speaking/speaker/speaker-4.png',
-  '/assets/services/speaking/speaker/speaker-1.png',
-  '/assets/services/speaking/speaker/speaker-2.png',
-  '/assets/services/speaking/speaker/speaker-3.png',
-  '/assets/services/speaking/speaker/speaker-4.png',
-];
-
-const SPEAKER_IMAGES_ROW2 = [
-  '/assets/services/speaking/speaker/speaker-8.png',
-  '/assets/services/speaking/speaker/speaker-9.png',
-  '/assets/services/speaking/speaker/speaker-10.png',
   '/assets/services/speaking/speaker/speaker-8.png',
   '/assets/services/speaking/speaker/speaker-9.png',
   '/assets/services/speaking/speaker/speaker-10.png',
@@ -118,6 +108,13 @@ export const SpeakingPage: React.FC = () => {
   const [agreed, setAgreed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [startTime] = useState(Date.now());
+
+  const speakerRowRef = useRef<HTMLDivElement>(null);
+
+  const scrollSpeakers = (direction: 'left' | 'right') => {
+    const amount = direction === 'left' ? -360 : 360;
+    speakerRowRef.current?.scrollBy({ left: amount, behavior: 'smooth' });
+  };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -346,28 +343,36 @@ export const SpeakingPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="w-full overflow-hidden space-y-3 md:space-y-4">
-          {/* Row 1: slides from right */}
-          <div className="overflow-hidden">
-            <div className="flex w-max animate-scroll-left">
-              {[...SPEAKER_IMAGES_ROW1, ...SPEAKER_IMAGES_ROW1].map((src, idx) => (
-                <div key={idx} className="flex-shrink-0 px-1 md:px-1.5">
-                  <img src={src} alt={`登壇写真 ${(idx % SPEAKER_IMAGES_ROW1.length) + 1}`} className="h-[140px] sm:h-[180px] md:h-[220px] lg:h-[260px] aspect-[4/3] object-cover rounded-md md:rounded-lg" />
+        <div className="relative w-full">
+          <div ref={speakerRowRef} className="overflow-x-auto scrollbar-hide snap-x">
+            <div className="flex w-max">
+              {SPEAKER_IMAGES.map((src, idx) => (
+                <div key={idx} className="flex-shrink-0 px-1 md:px-1.5 snap-start">
+                  <img src={src} alt={`登壇写真 ${idx + 1}`} className="h-[140px] sm:h-[180px] md:h-[220px] lg:h-[260px] aspect-[4/3] object-cover rounded-md md:rounded-lg" />
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Row 2: slides from left */}
-          <div className="overflow-hidden">
-            <div className="flex w-max animate-scroll-right">
-              {[...SPEAKER_IMAGES_ROW2, ...SPEAKER_IMAGES_ROW2].map((src, idx) => (
-                <div key={idx} className="flex-shrink-0 px-1 md:px-1.5">
-                  <img src={src} alt={`登壇写真 ${(idx % SPEAKER_IMAGES_ROW2.length) + 6}`} className="h-[140px] sm:h-[180px] md:h-[220px] lg:h-[260px] aspect-[4/3] object-cover rounded-md md:rounded-lg" />
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Manual Slide Controls */}
+          <button
+            onClick={() => scrollSpeakers('left')}
+            aria-label="前へ"
+            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-gray-400 hover:text-blue-600 transition-all z-10"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+          <button
+            onClick={() => scrollSpeakers('right')}
+            aria-label="次へ"
+            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-gray-400 hover:text-blue-600 transition-all z-10"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-5 h-5 md:w-6 md:h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
         </div>
       </section>
 

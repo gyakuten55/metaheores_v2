@@ -75,7 +75,7 @@ export const TopPage: React.FC = () => {
     if (activeTab === 'all') return true;
     if (activeTab === 'news_release') return !item.isMemberBlog && item.category_new?.some(c => c === 'PRtimes' || c === 'press' || c === 'ニュースリリース');
     if (activeTab === 'information') return !item.isMemberBlog && item.category_new?.some(c => c === 'info' || c === 'information' || c === 'インフォメーション' || c === 'お知らせ');
-    if (activeTab === 'knowledge') return !item.isMemberBlog && item.category_new?.some(c => c === 'knowledge' || c === 'ナレッジ');
+    if (activeTab === 'knowledge') return !item.isMemberBlog && item.category_new?.some(c => c === 'ナレッジ');
     if (activeTab === 'blog') return item.isMemberBlog;
     return true;
   });
@@ -409,36 +409,54 @@ export const TopPage: React.FC = () => {
           </div>
 
           {/* News List */}
-          <div className="max-w-3xl mx-auto px-2 md:px-0">
+          <div className="max-w-5xl mx-auto px-2 md:px-0">
             {filteredNews.length > 0 ? (
-              <div className="divide-y divide-gray-100">
-                {filteredNews.slice(0, 5).map((item) => (
-                  <Link 
-                    key={item.id} 
-                    to={item.isMemberBlog ? `/member-blog/${item.id}` : `/news/${item.id}`} 
-                    className="group flex flex-col md:flex-row md:items-center gap-2 md:gap-4 py-4 md:py-3 hover:bg-gray-50/50 transition-all px-2 -mx-2 rounded-lg"
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {filteredNews.slice(0, 3).map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.08 }}
                   >
-                    <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
-                      <time className="text-[11px] md:text-[13px] font-bold text-gray-900 font-mono w-auto md:w-24">
-                        {formatDate(item.publishedAt)}
-                      </time>
-                      {item.isMemberBlog && (
-                        <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[9px] font-black tracking-widest uppercase rounded border border-blue-100 md:hidden">
-                          BLOG
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-3 flex-grow min-w-0">
-                      {item.isMemberBlog && (
-                        <span className="hidden md:inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-[9px] font-black tracking-widest uppercase rounded border border-blue-100 flex-shrink-0">
-                          BLOG
-                        </span>
-                      )}
-                      <h3 className="text-sm md:text-[14px] font-bold text-gray-700 group-hover:text-blue-600 transition-colors line-clamp-2 md:line-clamp-1 flex-grow leading-relaxed md:leading-normal">
-                        {item.title}
-                      </h3>
-                    </div>
-                  </Link>
+                    <Link
+                      to={item.isMemberBlog ? `/member-blog/${item.id}` : `/news/${item.id}`}
+                      className="group block bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300"
+                    >
+                      {/* Thumbnail */}
+                      <div className="w-full aspect-video overflow-hidden bg-gray-100">
+                        {item.eyecatch?.url ? (
+                          <img
+                            src={item.eyecatch.url}
+                            alt=""
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                            <span className="text-gray-300 text-2xl font-bold">N</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-5">
+                        <div className="flex items-center gap-2 mb-3">
+                          <time className="text-[10px] md:text-[11px] font-bold text-gray-400 font-mono">
+                            {formatDate(item.publishedAt)}
+                          </time>
+                          {item.isMemberBlog && (
+                            <span className="px-1.5 py-0.5 bg-blue-50 text-blue-600 text-[8px] font-black tracking-widest uppercase rounded border border-blue-100">
+                              BLOG
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-sm md:text-[15px] font-bold text-gray-700 group-hover:text-blue-600 transition-colors line-clamp-2 leading-relaxed">
+                          {item.title}
+                        </h3>
+                      </div>
+                    </Link>
+                  </motion.div>
                 ))}
               </div>
             ) : (
@@ -449,8 +467,8 @@ export const TopPage: React.FC = () => {
           </div>
           
           <div className="mt-10 text-center">
-             <Link 
-               to={activeTab === 'blog' ? "/members/blog" : "/news"} 
+             <Link
+               to={activeTab === 'blog' ? "/members/blog" : activeTab === 'knowledge' ? "/knowledge" : "/news"}
                className="text-[10px] font-bold text-gray-400 hover:text-blue-600 transition-colors tracking-[0.2em] border-b border-gray-100 hover:border-blue-600 pb-1"
              >
                VIEW ALL

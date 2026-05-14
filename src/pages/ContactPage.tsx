@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { PageHero } from '../components/PageHero';
 import { ChevronRight, CheckCircle2, ChevronLeft, Send } from 'lucide-react';
 
 type ContactCategory = 'business' | 'service' | 'partner' | 'recruit' | 'press' | 'other' | '';
+
+const VALID_CATEGORIES: ContactCategory[] = ['business', 'service', 'partner', 'recruit', 'press', 'other'];
 type FormStep = 'input' | 'confirm' | 'complete';
 
 interface FormData {
@@ -38,11 +40,20 @@ const INITIAL_DATA: FormData = {
 };
 
 export const ContactPage: React.FC = () => {
+  const location = useLocation();
   const [step, setStep] = useState<FormStep>('input');
   const [agreed, setAgreed] = useState(false);
   const [formData, setFormData] = useState<FormData>(INITIAL_DATA);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [startTime] = useState(Date.now()); // Track when the form was loaded
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const type = params.get('type');
+    if (type && VALID_CATEGORIES.includes(type as ContactCategory)) {
+      setFormData(prev => ({ ...prev, category: type as ContactCategory }));
+    }
+  }, [location.search]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -140,9 +151,20 @@ export const ContactPage: React.FC = () => {
             {/* STEP 1: INPUT */}
             {step === 'input' && (
               <motion.div key="input" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-                <div className="mb-12 text-center">
+                <div className="mb-8 text-center">
                   <p className="text-sm text-gray-500 font-bold">以下のフォームより必要事項をご入力の上、送信してください。</p>
                 </div>
+
+                {/* 営業連絡お断り */}
+                <div className="mb-12 max-w-2xl mx-auto text-center">
+                  <span className="text-[10px] font-black tracking-[0.4em] text-gray-400 uppercase block mb-3">Notice</span>
+                  <p className="text-sm font-bold text-gray-800 tracking-wider mb-3">営業目的でのご連絡はご遠慮ください。</p>
+                  <p className="text-xs text-gray-500 font-medium leading-[1.9]">
+                    本フォームは事業・サービスに関するご相談、採用・取材等のお問い合わせ専用です。<br className="hidden md:block" />
+                    営業・売り込み目的のメッセージにつきましては、原則お返事いたしかねます。
+                  </p>
+                </div>
+
                 <form className="space-y-0 border-t-2 border-gray-900" onSubmit={goToConfirm}>
                   {/* Honeypot field for spam prevention */}
                   <div style={{ position: 'absolute', left: '-9999px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>

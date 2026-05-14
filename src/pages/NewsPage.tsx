@@ -5,6 +5,23 @@ import { ChevronDown, Search } from 'lucide-react';
 import { getBlogs, Blog, Category, getCategoryOptions } from '../lib/microcms';
 import { PageHero } from '../components/PageHero';
 
+// サービス（具体的な事業・プロダクト）に該当するカテゴリID
+const SERVICE_CATEGORY_IDS = new Set<string>([
+  'XRソリューション',
+  'holoshare',
+  'HERO AIVO',
+  'AI人材育成研修',
+  '防災メタバース',
+  '防災万博 / こども防災万博',
+  'ゲームメイキングキャンプ',
+  'Hero Egg',
+  'GLOBAL HERO SUMMIT',
+  'EGG JAM',
+  'AI MONDAY',
+  'ゲーム × イベント',
+  'Meta Heroes Guild',
+]);
+
 export const NewsPage: React.FC = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -14,9 +31,28 @@ export const NewsPage: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [knowledgeBlogs, setKnowledgeBlogs] = useState<Blog[]>([]);
 
-  // PC: 30, Mobile: 10
-  const limit = typeof window !== 'undefined' && window.innerWidth >= 1024 ? 30 : 10;
+  // PC: 9, Mobile: 6
+  const limit = typeof window !== 'undefined' && window.innerWidth >= 1024 ? 9 : 6;
+
+  // ナレッジ最新記事の取得
+  useEffect(() => {
+    const fetchKnowledge = async () => {
+      try {
+        const response = await getBlogs(
+          6,
+          undefined,
+          { categoryId: 'ナレッジ' },
+          0
+        );
+        setKnowledgeBlogs(response.contents || []);
+      } catch (error) {
+        console.error('Failed to fetch knowledge articles', error);
+      }
+    };
+    fetchKnowledge();
+  }, []);
 
   // カテゴリ取得
   useEffect(() => {
@@ -43,12 +79,13 @@ export const NewsPage: React.FC = () => {
       try {
         const offset = (currentPage - 1) * limit;
         const response = await getBlogs(
-          limit, 
-          undefined, 
+          limit,
+          undefined,
           {
             year: selectedYear,
             keyword: searchQuery,
-            categoryId: selectedCategory
+            categoryId: selectedCategory,
+            excludeCategoryId: 'ナレッジ',
           },
           offset
         );
@@ -120,15 +157,15 @@ export const NewsPage: React.FC = () => {
                 <div className="flex flex-col lg:flex-row justify-between items-end gap-8 mb-16 border-b border-gray-100 pb-12 max-w-7xl mx-auto">
                     {/* Filter Group */}
                     <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                        {/* Category Select */}
+                        {/* Service Category Select */}
                         <div className="relative min-w-[200px]">
                             <select
-                                value={selectedCategory}
+                                value={SERVICE_CATEGORY_IDS.has(selectedCategory) ? selectedCategory : ''}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
                                 className="w-full appearance-none px-6 py-3 bg-gray-50 border-none rounded-sm text-xs font-black tracking-widest text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer pr-12"
                             >
-                                <option value="">CATEGORY: ALL</option>
-                                {categories.map((cat) => (
+                                <option value="">SERVICE: ALL</option>
+                                {categories.filter(cat => SERVICE_CATEGORY_IDS.has(cat.id)).map((cat) => (
                                     <option key={cat.id} value={cat.id}>
                                         {cat.name.toUpperCase()}
                                     </option>
@@ -136,7 +173,24 @@ export const NewsPage: React.FC = () => {
                             </select>
                             <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
                         </div>
-        
+
+                        {/* Other Category Select */}
+                        <div className="relative min-w-[200px]">
+                            <select
+                                value={!SERVICE_CATEGORY_IDS.has(selectedCategory) ? selectedCategory : ''}
+                                onChange={(e) => setSelectedCategory(e.target.value)}
+                                className="w-full appearance-none px-6 py-3 bg-gray-50 border-none rounded-sm text-xs font-black tracking-widest text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer pr-12"
+                            >
+                                <option value="">CATEGORY: ALL</option>
+                                {categories.filter(cat => !SERVICE_CATEGORY_IDS.has(cat.id)).map((cat) => (
+                                    <option key={cat.id} value={cat.id}>
+                                        {cat.name.toUpperCase()}
+                                    </option>
+                                ))}
+                            </select>
+                            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 pointer-events-none" />
+                        </div>
+
                         {/* Year Select */}
                         <div className="relative min-w-[160px]">
                             <select
@@ -226,7 +280,7 @@ export const NewsPage: React.FC = () => {
                   >
                     <ChevronDown className="w-5 h-5 text-gray-400 rotate-90 group-hover:text-blue-600" />
                   </button>
-                  
+
                   <div className="flex items-center gap-2">
                     {getPageNumbers().map((page, idx) => (
                       <React.Fragment key={idx}>
@@ -236,8 +290,8 @@ export const NewsPage: React.FC = () => {
                           <button
                             onClick={() => setCurrentPage(Number(page))}
                             className={`w-12 h-12 rounded-full text-xs font-black transition-all ${
-                              currentPage === page 
-                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-100' 
+                              currentPage === page
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-100'
                                 : 'text-gray-400 hover:bg-gray-50'
                             }`}
                           >
@@ -260,6 +314,60 @@ export const NewsPage: React.FC = () => {
             </>
           )}
         </div>
+
+        {/* Knowledge Section */}
+        {knowledgeBlogs.length > 0 && (
+          <section className="max-w-7xl mx-auto px-4 mt-32 pt-20 border-t border-gray-100">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
+              <div>
+                <span className="block text-[10px] font-black tracking-[0.3em] text-blue-500 uppercase mb-2">Knowledge</span>
+                <h2 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">ナレッジ</h2>
+                <p className="mt-3 text-sm font-bold text-gray-500">AI・メタバース・XRに関する知見をお届けします</p>
+              </div>
+              <Link
+                to="/knowledge"
+                className="inline-flex items-center gap-2 text-xs font-black text-gray-400 hover:text-blue-600 transition-colors tracking-[0.2em] uppercase border-b border-gray-200 hover:border-blue-600 pb-1 self-start md:self-end"
+              >
+                View All
+                <ChevronDown className="w-4 h-4 -rotate-90" />
+              </Link>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"
+            >
+              {knowledgeBlogs.map((item) => (
+                <Link key={item.id} to={`/news/${item.id}`} className="group flex flex-col h-full">
+                  <div className="relative aspect-video overflow-hidden rounded-xl bg-gray-100 mb-6 shadow-sm border border-gray-50">
+                    <img
+                      src={item.eyecatch?.url || '/assets/top/business_bg.png'}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  </div>
+                  <div className="flex flex-col flex-grow">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-6 h-6 rounded-full border border-blue-200 flex items-center justify-center flex-shrink-0 transition-colors group-hover:bg-blue-600 group-hover:border-blue-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3 text-blue-500 group-hover:text-white">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                      </div>
+                      <time className="text-[10px] font-black text-gray-400 tracking-[0.2em] font-mono">
+                        {formatDate(item.publishedAt)}
+                      </time>
+                    </div>
+                    <h3 className="text-base font-black text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2 tracking-tight leading-snug">
+                      {item.title}
+                    </h3>
+                  </div>
+                </Link>
+              ))}
+            </motion.div>
+          </section>
+        )}
       </div>
     </div>
   );

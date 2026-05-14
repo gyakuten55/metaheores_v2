@@ -5,9 +5,9 @@ import { ChevronRight } from 'lucide-react';
 const SERVICES = [
   {
     id: 'digital',
-    subLabel: 'デジタルソリューション',
-    title: 'XR & AI Solutions',
-    tags: ['メタバース開発', 'AIシステム開発', 'AI人材育成企業研修'],
+    subLabel: 'AI・XRソリューション',
+    title: 'DX Solution',
+    tags: ['人材開発支援', 'VR・AR開発', 'マーケティング支援', 'システム開発', 'ゲーム開発'],
     bgImage: '/assets/top/service_bg_xrai.png',
     link: '/services#digital',
     gradient: 'from-blue-600/80 to-cyan-500/40'
@@ -15,17 +15,17 @@ const SERVICES = [
   {
     id: 'education',
     subLabel: '教育×テクノロジー',
-    title: 'Technology & Education',
-    tags: ['Hero Egg', 'ゲームクリエイター体験会', '防災万博'],
+    title: 'Edtech',
+    tags: ['DXスクール', 'STEAM教育', '施設・スペース提供'],
     bgImage: '/assets/top/service_bg_techedu.png',
-    link: '/services#social',
+    link: '/services#education',
     gradient: 'from-emerald-600/80 to-teal-500/40'
   },
   {
     id: 'community',
-    subLabel: '共創・コミュニティ',
-    title: 'Community&Co-creation',
-    tags: ['イベント開催', '講演会', 'オープンイノベーション'],
+    subLabel: 'イベント・コミュニティ・共創',
+    title: 'Innovation',
+    tags: ['コミュニティ形成・運営', 'オープンイノベーション', 'イベント企画・制作・運営'],
     bgImage: '/assets/top/service_bg_community.png',
     link: '/services#community',
     gradient: 'from-purple-600/80 to-pink-500/40'
@@ -38,10 +38,10 @@ export const ServiceSection: React.FC = () => {
       <div className="container mx-auto px-4 mb-12">
         <div className="text-center">
           <span className="text-[10px] md:text-xs font-bold tracking-[0.4em] block mb-1 uppercase text-gray-400">
-            SERVICE
+            SOLUTION
           </span>
           <div className="flex flex-col items-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">サービス</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">ソリューション</h2>
             <div className="w-8 h-0.5 bg-blue-600" />
           </div>
         </div>

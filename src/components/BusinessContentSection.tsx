@@ -26,7 +26,7 @@ const BUSINESS_ITEMS = [
     titleJa: 'イベント',
     titleEn: 'Event',
     image: '/assets/business-content/event/event_hero.png',
-    logo: '/assets/top/ghs_logo.png',
+    logo: '/assets/top/ths_logo.png',
     link: '/business',
     align: 'left'
   },
@@ -80,7 +80,7 @@ export const BusinessContentSection: React.FC = () => {
                   </motion.div>
 
                   {/* Logo Banner Space Holder */}
-                  <div className="h-12 md:h-16" />
+                  <div className="h-20 md:h-28" />
 
                   {/* Service Logo (Above Line) */}
                   <motion.div
@@ -92,11 +92,11 @@ export const BusinessContentSection: React.FC = () => {
                       item.align === 'left' ? 'md:justify-end md:pr-10' : 'md:justify-start md:pl-10'
                     } justify-center`}
                   >
-                    <img 
-                      src={item.logo} 
-                      alt={`${item.titleJa} logo`} 
+                    <img
+                      src={item.logo}
+                      alt={`${item.titleJa} logo`}
                       loading="lazy"
-                      className="h-8 md:h-10 w-auto object-contain max-w-[180px]"
+                      className="h-12 md:h-16 w-auto object-contain max-w-[240px] md:max-w-[280px]"
                     />
                   </motion.div>
 

@@ -32,3 +32,10 @@ dist-ssr
 
 # Supabase
 supabase/.temp
+
+# Next.js (not used, but prevent accidental commits)
+.next/
+next-env.d.ts
+
+# AI assistant files
+.gemini/

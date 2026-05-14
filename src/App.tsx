@@ -4,6 +4,7 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { BlogDetailPage } from './pages/BlogDetailPage';
 import { MemberPage } from './pages/MemberPage';
 import { MemberListPage } from './pages/MemberListPage';
+import { MembersAllPage } from './pages/MembersAllPage';
 import { NewsPage } from './pages/NewsPage';
 import { WorksPage } from './pages/WorksPage';
 import { TopPage } from './pages/TopPage';
@@ -41,6 +42,7 @@ import { RecruitPage } from './pages/RecruitPage';
 import { FAQPage } from './pages/FAQPage';
 import { MemberBlogPage } from './pages/MemberBlogPage';
 import { SpeakingPage } from './pages/SpeakingPage';
+import { KnowledgePage } from './pages/KnowledgePage';
 
 import LoginPage from './pages/agency/LoginPage';
 import { Footer } from './components/Footer';
@@ -98,7 +100,17 @@ function App() {
                       "@type": "Person",
                       "name": "松石 和俊"
                     },
-                    "foundingDate": "2021-12-03"
+                    "foundingDate": "2021-12-03",
+                    "sameAs": [
+                      "https://prtimes.jp/main/html/searchrlp/company_id/121285.html",
+                      "https://www.facebook.com/metaheroes.jp"
+                    ],
+                    "contactPoint": {
+                      "@type": "ContactPoint",
+                      "contactType": "customer service",
+                      "url": "https://meta-heroes.co.jp/contact",
+                      "availableLanguage": "Japanese"
+                    }
                   }}
                 />
                 <TopPage />
@@ -153,15 +165,17 @@ function App() {
             <Route path="/services/hero-egg" element={<><SEO title="Hero Egg | 子どもから大人まで学べるDX教育施設 | 株式会社MetaHeroes" description="すべてのこどもに「ヒーロー」の卵を。10GBの超高速回線やハイスペックPCを完備し、次世代のテクノロジーを楽しみながら学べるDX教育プラットフォーム。" keywords="Hero Egg, DX教育, メタバース教育, プログラミング, 子ども教育" /><HeroEggPage /></>} />
             <Route path="/services/game-making-camp" element={<><SEO title="ゲームメイキングキャンプ | 親子で学ぶゲーム制作体験 | 株式会社MetaHeroes" description="プロの講師から学ぶ、子ども向けゲーム制作ワークショップ。Fortnite（UEFN）やRobloxなどを通じて、論理的思考力とクリエイティビティを育みます。" keywords="ゲーム制作, UEFN, Roblox, プログラミング教室, 夏休みイベント" /><GameMakingCampPage /></>} />
             <Route path="/services/hero-expo" element={<><SEO title="HERO EXPO | 次世代DX体験イベント | 株式会社MetaHeroes" /><HeroExpoPage /></>} />
-            <Route path="/services/global-hero-summit" element={<><SEO title="Global Hero Summit | 株式会社MetaHeroes" /><GlobalHeroSummitPage /></>} />
+            <Route path="/services/global-hero-summit" element={<><SEO title="THE HERO SUMMIT | 株式会社MetaHeroes" /><GlobalHeroSummitPage /></>} />
             <Route path="/services/egg-jam" element={<><SEO title="EGG JAM | 株式会社MetaHeroes" /><EggJamPage /></>} />
             <Route path="/services/ai-monday" element={<><SEO title="AI MONDAY | 生成AI実践学習コミュニティ | 株式会社MetaHeroes" description="毎週月曜日開催。生成AIの最新情報を学び、アウトプットする実践型コミュニティ。AIライト層からビジネスリーダーまで、共に学び成長する場を提供します。" /><AiMondayPage /></>} />
             <Route path="/services/game-event" element={<><SEO title="ゲーム×イベント | 没入型プロモーション | 株式会社MetaHeroes" /><GameEventPage /></>} />
             <Route path="/services/meta-heroes-guild" element={<><SEO title="Meta Heroes Guild | クリエイター共創コミュニティ | 株式会社MetaHeroes" /><MetaHeroesGuildPage /></>} />
             <Route path="/ceo-message" element={<><SEO title="代表メッセージ | 株式会社MetaHeroes" /><CeoMessagePage /></>} />
             <Route path="/news" element={<><SEO title="ニュース | 株式会社MetaHeroes" /><NewsPage /></>} />
+            <Route path="/knowledge" element={<><SEO title="ナレッジ | 株式会社MetaHeroes" description="AI・メタバース・XRに関するナレッジ記事。MetaHeroesの知見や業界の最新動向をお届けします。" /><KnowledgePage /></>} />
             <Route path="/works" element={<><SEO title="制作実績 | 株式会社MetaHeroes" /><WorksPage /></>} />
             <Route path="/members/blog" element={<><SEO title="メンバーブログ | 株式会社MetaHeroes" /><MemberBlogPage /></>} />
+            <Route path="/members/list" element={<><SEO title="メンバー一覧 | 株式会社MetaHeroes" /><MembersAllPage /></>} />
             <Route path="/members" element={<><SEO title="メンバー紹介 | 株式会社MetaHeroes" /><MemberListPage /></>} />
             <Route path="/member/:memberId" element={<MemberPage />} />
             <Route path="/news/:blogId" element={<BlogDetailPage />} />

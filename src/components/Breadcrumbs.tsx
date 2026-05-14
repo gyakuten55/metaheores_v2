@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
+
+const SITE_URL = 'https://meta-heroes.co.jp';
 
 const ROUTE_MAP: { [key: string]: string } = {
   'about': '企業情報',
@@ -23,7 +25,7 @@ const ROUTE_MAP: { [key: string]: string } = {
   'hero-egg': 'Hero Egg',
   'game-making-camp': 'ゲームメイキングキャンプ',
   'hero-expo': 'HERO EXPO',
-  'global-hero-summit': 'Global Hero Summit',
+  'global-hero-summit': 'THE HERO SUMMIT',
   'egg-jam': 'EGG JAM',
   'ai-monday': 'AI MONDAY',
   'game-event': 'ゲーム×イベント',
@@ -44,11 +46,51 @@ export const Breadcrumbs: React.FC = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
 
+  // BreadcrumbList 構造化データを出力
+  useEffect(() => {
+    if (location.pathname === '/') return;
+
+    const items = [
+      { name: 'HOME', url: `${SITE_URL}/` },
+      ...pathnames.map((name, index) => {
+        const url = `${SITE_URL}/${pathnames.slice(0, index + 1).join('/')}`;
+        const label = ROUTE_MAP[name] || name;
+        return { name: label.length > 20 ? '詳細' : label, url };
+      }),
+    ];
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+        item: item.url,
+      })),
+    };
+
+    const scriptId = 'json-ld-breadcrumb';
+    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+    script.text = JSON.stringify(schema);
+
+    return () => {
+      const el = document.getElementById(scriptId);
+      if (el) el.remove();
+    };
+  }, [location.pathname, pathnames]);
+
   // トップページでは表示しない
   if (location.pathname === '/') return null;
 
   return (
-    <nav className="relative z-50 pointer-events-none">
+    <nav className="relative z-50 pointer-events-none" aria-label="パンくずリスト">
       <div className="container mx-auto px-4 sm:px-8">
         <ol className="flex items-center flex-wrap gap-2 text-[10px] font-bold tracking-wider pointer-events-auto py-4">
           <li className="flex items-center">

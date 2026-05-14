@@ -1,87 +1,242 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- トップ -->
   <url>
     <loc>https://meta-heroes.co.jp/</loc>
-    <lastmod>2026-02-01</lastmod>
+    <lastmod>2026-04-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- 企業情報 -->
   <url>
     <loc>https://meta-heroes.co.jp/about</loc>
-    <lastmod>2026-02-01</lastmod>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/about/company</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/about/profile</loc>
+    <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://meta-heroes.co.jp/about/mission</loc>
-    <lastmod>2026-02-01</lastmod>
+    <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://meta-heroes.co.jp/about/offices</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/about/conduct</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/about/privacy</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/about/group</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/ceo-message</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 事業内容 -->
+  <url>
     <loc>https://meta-heroes.co.jp/business</loc>
-    <lastmod>2026-02-01</lastmod>
+    <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- サービス -->
   <url>
     <loc>https://meta-heroes.co.jp/services</loc>
-    <lastmod>2026-02-01</lastmod>
+    <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://meta-heroes.co.jp/services/xr</loc>
-    <lastmod>2026-02-01</lastmod>
+    <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/services/holoshare</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://meta-heroes.co.jp/services/hero-aivo</loc>
-    <lastmod>2026-02-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://meta-heroes.co.jp/services/bousai-metaverse</loc>
-    <lastmod>2026-02-01</lastmod>
+    <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://meta-heroes.co.jp/services/ai-training</loc>
-    <lastmod>2026-02-01</lastmod>
+    <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://meta-heroes.co.jp/news</loc>
-    <lastmod>2026-02-01</lastmod>
-    <changefreq>daily</changefreq>
+    <loc>https://meta-heroes.co.jp/services/bousai-metaverse</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://meta-heroes.co.jp/works</loc>
-    <lastmod>2026-02-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://meta-heroes.co.jp/recruit</loc>
-    <lastmod>2026-02-01</lastmod>
+    <loc>https://meta-heroes.co.jp/services/bousai-expo</loc>
+    <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://meta-heroes.co.jp/faq</loc>
-    <lastmod>2026-02-01</lastmod>
+    <loc>https://meta-heroes.co.jp/services/hero-egg</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/services/hero-egg-collection</loc>
+    <lastmod>2026-04-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://meta-heroes.co.jp/services/game-making-camp</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/services/hero-expo</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/services/global-hero-summit</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/services/egg-jam</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/services/ai-monday</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/services/game-event</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/services/meta-heroes-guild</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- ニュース・ナレッジ -->
+  <url>
+    <loc>https://meta-heroes.co.jp/news</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/knowledge</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 実績・ギャラリー -->
+  <url>
+    <loc>https://meta-heroes.co.jp/works</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/gallery</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- メンバー -->
+  <url>
+    <loc>https://meta-heroes.co.jp/members</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/members/blog</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 講演・登壇 -->
+  <url>
+    <loc>https://meta-heroes.co.jp/speaking</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 採用・お問い合わせ -->
+  <url>
+    <loc>https://meta-heroes.co.jp/recruit</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://meta-heroes.co.jp/contact</loc>
-    <lastmod>2026-02-01</lastmod>
+    <lastmod>2026-04-09</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://meta-heroes.co.jp/document-request</loc>
+    <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 </urlset>

@@ -608,7 +608,6 @@ export const kenjiData: MemberData = {
 // 全メンバーリスト（新しいメンバーを追加したらここに追加）
 export const allMembers: MemberData[] = [
   keitoData,
-  namiData,
   yuyaData,
   manamiData,
   kenjiData,
