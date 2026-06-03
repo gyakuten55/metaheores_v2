@@ -179,7 +179,8 @@ export const getBlogs = async (
     orders: '-publishedAt',
   };
 
-  const filterConditions: string[] = [];
+  // 下書き（publishedAt 未設定）を除外し、公開済み記事のみ取得する
+  const filterConditions: string[] = ['publishedAt[exists]'];
 
   if (filters?.categoryId) {
     if (Array.isArray(filters.categoryId)) {
