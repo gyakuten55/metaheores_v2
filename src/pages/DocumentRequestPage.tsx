@@ -104,13 +104,17 @@ export const DocumentRequestPage: React.FC = () => {
 
     setLoadingForm(true);
 
+    let handled = false;
     const handleMessage = (event: MessageEvent) => {
-      if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted') {
+      if (event.data?.type === 'hsFormCallback' && event.data?.eventName === 'onFormSubmitted') {
+        if (handled) return; // 二重送信防止
+        handled = true;
         console.log('HubSpot Form Submitted:', event.data);
 
-        if (event.data.id === '5e03bb7b-49a7-43cb-8644-9fa906c55a3a') {
+        {
+          // このページにフォームは1つだけのため、フォームIDの厳密一致は必須としない
           // Extract values robustly
-          const data = event.data.data;
+          const data = event.data.data || {};
           let email = '';
           let firstName = '';
           let lastName = '';
@@ -191,11 +195,11 @@ export const DocumentRequestPage: React.FC = () => {
             inlineMessage: "送信完了",
             onFormReady: () => {
               setLoadingForm(false);
-            },
-            onFormSubmitted: () => {
-              setStep('thanks');
-              window.scrollTo(0, 0);
             }
+            // onFormSubmitted は登録しない:
+            // 完了画面への遷移は postMessage リスナー(handleMessage)側で行う。
+            // ここで setStep('thanks') すると再レンダリングでリスナーが解除され、
+            // 直後の postMessage を取りこぼしてメール送信が呼ばれなくなるため。
           });
         } catch (e) {
           console.error('HubSpot Error:', e);
