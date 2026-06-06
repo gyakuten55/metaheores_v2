@@ -130,6 +130,45 @@ export const getCategoryOptions = async (): Promise<Category[]> => {
   return CATEGORY_MASTER;
 };
 
+// お役立ち資料(ダウンロード資料)の型定義
+export interface DocumentMaterial {
+  id: string;
+  title: string;
+  description?: string;
+  category?: string[]; // セレクトフィールド（単一選択でも配列で返る）
+  pdf?: {
+    url: string;
+  };
+  publishedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DocumentMaterialResponse {
+  contents: DocumentMaterial[];
+  totalCount: number;
+  offset: number;
+  limit: number;
+}
+
+// お役立ち資料一覧を取得（公開済みのみ・登録順）
+export const getDocuments = async (): Promise<DocumentMaterial[]> => {
+  try {
+    const res = await client.get<DocumentMaterialResponse>({
+      endpoint: 'documents',
+      queries: {
+        limit: 100,
+        orders: 'publishedAt',
+        filters: 'publishedAt[exists]',
+      },
+    });
+    return res.contents;
+  } catch (e) {
+    console.error('Failed to fetch documents from microCMS:', e);
+    return [];
+  }
+};
+
 // バナー(ピックアップニュース)の型定義
 export interface Banner {
   id: string;

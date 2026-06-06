@@ -4,22 +4,24 @@ import { PageHero } from '../components/PageHero';
 import { PdfThumbnail } from '../components/PdfThumbnail';
 import { ChevronRight, ChevronLeft, Check, Loader2, CheckCircle, Mail, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getDocuments } from '../lib/microcms';
 
 type FormStep = 'select' | 'input' | 'thanks';
 
 interface DocumentItem {
   id: string;
-  category: 'ai' | 'egg' | 'metaverse';
+  category: string; // セクション見出しに使うカテゴリ名
   title: string;
   description: string;
-  pdfUrl: string; // Preview URL
-  fileName: string; // Used for email link
+  pdfUrl: string; // プレビュー & 添付に使うPDFのURL
+  fileName: string; // メール本文・添付ファイル名に使う表示名
 }
 
-const DOCUMENTS: DocumentItem[] = [
+// microCMS未登録時 / 取得失敗時のフォールバック（従来のベタ書きデータ）
+const FALLBACK_DOCUMENTS: DocumentItem[] = [
   {
     id: 'ai-training',
-    category: 'ai',
+    category: 'AI事業',
     title: 'AI人材育成研修 ホワイトペーパー',
     description: '実務に直結するAIリスキリング研修のカリキュラムと導入メリットをまとめた最新資料です。',
     pdfUrl: '/assets/documents/ホワイトペーパー_AI人材育成研修プログラム (1).pdf',
@@ -27,7 +29,7 @@ const DOCUMENTS: DocumentItem[] = [
   },
   {
     id: 'hero-egg',
-    category: 'egg',
+    category: 'HERO EGG',
     title: 'Hero Egg ホワイトペーパー',
     description: 'Hero Eggサービスの概要・導入メリットをまとめたホワイトペーパーです。',
     pdfUrl: '/assets/documents/hero_egg_whitepaper.pdf',
@@ -35,7 +37,7 @@ const DOCUMENTS: DocumentItem[] = [
   },
   {
     id: 'metaverse',
-    category: 'metaverse',
+    category: 'メタバース・XR',
     title: 'メタバース事業 ホワイトペーパー',
     description: 'メタバース・XR事業の概要・活用事例をまとめたホワイトペーパーです。',
     pdfUrl: '/assets/documents/metaverse_whitepaper.pdf',
@@ -43,10 +45,58 @@ const DOCUMENTS: DocumentItem[] = [
   }
 ];
 
+// メール添付用のファイル名（拡張子付き）を安全に生成する
+const buildFileName = (title: string, pdfUrl: string): string => {
+  // URL末尾に .pdf を含むファイル名があればそれを優先
+  try {
+    const last = decodeURIComponent(pdfUrl.split('/').pop() || '');
+    if (last.toLowerCase().endsWith('.pdf')) return last;
+  } catch {
+    // ignore decode errors
+  }
+  return `${title}.pdf`;
+};
+
 export const DocumentRequestPage: React.FC = () => {
   const [step, setStep] = useState<FormStep>('select');
   const [selectedDocIds, setSelectedDocIds] = useState<string[]>([]);
   const [loadingForm, setLoadingForm] = useState(false);
+  const [documents, setDocuments] = useState<DocumentItem[]>([]);
+  const [loadingDocs, setLoadingDocs] = useState(true);
+
+  // microCMSからお役立ち資料を取得（失敗・空ならフォールバックを使用）
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const cmsDocs = await getDocuments();
+        const mapped: DocumentItem[] = cmsDocs
+          .filter(d => d.pdf?.url) // PDF未設定は除外
+          .map(d => ({
+            id: d.id,
+            category: d.category?.[0] || 'その他',
+            title: d.title,
+            description: d.description || '',
+            pdfUrl: d.pdf!.url,
+            fileName: buildFileName(d.title, d.pdf!.url),
+          }));
+        if (active) setDocuments(mapped.length > 0 ? mapped : FALLBACK_DOCUMENTS);
+      } catch {
+        if (active) setDocuments(FALLBACK_DOCUMENTS);
+      } finally {
+        if (active) setLoadingDocs(false);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // 表示順を保ったカテゴリ一覧（資料に登場した順）
+  const categories = documents.reduce<string[]>((acc, doc) => {
+    if (!acc.includes(doc.category)) acc.push(doc.category);
+    return acc;
+  }, []);
 
   // Form Loader
   useEffect(() => {
@@ -92,9 +142,8 @@ export const DocumentRequestPage: React.FC = () => {
 
           console.log('Extracted Data:', { email, fullName, company });
 
-          const selectedFiles = DOCUMENTS
-            .filter(doc => selectedDocIds.includes(doc.id))
-            .map(doc => doc.fileName);
+          const selectedDocs = documents.filter(doc => selectedDocIds.includes(doc.id));
+          const selectedFiles = selectedDocs.map(doc => ({ name: doc.fileName, url: doc.pdfUrl }));
 
           if (email && selectedFiles.length > 0) {
             fetch('/api/send-mail', {
@@ -106,7 +155,7 @@ export const DocumentRequestPage: React.FC = () => {
                 email: email,
                 company: company,
                 documentFiles: selectedFiles,
-                content: `HubSpot資料請求（サイト連携）\n資料: ${selectedFiles.join(', ')}`
+                content: `HubSpot資料請求（サイト連携）\n資料: ${selectedDocs.map(d => d.title).join(', ')}`
               })
             })
             .then(res => {
@@ -162,7 +211,7 @@ export const DocumentRequestPage: React.FC = () => {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [step, selectedDocIds]);
+  }, [step, selectedDocIds, documents]);
 
   const toggleDocument = (id: string) => {
     setSelectedDocIds(prev => prev.includes(id)
@@ -223,16 +272,24 @@ export const DocumentRequestPage: React.FC = () => {
                   <p className="text-sm text-gray-500 font-bold">PDFの1ページ目がプレビュー表示されます。クリックで選択できます。</p>
                 </div>
 
+                {/* Loading */}
+                {loadingDocs && (
+                  <div className="flex flex-col items-center justify-center py-24 gap-4">
+                    <Loader2 className="animate-spin text-blue-600" size={40} />
+                    <p className="text-sm font-bold text-gray-400">資料を読み込んでいます...</p>
+                  </div>
+                )}
+
                 {/* Categories */}
-                {['ai', 'egg', 'metaverse'].map(cat => {
-                  const categoryDocs = DOCUMENTS.filter(doc => doc.category === cat);
+                {!loadingDocs && categories.map(cat => {
+                  const categoryDocs = documents.filter(doc => doc.category === cat);
                   if (categoryDocs.length === 0) return null;
-                  
+
                   return (
                     <div key={cat} className="mb-16 last:mb-0">
                       <div className="flex items-center gap-4 mb-8">
                         <h4 className="text-lg font-black text-gray-900 border-l-4 border-blue-600 pl-4 uppercase tracking-widest">
-                          {cat === 'ai' ? 'AI事業' : cat === 'egg' ? 'HERO EGG' : 'メタバース・XR'}
+                          {cat}
                         </h4>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

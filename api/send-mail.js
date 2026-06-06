@@ -38,16 +38,48 @@ export default async function handler(req, res) {
   const isDocumentRequest = type === 'document_request';
   const siteUrl = 'https://meta-heroes.co.jp';
 
+  // SSRF対策: 添付PDFの取得元は信頼できるホストのみに限定する。
+  // 添付内容は請求者宛メールに添付されるため、クライアントが任意URLを指定できると
+  // 内部エンドポイント等の内容を窃取される恐れがある。ホストを完全一致でホワイトリスト化する。
+  const ALLOWED_FILE_HOSTS = new Set([
+    'meta-heroes.co.jp',         // 自社サイト（public/assets配下の従来資料）
+    'files.microcms-assets.io',  // microCMS ファイルアセット
+    'images.microcms-assets.io', // microCMS 画像アセット
+  ]);
+
+  const isAllowedFileUrl = (url) => {
+    try {
+      const u = new URL(url);
+      return u.protocol === 'https:' && ALLOWED_FILE_HOSTS.has(u.hostname);
+    } catch {
+      return false;
+    }
+  };
+
+  // documentFiles は新形式 {name, url}（microCMS） / 旧形式 文字列（/assets/documents/配下） の両対応
+  const normalizeFile = (file) => {
+    if (typeof file === 'string') {
+      // 旧形式: ファイル名のみ → 自社サイトpublic配下のURLをサーバ側で組み立て（信頼できる）
+      return { name: file, url: `${siteUrl}/assets/documents/${encodeURIComponent(file)}` };
+    }
+    // 新形式: { name, url } → ファイル名は表示用、URLは取得前に必ず検証する
+    return { name: file.name, url: file.url };
+  };
+
   // Fetch document files for attachment
   let attachments = [];
   if (isDocumentRequest && documentFiles && documentFiles.length > 0) {
     const fetchResults = await Promise.allSettled(
       documentFiles.map(async (file) => {
-        const url = `${siteUrl}/assets/documents/${encodeURIComponent(file)}`;
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Failed to fetch ${file}: ${response.status}`);
+        const { name, url } = normalizeFile(file);
+        if (!isAllowedFileUrl(url)) {
+          throw new Error(`Blocked disallowed file URL for ${name}`);
+        }
+        // redirect: 'manual' でリダイレクト経由のSSRF回避
+        const response = await fetch(url, { redirect: 'manual' });
+        if (!response.ok) throw new Error(`Failed to fetch ${name}: ${response.status}`);
         const buffer = Buffer.from(await response.arrayBuffer());
-        return { filename: file, content: buffer };
+        return { filename: name, content: buffer };
       })
     );
     attachments = fetchResults
@@ -131,7 +163,7 @@ ${content}
     // 2. Send Auto-reply to User
     let autoReplyText = '';
     if (isDocumentRequest && documentFiles && documentFiles.length > 0) {
-      const fileList = documentFiles.map(file => `・${file}`).join('\n');
+      const fileList = documentFiles.map(file => `・${normalizeFile(file).name}`).join('\n');
 
       autoReplyText = `
 ${name} 様
