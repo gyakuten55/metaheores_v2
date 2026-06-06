@@ -47,23 +47,27 @@ export default async function handler(req, res) {
     'images.microcms-assets.io', // microCMS 画像アセット
   ]);
 
-  const isAllowedFileUrl = (url) => {
+  // 相対パス(/assets/...)は自社サイト基準で絶対URL化。
+  // https かつ許可ホストのみ通し、それ以外は null（取得をブロック）。
+  const resolveAllowedFileUrl = (rawUrl) => {
     try {
-      const u = new URL(url);
-      return u.protocol === 'https:' && ALLOWED_FILE_HOSTS.has(u.hostname);
+      const u = new URL(rawUrl, siteUrl); // 相対なら siteUrl 起点で解決（スペース/日本語も自動エンコード）
+      if (u.protocol !== 'https:') return null;
+      if (!ALLOWED_FILE_HOSTS.has(u.hostname)) return null;
+      return u.toString();
     } catch {
-      return false;
+      return null;
     }
   };
 
-  // documentFiles は新形式 {name, url}（microCMS） / 旧形式 文字列（/assets/documents/配下） の両対応
+  // documentFiles は新形式 {name, url}（microCMS絶対URL or 相対パス） / 旧形式 文字列（ファイル名のみ） の両対応
   const normalizeFile = (file) => {
     if (typeof file === 'string') {
-      // 旧形式: ファイル名のみ → 自社サイトpublic配下のURLをサーバ側で組み立て（信頼できる）
-      return { name: file, url: `${siteUrl}/assets/documents/${encodeURIComponent(file)}` };
+      // 旧形式: ファイル名のみ → 自社サイトpublic配下の相対パスへ
+      return { name: file, rawUrl: `/assets/documents/${file}` };
     }
     // 新形式: { name, url } → ファイル名は表示用、URLは取得前に必ず検証する
-    return { name: file.name, url: file.url };
+    return { name: file.name, rawUrl: file.url };
   };
 
   // Fetch document files for attachment
@@ -71,9 +75,10 @@ export default async function handler(req, res) {
   if (isDocumentRequest && documentFiles && documentFiles.length > 0) {
     const fetchResults = await Promise.allSettled(
       documentFiles.map(async (file) => {
-        const { name, url } = normalizeFile(file);
-        if (!isAllowedFileUrl(url)) {
-          throw new Error(`Blocked disallowed file URL for ${name}`);
+        const { name, rawUrl } = normalizeFile(file);
+        const url = resolveAllowedFileUrl(rawUrl);
+        if (!url) {
+          throw new Error(`Blocked or invalid file URL for ${name}`);
         }
         // redirect: 'manual' でリダイレクト経由のSSRF回避
         const response = await fetch(url, { redirect: 'manual' });
