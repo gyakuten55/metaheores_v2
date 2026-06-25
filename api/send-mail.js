@@ -317,8 +317,8 @@ URL: https://meta-heroes.co.jp/
       to: email,
       subject: `【株式会社MetaHeroes】${replySubject}ありがとうございます`,
       text: autoReplyText,
-      // 資料請求のみ添付（採用エントリーの履歴書は応募者に返送しない）
-      ...(isDocumentRequest && attachments.length > 0 && { attachments }),
+      // 資料請求 / 採用エントリーは応募者にも控えとして添付する
+      ...((isDocumentRequest || isRecruitEntry) && attachments.length > 0 && { attachments }),
     });
 
     return res.status(200).json({ success: true });
