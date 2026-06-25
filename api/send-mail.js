@@ -110,10 +110,31 @@ export default async function handler(req, res) {
     }
   }
 
-  // 採用エントリー: クライアントから送られたbase64ファイル(履歴書・職務経歴書)を添付に変換
+  // 採用エントリー: クライアントから送られたbase64ファイル(履歴書・職務経歴書)を添付に変換。
+  // 注意: これらは「採用担当(contact@meta-heroes.io / 固定宛先)」宛にのみ添付する。
+  // 攻撃者が指定可能な宛先(応募者email)へ任意ファイルを送る踏み台(オープンリレー/ブランド悪用)に
+  // ならないよう、サーバー側でも拡張子・サイズ・件数を制限する(多層防御)。
   if (isRecruitEntry && Array.isArray(files) && files.length > 0) {
+    const ALLOWED_ATTACH_EXT = new Set(['pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg', 'gif', 'webp']);
+    const MAX_ATTACH_BYTES = 3 * 1024 * 1024; // 1ファイルあたり3MB
+    const MAX_ATTACH_COUNT = 5;
+    const base64Bytes = (b64) => Math.floor((String(b64).replace(/=+$/, '').length * 3) / 4);
+
     attachments = files
-      .filter(f => f && f.filename && f.content)
+      .filter(f => f && typeof f.filename === 'string' && typeof f.content === 'string')
+      .slice(0, MAX_ATTACH_COUNT)
+      .filter(f => {
+        const ext = (f.filename.split('.').pop() || '').toLowerCase();
+        if (!ALLOWED_ATTACH_EXT.has(ext)) {
+          console.warn(`Rejected attachment (disallowed ext): ${f.filename}`);
+          return false;
+        }
+        if (base64Bytes(f.content) > MAX_ATTACH_BYTES) {
+          console.warn(`Rejected attachment (too large): ${f.filename}`);
+          return false;
+        }
+        return true;
+      })
       .map(f => ({
         filename: f.filename,
         content: f.content,
@@ -317,8 +338,10 @@ URL: https://meta-heroes.co.jp/
       to: email,
       subject: `【株式会社MetaHeroes】${replySubject}ありがとうございます`,
       text: autoReplyText,
-      // 資料請求 / 採用エントリーは応募者にも控えとして添付する
-      ...((isDocumentRequest || isRecruitEntry) && attachments.length > 0 && { attachments }),
+      // 添付は資料請求(自社の固定資料)のみ。採用エントリーの応募書類は、攻撃者が指定可能な宛先(応募者email)へ
+      // 任意ファイルを送る踏み台にしないため、応募者へは返送せず採用担当(固定宛先)へのみ添付する。
+      // 応募者には autoReplyText 内で提出ファイル名を控えとして通知済み。
+      ...(isDocumentRequest && attachments.length > 0 && { attachments }),
     });
 
     return res.status(200).json({ success: true });
