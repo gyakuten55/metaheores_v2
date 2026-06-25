@@ -232,7 +232,6 @@ const FOOTER_COLUMNS = [
 
           {/* Copyright */}
           <div className="text-center">
-            <p className="text-gray-400 text-[10px] font-bold tracking-widest uppercase mb-2">bT7QmG</p>
             <p className="text-gray-300 text-[10px] tracking-widest uppercase font-bold">
               &copy; {new Date().getFullYear()} Meta Heroes Inc. All rights reserved.
             </p>

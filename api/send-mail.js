@@ -5,18 +5,30 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { 
-    category, 
-    company, 
-    department, 
-    name, 
-    email, 
-    occupation, 
+  const {
+    category,
+    company,
+    department,
+    name,
+    email,
+    occupation,
     content,
     confirm_email_field, // Honeypot
     _t, // Timestamp
-    type, // 'document_request' or undefined
-    documentFiles // Array of filenames for documents
+    type, // 'document_request' | 'recruit_entry' | undefined
+    documentFiles, // Array of filenames for documents
+    // --- 採用エントリー(recruit_entry)用フィールド ---
+    desiredJob,      // 応募職種
+    employmentType,  // 希望雇用形態
+    furigana,        // ふりがな
+    phone,           // 電話番号
+    birthdate,       // 生年月日
+    address,         // 住所
+    skills,          // 保有スキル・経験
+    motivation,      // 志望動機・自己PR
+    portfolio,       // ポートフォリオURL / SNS
+    referralSource,  // 知ったきっかけ
+    files            // [{ filename, content(base64) }] 履歴書・職務経歴書
   } = req.body;
 
   // 1. Honeypot check: If filled, it's a bot
@@ -36,6 +48,7 @@ export default async function handler(req, res) {
   }
 
   const isDocumentRequest = type === 'document_request';
+  const isRecruitEntry = type === 'recruit_entry';
   const siteUrl = 'https://meta-heroes.co.jp';
 
   // SSRF対策: 添付PDFの取得元は信頼できるホストのみに限定する。
@@ -97,6 +110,17 @@ export default async function handler(req, res) {
     }
   }
 
+  // 採用エントリー: クライアントから送られたbase64ファイル(履歴書・職務経歴書)を添付に変換
+  if (isRecruitEntry && Array.isArray(files) && files.length > 0) {
+    attachments = files
+      .filter(f => f && f.filename && f.content)
+      .map(f => ({
+        filename: f.filename,
+        content: f.content,
+        encoding: 'base64',
+      }));
+  }
+
   const categoryLabels = {
     business: '事業に関するお問い合わせ',
     service: 'サービスに関するお問い合わせ',
@@ -107,7 +131,11 @@ export default async function handler(req, res) {
     other: 'その他'
   };
 
-  const categoryLabel = isDocumentRequest ? 'お役立ち資料' : (categoryLabels[category] || category);
+  const categoryLabel = isDocumentRequest
+    ? 'お役立ち資料'
+    : isRecruitEntry
+      ? '採用エントリー'
+      : (categoryLabels[category] || category);
 
   // Validation
   if (!name || !email) {
@@ -143,14 +171,33 @@ export default async function handler(req, res) {
     logger: true
   });
 
-  try {
-    // 1. Send to Admin
-    await transporter.sendMail({
-      from: `"MetaHeroes Website" <${user}>`,
-      to: 'contact@meta-heroes.io',
-      replyTo: email,
-      subject: `【${categoryLabel}】${name}様`,
-      text: `
+  // 管理者宛メール本文（採用エントリーは専用フォーマット）
+  let adminText;
+  if (isRecruitEntry) {
+    adminText = `
+ウェブサイトから採用エントリーがありました。
+
+【応募職種】: ${desiredJob || '---'}
+【希望雇用形態】: ${employmentType || '---'}
+【お名前】: ${name}
+【ふりがな】: ${furigana || '---'}
+【メールアドレス】: ${email}
+【電話番号】: ${phone || '---'}
+【生年月日】: ${birthdate || '---'}
+【住所】: ${address || '---'}
+【ポートフォリオURL / SNS】: ${portfolio || '---'}
+【知ったきっかけ】: ${referralSource || '---'}
+
+【保有スキル・経験】:
+${skills || '---'}
+
+【志望動機・自己PR】:
+${motivation || '---'}
+
+【添付書類】: ${attachments.length > 0 ? attachments.map(a => a.filename).join(' / ') : 'なし'}
+    `;
+  } else {
+    adminText = `
 ウェブサイトから${categoryLabel}がありました。
 
 【項目】: ${categoryLabel}
@@ -162,7 +209,19 @@ export default async function handler(req, res) {
 
 【内容】:
 ${content}
-      `,
+    `;
+  }
+
+  try {
+    // 1. Send to Admin
+    await transporter.sendMail({
+      from: `"MetaHeroes Website" <${user}>`,
+      to: 'contact@meta-heroes.io',
+      replyTo: email,
+      subject: `【${categoryLabel}】${name}様`,
+      text: adminText,
+      // 採用エントリーの履歴書・職務経歴書は採用担当(管理者)宛に添付する
+      ...(isRecruitEntry && attachments.length > 0 && { attachments }),
     });
 
     // 2. Send Auto-reply to User
@@ -188,6 +247,34 @@ ${fileList}
 お名前: ${name}
 会社名: ${company || '---'}
 --------------------------------------------------
+
+株式会社MetaHeroes
+URL: https://meta-heroes.co.jp/
+      `;
+    } else if (isRecruitEntry) {
+      autoReplyText = `
+${name} 様
+
+この度は株式会社MetaHeroesへエントリーいただき、誠にありがとうございます。
+以下の内容でエントリーを承りました。
+
+内容を確認の上、採用担当者より追ってご連絡させていただきます。
+今しばらくお待ちいただけますようお願い申し上げます。
+
+--------------------------------------------------
+【エントリー内容】
+
+応募職種: ${desiredJob || '---'}
+希望雇用形態: ${employmentType || '---'}
+お名前: ${name}（${furigana || '---'}）
+メールアドレス: ${email}
+電話番号: ${phone || '---'}
+生年月日: ${birthdate || '---'}
+住所: ${address || '---'}
+添付書類: ${attachments.length > 0 ? attachments.map(a => a.filename).join(' / ') : 'なし'}
+--------------------------------------------------
+
+※本メールは自動返信です。心当たりのない場合は破棄してください。
 
 株式会社MetaHeroes
 URL: https://meta-heroes.co.jp/
@@ -219,12 +306,19 @@ URL: https://meta-heroes.co.jp/
       `;
     }
 
+    const replySubject = isDocumentRequest
+      ? 'お役立ち資料'
+      : isRecruitEntry
+        ? '採用エントリー'
+        : 'お問い合わせ';
+
     await transporter.sendMail({
       from: `"株式会社MetaHeroes" <${user}>`,
       to: email,
-      subject: `【株式会社MetaHeroes】${isDocumentRequest ? 'お役立ち資料' : 'お問い合わせ'}ありがとうございます`,
+      subject: `【株式会社MetaHeroes】${replySubject}ありがとうございます`,
       text: autoReplyText,
-      ...(attachments.length > 0 && { attachments }),
+      // 資料請求のみ添付（採用エントリーの履歴書は応募者に返送しない）
+      ...(isDocumentRequest && attachments.length > 0 && { attachments }),
     });
 
     return res.status(200).json({ success: true });

@@ -30,8 +30,20 @@ const RECRUITMENT_TYPES: JobCategory[] = [
   {
     id: 'xr',
     title: 'XR事業',
-    description: `XR（VR・AR・メタバース）技術を活用した法人ソリューションの提案営業をお任せします。企業や自治体が抱える社会課題を、XRのチカラで解決へと導きます。`,
+    description: `XR技術のチカラで、企業や自治体が抱えている教育・防災・観光・研修・現場支援などの課題に寄り添い、体験型ソリューションの提案営業をお任せします。
+
+■ XRソリューションの提案
+企業、自治体、教育機関、施設運営会社などに対して、メタバース・VR・AR・スマートグラスを活用した課題解決型の提案を行います。セミナーやイベント参加、紹介などから商談アポを取得し、課題をヒアリング。クライアントに応じたXR研修、防災体験、観光コンテンツ、展示会活用、現場支援ソリューションなどを提案します。`,
     positions: ['営業'],
+    details: [
+      { label: '応募資格', value: '学歴不問／業種未経験OK／第二新卒歓迎\n■ 法人向けの営業経験または顧客折衝経験をお持ちの方\n■ XR・メタバース・スマートグラス・教育・防災領域に興味がある方' },
+      { label: '給与', value: '月給27万円〜50万円＋業績賞与年2回\n想定年収：300万円〜600万円' },
+      { label: '勤務地', value: '大阪府大阪市浪速区難波中2-10-70\nなんばパークス1F eスタジアムなんば本店\n南海電鉄「なんば駅」中央口・南口直結' },
+      { label: '勤務時間', value: '10:00〜19:00（実働8時間）\n残業月20時間程度' },
+      { label: '休日・休暇', value: '年間休日120日／完全週休2日制（土日祝）\n年末年始・GW・夏季休暇・有給休暇・産前産後休暇・育児休暇' },
+      { label: '待遇', value: '社会保険完備／交通費全額支給／服装基本自由・ネイルOK\n昇給年1回／賞与年2回' },
+    ],
+    contactRecruit: true,
   },
   {
     id: 'ai',
@@ -150,8 +162,20 @@ const RECRUITMENT_TYPES: JobCategory[] = [
   {
     id: 'corporate',
     title: 'コーポレート',
-    description: `総務・労務・経理・人事など、Meta Heroesの組織運営を支えるバックオフィス業務全般をお任せします。`,
+    description: `Meta Heroesの各事業を支えるバックオフィス担当として、総合事務をお任せします。AI・XR・教育・イベントなど複数の事業が円滑に進むよう、社内外の調整や書類管理、事務サポートを担うポジションです。
+
+■ 総合事務・バックオフィス業務
+書類作成、データ入力、請求書・契約書まわりの管理、備品管理、スケジュール調整、社内外の連絡対応など、コーポレート部門の事務業務を幅広く担当します。営業、マーケティング、イベント運営、教育事業などの各部署と連携しながら、会社全体の運営をサポートしていただきます。`,
     positions: ['総合事務'],
+    details: [
+      { label: '応募資格', value: '学歴不問／業種未経験OK／第二新卒歓迎\n■ 基本的なPC操作ができる方\n■ 事務、営業事務、総務、経理補助、カスタマーサポートなどの経験をお持ちの方歓迎\n■ 社内外とのやり取りを丁寧に進められる方' },
+      { label: '給与', value: '月給20万円〜（賞与なし）' },
+      { label: '勤務地', value: '大阪府大阪市浪速区難波中2-10-70\nなんばパークス1F eスタジアムなんば本店\n南海電鉄「なんば駅」中央口・南口直結' },
+      { label: '勤務時間', value: '10:00〜19:00（実働8時間）\n残業月20時間程度' },
+      { label: '休日・休暇', value: '年間休日120日／完全週休2日制（土日祝）\n年末年始・GW・夏季休暇・有給休暇・産前産後休暇・育児休暇' },
+      { label: '待遇', value: '社会保険完備／交通費全額支給／服装基本自由・ネイルOK\n昇給年1回' },
+    ],
+    contactRecruit: true,
   },
 ];
 
@@ -472,15 +496,26 @@ export const RecruitPage: React.FC = () => {
                         )
                       )}
                       {type.contactRecruit && (
-                        <Link
-                          to="/contact?type=recruit"
-                          className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-[#2563eb] to-[#06b6d4] text-white rounded-full shadow-md hover:shadow-lg transition-all group"
-                        >
-                          <span className="text-sm font-bold tracking-wider">採用に関するお問い合わせ</span>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 group-hover:translate-x-1 transition-transform">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                          </svg>
-                        </Link>
+                        <div className="flex flex-col sm:flex-row gap-4">
+                          <Link
+                            to={`/recruit/entry?job=${type.id}`}
+                            className="inline-flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-[#2563eb] to-[#06b6d4] text-white rounded-full shadow-md hover:shadow-lg transition-all group"
+                          >
+                            <span className="text-sm font-bold tracking-wider">エントリー</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 group-hover:translate-x-1 transition-transform">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                            </svg>
+                          </Link>
+                          <Link
+                            to="/contact?type=recruit"
+                            className="inline-flex items-center justify-center gap-3 px-6 py-3 bg-white border border-gray-400 text-gray-800 rounded-full shadow-sm hover:border-blue-500 hover:text-blue-600 transition-all group"
+                          >
+                            <span className="text-sm font-bold tracking-wider">カジュアル面談を希望する</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 group-hover:translate-x-1 transition-transform">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                            </svg>
+                          </Link>
+                        </div>
                       )}
                     </div>
                   </div>

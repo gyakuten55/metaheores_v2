@@ -389,112 +389,6 @@ export const yuyaData: MemberData = {
   ],
 };
 
-export const manamiData: MemberData = {
-  id: 'manami',
-  category: 'コンテンツプロデュース',
-  name: '横田 愛美',
-  nameEn: 'Manami Yokota',
-  role: 'HERO EGGマネージャー',
-  icon: '/assets/manami/top_color.png',
-  catchphrase: {
-    main: '日本と世界を繋ぐ\nライトワーカー',
-    emphasis: '第三の居場所を',
-  },
-  heroImage: '/assets/manami/first.png',
-  stats: [
-    { value: '2.5', suffix: '年', label: 'NY留学経験' },
-    { value: '6.0', label: 'IELTSスコア' },
-    { value: '初段', label: '書道' },
-    { value: '124', suffix: 'カ国', label: '国際交流参加国数' },
-  ],
-  philosophy: {
-    backgroundImage: '/assets/manami/philosophy.png',
-    paragraphs: [
-      '生きづらさを感じる世の中で、家でも学校でもない「第三の居場所」となるような機会・環境を提供することを大事にしています。',
-      '世界は思ってるよりも広くて、色々な可能性がありなんでもできるということを示したい。',
-      'だからHERO EGGを都会だけでなく地方や海外に広げて、多くの子どもたちへ多くの人生における選択肢を与え続けていきたいと思っています。',
-    ],
-  },
-  skills: [
-    {
-      title: 'コミュニケーション能力',
-      description: '国を超えて誰にでも話しかけ、コミュニケーションをとり、初対面でも仲良くなるのが得意です。',
-    },
-    {
-      title: '細かい管理能力',
-      description: '抜け漏れがないかチェックし綺麗にコンプリートさせます。イベント運営や組織管理において力を発揮します。',
-    },
-    {
-      title: 'グローバルマインド',
-      description: 'NY留学や多数の国際交流主催経験を通じて培った、多様な価値観を受け入れ、可能性を広げる視点を持っています。',
-    },
-  ],
-  caseStudy: {
-    image: '/assets/manami/casestudy.png',
-    challenge: '子どもたちが狭い世界観の中で将来の選択肢を狭めてしまっている現状。',
-    approach: 'HERO EGGを通じて、異文化や多様な価値観に触れる原体験を提供。',
-    result: '子どもたちの視野が広がり、自ら新しい挑戦を始めるケースが増加。',
-  },
-  career: [
-    {
-      label: 'Now',
-      title: 'HERO EGGマネージャー',
-      description: [
-        '子どもたちに「第三の居場所」と選択肢を提供するプロジェクトを統括。',
-        '都会だけでなく地方や海外への展開を見据え、活動の幅を広げています。',
-      ],
-    },
-    {
-      label: 'Past',
-      title: '国際交流会主催',
-      description: [
-        '1年間で18回の国際交流会を主催し、累計124カ国の方々が参加。',
-        '世界中の人々を繋ぎ、新しい出会いと可能性を生み出す場を創出しました。',
-      ],
-    },
-    {
-      label: 'Origin',
-      title: 'NY留学への挑戦',
-      description: [
-        'ニューヨークの大学へ2年半留学し、IELTS 6.0を取得。',
-        '世界は広く、何でもできるという実感を得たことが、現在の活動の原点になっています。',
-      ],
-    },
-  ],
-  qa: [
-    {
-      question: '入社して良かったことは？',
-      answer: '保護者の方から感謝されたり、「ここにきて良かった」などと言ってくれると嬉しくなります。自分一人じゃ関われない人と当たり前のように関わることができるのも魅力。以前はずっと完璧を求める減点方式で苦しかったですが、ここでは加点方式になってきていると感じられるところです。',
-      image: '/assets/manami/q1.png',
-    },
-    {
-      question: '自身の成長を感じる点は？',
-      answer: 'イベントの時の立ち振る舞いや気遣い、イベント企画運営力の向上だけでなく、自分自身の心の忍耐力が強化された気がします。予期せぬトラブルにも冷静に対応し、チームを導く力がついてきました。',
-      image: '/assets/manami/q2.png',
-    },
-    {
-      question: 'Meta Heroesの魅力は？',
-      answer: '「可能性を信じる」文化です。私の「世界は広い」という想いを、実際の事業として形にできる環境があります。一人ひとりの個性を尊重し、それを強みとして活かしてくれる仲間がいることが最大の魅力です。',
-      image: '/assets/manami/q3.png',
-    },
-    {
-      question: 'プライベートの過ごし方は？',
-      answer: '毎週、神社へ行って、その帰りに観葉植物を購入するのがルーティンです。家では好きなお香を炊いて、音楽を聴きながらゆっくりハーブティーを飲んでいます。自分を整える時間をとても大切にしています。',
-      image: '/assets/manami/q4.png',
-    },
-  ],
-  schedule: [
-    { time: '9:00', title: 'メールチェック・タスク整理' },
-    { time: '10:00', title: 'HERO EGG企画会議' },
-    { time: '12:00', title: 'ランチ' },
-    { time: '13:00', title: 'イベント運営準備・手配' },
-    { time: '15:00', title: '保護者・パートナー連絡' },
-    { time: '17:00', title: 'チームミーティング' },
-    { time: '18:30', title: '退社' },
-    { time: '19:00', title: '自分を整える時間（神社・お香）' },
-  ],
-};
-
 export const kenjiData: MemberData = {
   id: 'kenji',
   category: 'コーポレート',
@@ -609,6 +503,5 @@ export const kenjiData: MemberData = {
 export const allMembers: MemberData[] = [
   keitoData,
   yuyaData,
-  manamiData,
   kenjiData,
 ];

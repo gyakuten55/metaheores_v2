@@ -38,6 +38,7 @@ const ROUTE_MAP: { [key: string]: string } = {
   'contact': 'お問い合わせ',
   'document-request': 'お役立ち資料',
   'recruit': '採用情報',
+  'entry': '採用エントリー',
   'faq': 'よくある質問',
   'ceo-message': '代表メッセージ'
 };

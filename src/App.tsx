@@ -39,6 +39,7 @@ import { ContactPage } from './pages/ContactPage';
 import { ContactPrivacyPage } from './pages/ContactPrivacyPage';
 import { DocumentRequestPage } from './pages/DocumentRequestPage';
 import { RecruitPage } from './pages/RecruitPage';
+import { RecruitEntryPage } from './pages/RecruitEntryPage';
 import { FAQPage } from './pages/FAQPage';
 import { MemberBlogPage } from './pages/MemberBlogPage';
 import { SpeakingPage } from './pages/SpeakingPage';
@@ -153,6 +154,7 @@ function App() {
             <Route path="/document-request" element={<><SEO title="お役立ち資料 | 株式会社MetaHeroes" /><DocumentRequestPage /></>} />
             <Route path="/speaking" element={<><SEO title="講演・登壇 | 株式会社MetaHeroes" description="AI・メタバース・XRの最前線で事業を推進するMetaHeroesによる講演・登壇サービス。カンファレンス登壇からワークショップ、イベントプロデュースまで柔軟に対応します。" /><SpeakingPage /></>} />
             <Route path="/recruit" element={<><SEO title="採用情報 | 株式会社MetaHeroes" description="次世代の社会基盤を創るHEROを募集しています。メタバース・AIの力で世界をワクワクさせませんか？" /><RecruitPage /></>} />
+            <Route path="/recruit/entry" element={<><SEO title="採用エントリー | 株式会社MetaHeroes" description="Meta Heroesの未来を共に創る仲間を募集しています。応募フォームよりエントリーしてください。" /><RecruitEntryPage /></>} />
             <Route path="/faq" element={<><SEO title="よくある質問 | 株式会社MetaHeroes" /><FAQPage /></>} />
             <Route path="/services" element={<><SEO title="サービス一覧 | 株式会社MetaHeroes" /><ServicesPage /></>} />
             <Route path="/services/xr" element={<><SEO title="XRソリューション | VR・MRによる没入型課題解決 | 株式会社MetaHeroes" description="VR/AR/MR技術を駆使し、場所や時間の制約を超えた没入体験を提供。防災・教育・地域創生など、実社会の「不」を解消する最新のXRソリューションをオーダーメイドで構築します。" keywords="VR, AR, MR, 没入体験, デジタルツイン, メタバース開発, UEFN" /><XrSolutionsPage /></>} />
