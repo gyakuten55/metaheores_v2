@@ -9,6 +9,7 @@ import { ChevronLeft } from "lucide-react";
 import {
   IllustDeliverable,
 } from "@/components/Illustrations";
+import { asset, url } from "@/lib/paths";
 
 // ── 1. OUTCOMES — 横スライド + イラスト ──────────────────────────────────────
 // ── SHARED HOOK: ドラッグ対応スライダー ──────────────────────────────────────
@@ -98,12 +99,12 @@ function useSlider(totalItems: number, visibleCount: number = 1) {
 // ── 1. OUTCOMES — 横スライド + イラスト ──────────────────────────────────────
 export function OutcomesSlider() {
   const outcomeCards = [
-    { img: "/manus-storage/outcome-time_c0bea018.png", alt: "AI活用による業務時間削減のイメージ", tag: "TIME", title: "時間を取り戻す", body: "資料作成・情報整理・確認作業の時間を減らし、顧客対応や企画へ時間を戻す。" },
-    { img: "/manus-storage/outcome-inhouse_58b285d6.png", alt: "AI活用による業務内製化のイメージ", tag: "COST", title: "外注を内製化する", body: "文章・企画・資料・マニュアルなど、外部依存の制作工程を社内で回しやすくする。" },
-    { img: "/manus-storage/outcome-accuracy_1533059f.png", alt: "AI活用によるミス・抜け漏れ削減のイメージ", tag: "QUALITY", title: "ミスと抜け漏れを減らす", body: "大量データや書類の確認候補をAIで整理し、人が重要な判断に集中できる状態へ。" },
-    { img: "/manus-storage/outcome-standardize_37f24272.png", alt: "AI活用による属人業務標準化のイメージ", tag: "STANDARDIZE", title: "属人業務を標準化する", body: "熟練者の知識や業務手順を整理し、誰でも再現しやすい仕事の型へ。" },
-    { img: "/manus-storage/outcome-sales_7e0af4b1.png", alt: "AI活用による提案・販売力向上のイメージ", tag: "SALES", title: "提案・販売力を高める", body: "顧客理解・企画・提案・販促の初速を上げ、売上につながる仕事を強化する。" },
-    { img: "/manus-storage/outcome-improve_9d01592a.png", alt: "AI活用による社員自律改善のイメージ", tag: "GROWTH", title: "社員が自ら改善する", body: "研修後も社員自身がAIを使い、新しい改善方法を考えられる状態をつくる。" },
+    { img: asset("/images/outcome-time.png"), alt: "AI活用による業務時間削減のイメージ", tag: "TIME", title: "時間を取り戻す", body: "資料作成・情報整理・確認作業の時間を減らし、顧客対応や企画へ時間を戻す。" },
+    { img: asset("/images/outcome-inhouse.png"), alt: "AI活用による業務内製化のイメージ", tag: "COST", title: "外注を内製化する", body: "文章・企画・資料・マニュアルなど、外部依存の制作工程を社内で回しやすくする。" },
+    { img: asset("/images/outcome-accuracy.png"), alt: "AI活用によるミス・抜け漏れ削減のイメージ", tag: "QUALITY", title: "ミスと抜け漏れを減らす", body: "大量データや書類の確認候補をAIで整理し、人が重要な判断に集中できる状態へ。" },
+    { img: asset("/images/outcome-standardize.png"), alt: "AI活用による属人業務標準化のイメージ", tag: "STANDARDIZE", title: "属人業務を標準化する", body: "熟練者の知識や業務手順を整理し、誰でも再現しやすい仕事の型へ。" },
+    { img: asset("/images/outcome-sales.png"), alt: "AI活用による提案・販売力向上のイメージ", tag: "SALES", title: "提案・販売力を高める", body: "顧客理解・企画・提案・販促の初速を上げ、売上につながる仕事を強化する。" },
+    { img: asset("/images/outcome-improve.png"), alt: "AI活用による社員自律改善のイメージ", tag: "GROWTH", title: "社員が自ら改善する", body: "研修後も社員自身がAIを使い、新しい改善方法を考えられる状態をつくる。" },
   ];
   const { trackRef, currentIndex, maxIndex, swipeHintShown, scrollToIndex, trackHandlers } = useSlider(outcomeCards.length, 3);
 
@@ -199,8 +200,8 @@ const exampleCases = [
   {
     category: "法人営業",
     id: "sales-marketing",
-    beforeImg: "/manus-storage/ba-sales-before_a951de88.png",
-    afterImg: "/manus-storage/ba-sales-after_d7e12968.png",
+    beforeImg: asset("/images/ba-sales-before.png"),
+    afterImg: asset("/images/ba-sales-after.png"),
     beforeAlt: "AI活用前の法人営業業務のイメージ",
     afterAlt: "AI活用後の法人営業業務のイメージ",
     before: "顧客情報の確認・課題整理・構成作成・提案書作成を全て手作業で行う",
@@ -210,8 +211,8 @@ const exampleCases = [
   {
     category: "経理",
     id: "accounting-finance",
-    beforeImg: "/manus-storage/ba-accounting-before_e11aba88.png",
-    afterImg: "/manus-storage/ba-accounting-after_ec6d94b6.png",
+    beforeImg: asset("/images/ba-accounting-before.png"),
+    afterImg: asset("/images/ba-accounting-after.png"),
     beforeAlt: "AI活用前の経理業務のイメージ",
     afterAlt: "AI活用後の経理業務のイメージ",
     before: "大量の数値・帳票を目視で確認し続ける",
@@ -221,8 +222,8 @@ const exampleCases = [
   {
     category: "製造",
     id: "manufacturing",
-    beforeImg: "/manus-storage/ba-manufacturing-before_ed68b4f2.png",
-    afterImg: "/manus-storage/ba-manufacturing-after_993cd657.png",
+    beforeImg: asset("/images/ba-manufacturing-before.png"),
+    afterImg: asset("/images/ba-manufacturing-after.png"),
     beforeAlt: "AI活用前の製造業務のイメージ",
     afterAlt: "AI活用後の製造業務のイメージ",
     before: "熟練者しか分からない作業が多く、技能継承が困難",
@@ -232,8 +233,8 @@ const exampleCases = [
   {
     category: "旅行・観光",
     id: "travel",
-    beforeImg: "/manus-storage/ba-travel-before_1e71b733.png",
-    afterImg: "/manus-storage/ba-travel-after_d923964b.png",
+    beforeImg: asset("/images/ba-travel-before.png"),
+    afterImg: asset("/images/ba-travel-after.png"),
     beforeAlt: "AI活用前の旅行・観光業務のイメージ",
     afterAlt: "AI活用後の旅行・観光業務のイメージ",
     before: "料金計算・行程確認・企画・販促を個別に手作業で行う",
@@ -356,9 +357,9 @@ export function PainSection() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto mb-10">
           {[
-            { img: "/manus-storage/pain-time_b5463e2c.png", alt: "時間不足の課題イメージ", title: "時間が足りない", body: "やることが多すぎて、考える時間がない…" },
-            { img: "/manus-storage/pain-dependency_c9136bb1.png", alt: "属人化・人依存の課題イメージ", title: "人に依存している", body: "ベテランにしか分からず、属人化している…" },
-            { img: "/manus-storage/pain-outsource_71765485.png", alt: "外注依存の課題イメージ", title: "外注し続けている", body: "コストがかさみ、ノウハウも社内に残らない…" },
+            { img: asset("/images/pain-time.png"), alt: "時間不足の課題イメージ", title: "時間が足りない", body: "やることが多すぎて、考える時間がない…" },
+            { img: asset("/images/pain-dependency.png"), alt: "属人化・人依存の課題イメージ", title: "人に依存している", body: "ベテランにしか分からず、属人化している…" },
+            { img: asset("/images/pain-outsource.png"), alt: "外注依存の課題イメージ", title: "外注し続けている", body: "コストがかさみ、ノウハウも社内に残らない…" },
           ].map((card, i) => (
             <div
               key={card.title}
@@ -386,11 +387,11 @@ export function PainSection() {
 
 //
 const REEL_STEPS = [
-  { n: "01", label: "業務を整理する", desc: "今の仕事を棚卸しし、AIで変えられる業務候補を見つける。", img: "/manus-storage/reel-01-organize_70dec5b0.png", alt: "業務を整理するステップのイメージ" },
-  { n: "02", label: "AIを使う仕事を決める", desc: "効果が高い仕事から優先して、AIを使う対象を絞り込む。", img: "/manus-storage/reel-02-decide_c69c8150.png", alt: "AIを使う仕事を決めるステップのイメージ" },
-  { n: "03", label: "実際にAIを使う", desc: "AIと一緒に実際の業務をやってみる。試して、慣れる。", img: "/manus-storage/reel-03-use_b96c941d.png", alt: "実際にAIを使うステップのイメージ" },
-  { n: "04", label: "成果物をつくる", desc: "提案書や資料など、仕事で使えるものを形にする。", img: "/manus-storage/reel-04-output_89ae0294.png", alt: "成果物をつくるステップのイメージ" },
-  { n: "05", label: "改善を続ける", desc: "効果を測りながら、もっと良くしていく。このサイクルを回す。", img: "/manus-storage/reel-05-improve_3de7242b.png", alt: "改善を続けるステップのイメージ" },
+  { n: "01", label: "業務を整理する", desc: "今の仕事を棚卸しし、AIで変えられる業務候補を見つける。", img: asset("/images/reel-01-organize.png"), alt: "業務を整理するステップのイメージ" },
+  { n: "02", label: "AIを使う仕事を決める", desc: "効果が高い仕事から優先して、AIを使う対象を絞り込む。", img: asset("/images/reel-02-decide.png"), alt: "AIを使う仕事を決めるステップのイメージ" },
+  { n: "03", label: "実際にAIを使う", desc: "AIと一緒に実際の業務をやってみる。試して、慣れる。", img: asset("/images/reel-03-use.png"), alt: "実際にAIを使うステップのイメージ" },
+  { n: "04", label: "成果物をつくる", desc: "提案書や資料など、仕事で使えるものを形にする。", img: asset("/images/reel-04-output.png"), alt: "成果物をつくるステップのイメージ" },
+  { n: "05", label: "改善を続ける", desc: "効果を測りながら、もっと良くしていく。このサイクルを回す。", img: asset("/images/reel-05-improve.png"), alt: "改善を続けるステップのイメージ" },
 ];
 
 // STEPS数 + 余韻区間(1.5) × 100vh
@@ -759,7 +760,7 @@ export function IndustrySlider({ industryCards }: { industryCards: IndustryCard[
                     className="mt-4 flex w-fit items-center gap-1 text-[#A3377B] text-xs font-semibold transition-colors hover:text-[#762A62] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#A3377B]"
                     aria-label={`${card.name}のカリキュラムを詳しく見る`}
                     onMouseDown={(e) => e.stopPropagation()}
-                    onClick={() => window.location.assign(`/curriculum-industry#${card.id}`)}
+                    onClick={() => window.location.assign(`${url("/curriculum-industry")}#${card.id}`)}
                   >
                     詳しく見る <ChevronRight size={10} />
                   </button>
@@ -781,7 +782,7 @@ export function IndustrySlider({ industryCards }: { industryCards: IndustryCard[
             <button key={i} onClick={() => scrollToIndex(i)} className={`slider-dot ${currentIndex === i ? "active" : ""}`} aria-label={`${i + 1}枚目へ`} />
           ))}
         </div>
-        <a href="/curriculum-industry" onClick={(e) => { e.preventDefault(); window.location.href = "/curriculum-industry"; }} className="btn-primary inline-flex">
+        <a href={url("/curriculum-industry")} onClick={(e) => { e.preventDefault(); window.location.href = url("/curriculum-industry"); }} className="btn-primary inline-flex">
           業種別カリキュラムをすべて見る <ArrowRight size={16} />
         </a>
       </div>
@@ -856,7 +857,7 @@ export function JobTabSection({ jobCards }: { jobCards: JobCard[] }) {
           <div className="mt-6 pt-5 border-t border-[#D9E0EA]">
             <a
               href={`/curriculum-job#${card.id}`}
-              onClick={(e) => { e.preventDefault(); window.location.href = `/curriculum-job#${card.id}`; }}
+              onClick={(e) => { e.preventDefault(); window.location.href = `${url("/curriculum-job")}#${card.id}`; }}
               className="inline-flex items-center gap-1.5 text-[#A3377B] text-sm font-semibold hover:gap-2.5 transition-all"
             >
               詳しいカリキュラムを見る <ChevronRight size={14} />
@@ -864,7 +865,7 @@ export function JobTabSection({ jobCards }: { jobCards: JobCard[] }) {
           </div>
         </div>
         <div className="text-center">
-          <a href="/curriculum-job" onClick={(e) => { e.preventDefault(); window.location.href = "/curriculum-job"; }} className="btn-primary inline-flex">
+          <a href={url("/curriculum-job")} onClick={(e) => { e.preventDefault(); window.location.href = url("/curriculum-job"); }} className="btn-primary inline-flex">
             職種別カリキュラムをすべて見る <ArrowRight size={16} />
           </a>
         </div>

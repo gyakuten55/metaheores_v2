@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import GlobalNav from "@/components/GlobalNav";
 import Footer from "@/components/Footer";
 import { ArrowRight, ChevronRight, ChevronDown, ExternalLink } from "lucide-react";
+import { url } from "@/lib/paths";
 
 function useReveal() {
   useEffect(() => {
@@ -250,7 +251,7 @@ export default function Subsidy() {
           <div className="max-w-3xl mx-auto text-center">
           <h2 className="section-heading text-2xl lg:text-3xl text-white mb-4 reveal">助成金活用も含めて、まずは相談する。</h2>
           <p className="text-white/60 mb-8 reveal">無料カリキュラム相談では、助成金活用の可能性についての情報提供も行います。</p>
-          <a href="/#consultation" className="btn-primary inline-flex reveal">
+          <a href={`${url("/")}#consultation`} className="btn-primary inline-flex reveal">
             無料カリキュラム相談を申し込む <ArrowRight size={16} />
           </a>
           </div>

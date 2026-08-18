@@ -8,25 +8,11 @@
  */
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { asset, url } from "@/lib/paths";
 
-const BASE = "/services/ai-training/ai-reskilling";
-
-// Resolve href for both dev and production environments
-function resolveHref(href: string): string {
-  // In production, prefix with BASE; in dev, use as-is
-  // We detect production by checking if window.location.pathname starts with BASE
-  if (typeof window !== "undefined" && window.location.pathname.startsWith(BASE)) {
-    if (href.startsWith("/#")) return `${BASE}/${href.slice(2) ? "#" + href.slice(2) : ""}`;
-    if (href === "/curriculum-industry/") return `${BASE}/curriculum-industry/`;
-    if (href === "/curriculum-job/") return `${BASE}/curriculum-job/`;
-    if (href === "/subsidy/") return `${BASE}/subsidy/`;
-  }
-  return href;
-}
-
-// Check if current page is home
+// Check if current page is home (location is base-relative thanks to <Router base>)
 function isHomePage(pathname: string): boolean {
-  return pathname === "/" || pathname === `${BASE}/` || pathname === `${BASE}`;
+  return pathname === "/" || pathname === "";
 }
 
 // Scroll to anchor with offset for sticky header + category bar
@@ -98,14 +84,11 @@ export default function GlobalNav() {
         scrollToAnchor(item.anchor);
       } else {
         // Navigate to home with hash — use window.location for full navigation
-        const homeUrl = typeof window !== "undefined" && window.location.pathname.startsWith(BASE)
-          ? `${BASE}/#${item.anchor}`
-          : `/#${item.anchor}`;
-        window.location.href = homeUrl;
+        window.location.href = `${url("/")}#${item.anchor}`;
       }
     } else if (item.href) {
       // Page link
-      const resolved = resolveHref(item.href);
+      const resolved = url(item.href);
       // For page links (no anchor), always navigate to TOP of page
       if ("scrollRestoration" in window.history) {
         window.history.scrollRestoration = "manual";
@@ -120,20 +103,14 @@ export default function GlobalNav() {
     if (isHome) {
       scrollToAnchor("consultation");
     } else {
-      const homeUrl = typeof window !== "undefined" && window.location.pathname.startsWith(BASE)
-        ? `${BASE}/#consultation`
-        : `/#consultation`;
-      window.location.href = homeUrl;
+      window.location.href = `${url("/")}#consultation`;
     }
   }
 
   function handleLogoClick(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
     setMenuOpen(false);
-    const homeUrl = typeof window !== "undefined" && window.location.pathname.startsWith(BASE)
-      ? `${BASE}/`
-      : `/`;
-    window.location.href = homeUrl;
+    window.location.href = url("/");
   }
 
   return (
@@ -144,9 +121,9 @@ export default function GlobalNav() {
     >
       <div className="container flex items-center justify-between h-16">
         {/* Logo */}
-        <a href="/" onClick={handleLogoClick} className="group flex shrink-0 items-center" aria-label="Meta Heroes AI Reskilling トップへ">
+        <a href={url("/")} onClick={handleLogoClick} className="group flex shrink-0 items-center" aria-label="Meta Heroes AI Reskilling トップへ">
           <img
-            src="/manus-storage/meta-heroes-reskilling-logo_b41f37ab.png"
+            src={asset("/images/meta-heroes-reskilling-logo.png")}
             alt="Meta Heroes AI Reskilling"
             className="h-8 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85 sm:h-9"
             width="160"
@@ -160,7 +137,7 @@ export default function GlobalNav() {
             const active = getNavItemActive(item);
             return (
               <a key={item.label}
-                href={item.href || `/#${item.anchor}`}
+                href={item.href ? url(item.href) : `${url("/")}#${item.anchor}`}
                 onClick={(e) => handleNavClick(e, item)}
                 className={`text-sm font-medium transition-colors duration-200 ${
                   active
@@ -171,7 +148,7 @@ export default function GlobalNav() {
               </a>
             );
           })}
-          <a href="/#consultation" onClick={handleConsultationClick} className="btn-primary text-sm py-2.5 px-5">
+          <a href={`${url("/")}#consultation`} onClick={handleConsultationClick} className="btn-primary text-sm py-2.5 px-5">
             無料相談
           </a>
         </nav>
@@ -197,7 +174,7 @@ export default function GlobalNav() {
               const active = getNavItemActive(item);
               return (
                 <a key={item.label}
-                  href={item.href || `/#${item.anchor}`}
+                  href={item.href ? url(item.href) : `${url("/")}#${item.anchor}`}
                   onClick={(e) => handleNavClick(e, item)}
                   className={`py-2.5 text-sm font-medium border-b border-white/5 last:border-0 ${
                     active ? "text-[#e879b8]" : "text-white/80 hover:text-white"
@@ -206,7 +183,7 @@ export default function GlobalNav() {
                 </a>
               );
             })}
-            <a href="/#consultation" onClick={handleConsultationClick}
+            <a href={`${url("/")}#consultation`} onClick={handleConsultationClick}
               className="btn-primary mt-3 justify-center py-3 text-sm">
               無料でカリキュラム相談する
             </a>
