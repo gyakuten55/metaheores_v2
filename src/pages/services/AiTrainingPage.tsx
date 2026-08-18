@@ -38,7 +38,7 @@ export const AiTrainingPage: React.FC = () => {
       <ServiceIntroBanner 
         image="/assets/services/ai-training/hero-thumbnail.png"
         title="実務に即した、従業員のDXスキルを身につけることができる研修サービス。"
-        websiteUrl="https://meta-heroes.co.jp"
+        websiteUrl="/services/ai-training/reskilling/"
       />
 
       {/* Concept Section - Full Width Gray Background */}
@@ -247,8 +247,6 @@ export const AiTrainingPage: React.FC = () => {
         <div className="container mx-auto px-4 py-24">
           <div className="flex flex-col md:flex-row justify-center items-stretch gap-6">
             <a href="https://meta-heroes.co.jp" target="_blank" rel="noopener noreferrer"
-              
-              
               className="group relative flex items-center justify-between w-full md:w-[320px] px-8 py-5 bg-[#333333] text-white rounded-full overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
