@@ -203,10 +203,14 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+// Dev-only tooling (Manus preview runtime / JSX location tagging / storage proxy)
+// is excluded from production builds so the deployed LP ships plain assets.
+const devOnlyPlugins = [jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
 
-export default defineConfig({
-  plugins,
+export default defineConfig(({ command }) => ({
+  plugins: command === "serve" ? [react(), tailwindcss(), ...devOnlyPlugins] : [react(), tailwindcss()],
+  // Deployed under meta-heroes.co.jp/services/ai-training/reskilling/
+  base: "/services/ai-training/reskilling/",
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
@@ -238,4 +242,4 @@ export default defineConfig({
       deny: ["**/.*"],
     },
   },
-});
+}));

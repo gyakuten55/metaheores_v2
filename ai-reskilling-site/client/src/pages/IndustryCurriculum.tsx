@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import GlobalNav from "@/components/GlobalNav";
 import Footer from "@/components/Footer";
 import { ArrowRight, ChevronRight } from "lucide-react";
+import { url } from "@/lib/paths";
 
 // Sticky header height + category bar height + extra padding
 const SCROLL_OFFSET = 64 + 48 + 20; // globalNav + categoryBar + padding
@@ -269,7 +270,7 @@ function IndustrySection({ cat, index }: { cat: typeof industryCategories[0]; in
 
         {/* Small text link CTA */}
         <div className="mt-4 reveal">
-          <a href="/#consultation" onClick={(e) => { e.preventDefault(); window.location.href = "/#consultation"; }}
+          <a href={`${url("/")}#consultation`} onClick={(e) => { e.preventDefault(); window.location.href = `${url("/")}#consultation`; }}
             className="inline-flex items-center gap-1.5 text-[#A3377B] text-sm font-semibold hover:underline">
             この業種について相談する <ArrowRight size={14} />
           </a>
@@ -400,7 +401,7 @@ export default function IndustryCurriculum() {
       <div className="py-16 text-center" style={{ background: "linear-gradient(135deg, #172554, #1e2d6b)" }}>
         <div className="container">
           <h2 className="section-heading text-2xl lg:text-3xl text-white mb-4">御社の業種に合ったカリキュラムを、一緒に設計します。</h2>
-          <a href="/#consultation" onClick={(e) => { e.preventDefault(); window.location.href = "/#consultation"; }} className="btn-primary inline-flex mt-2">
+          <a href={`${url("/")}#consultation`} onClick={(e) => { e.preventDefault(); window.location.href = `${url("/")}#consultation`; }} className="btn-primary inline-flex mt-2">
             無料でカリキュラム相談する <ArrowRight size={16} />
           </a>
         </div>

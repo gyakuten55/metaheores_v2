@@ -3,6 +3,7 @@
  * Design: Enterprise Depth — Dark Navy
  */
 import { Link } from "wouter";
+import { asset, url } from "@/lib/paths";
 
 export default function Footer() {
   return (
@@ -12,7 +13,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2.5 mb-4">
               <div className="w-8 h-8 rounded-md overflow-hidden bg-[#243B72] flex items-center justify-center">
-                <img src="/manus-storage/logo_mh_65379d15.png" alt="Meta Heroes" className="w-full h-full object-cover" />
+                <img src={asset("/images/logo_mh.png")} alt="Meta Heroes" className="w-full h-full object-cover" />
               </div>
               <span className="text-white font-bold text-sm">Meta Heroes</span>
             </div>
@@ -33,7 +34,7 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold text-sm mb-4">お問い合わせ</h4>
             <p className="text-sm mb-4">無料カリキュラム相談は随時受け付けています。</p>
-            <a href="/#consultation" className="btn-primary text-sm py-2.5 px-5 inline-flex">
+            <a href={`${url("/")}#consultation`} className="btn-primary text-sm py-2.5 px-5 inline-flex">
               無料相談を申し込む
             </a>
           </div>

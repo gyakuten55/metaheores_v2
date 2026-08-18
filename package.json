@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:reskilling-lp": "pnpm --dir ai-reskilling-site install --frozen-lockfile && pnpm --dir ai-reskilling-site run build && node scripts/sync-reskilling-lp.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.90.1",

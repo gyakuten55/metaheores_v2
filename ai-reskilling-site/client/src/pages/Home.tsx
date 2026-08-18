@@ -26,6 +26,7 @@ import {
   OverviewSection,
   RegulationSection,
 } from "@/components/HomeSections";
+import { asset, url } from "@/lib/paths";
 
 // ── Scroll reveal ────────────────────────────────────────────────────────────
 function useReveal() {
@@ -341,9 +342,9 @@ export default function Home() {
           <div className="absolute inset-x-0 bottom-0 h-32 z-10 pointer-events-none"
             style={{ background: "linear-gradient(to top, #0f1f4a 0%, transparent 100%)" }} />
           <picture>
-            <source srcSet="/manus-storage/fv_hero_image_6568e34a.webp" type="image/webp" />
+            <source srcSet={asset("/images/fv_hero_image.webp")} type="image/webp" />
             <img
-              src="/manus-storage/fv_hero_image_f5ad7448.png"
+              src={asset("/images/fv_hero_image.png")}
               alt="複数業種の仕事がデジタルにつながるビジュアル"
               className="w-full h-full"
               style={{ objectFit: "cover", objectPosition: "center center" }}
@@ -499,7 +500,7 @@ export default function Home() {
             </div>
             <p className="text-white/60 text-xs mb-1 reveal">※所定の要件を満たし、想定する助成額が認められた場合の一例です。助成金の支給・助成額を保証するものではありません。</p>
             <p className="text-white/50 text-xs mb-6 reveal">標準研修費：1名40万円 ※研修内容・時間・人数等により異なる場合があります。</p>
-            <a href="/subsidy" onClick={(e) => { e.preventDefault(); window.history.scrollRestoration = "manual" as ScrollRestoration; window.location.href = "/subsidy"; }} className="btn-primary inline-flex reveal">
+            <a href={url("/subsidy")} onClick={(e) => { e.preventDefault(); window.history.scrollRestoration = "manual" as ScrollRestoration; window.location.href = url("/subsidy"); }} className="btn-primary inline-flex reveal">
               助成金活用ガイドを見る <ArrowRight size={16} />
             </a>
           </div>

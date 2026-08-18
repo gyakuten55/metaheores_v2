@@ -6,21 +6,44 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/sync", "destination": "/api/sync.js" },
-    { "source": "/api/send-mail", "destination": "/api/send-mail.js" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/api/sync",
+      "destination": "/api/sync.js"
+    },
+    {
+      "source": "/api/send-mail",
+      "destination": "/api/send-mail.js"
+    },
+    {
+      "source": "/services/ai-training/reskilling",
+      "destination": "/services/ai-training/reskilling/index.html"
+    },
+    {
+      "source": "/services/ai-training/reskilling/(.*)",
+      "destination": "/services/ai-training/reskilling/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ],
   "headers": [
     {
       "source": "/agency/(.*)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
       ]
     },
     {
       "source": "/agency-login",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
       ]
     }
   ],
