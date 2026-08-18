@@ -1,0 +1,482 @@
+/* =============================================================
+ * Design: Enterprise Depth — Dark Navy × Purple/Pink
+ * Colors: Dark Navy #172554 | Navy #243B72 | Purple #A3377B
+ * Fonts: Noto Sans JP (display/body) + Inter (numbers)
+ * ============================================================= */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  /* Brand colors */
+  --color-dark-navy: #172554;
+  --color-navy: #243B72;
+  --color-dark-purple: #762A62;
+  --color-accent-purple: #A3377B;
+  --color-light-bg: #F7F8FC;
+  --color-brand-text: #111827;
+  --color-muted-text: #64748B;
+  --color-line: #D9E0EA;
+}
+
+:root {
+  --radius: 0.5rem;
+  --background: oklch(0.98 0.003 240);
+  --foreground: oklch(0.13 0.02 240);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.13 0.02 240);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.13 0.02 240);
+  /* Primary = Accent Purple */
+  --primary: oklch(0.42 0.16 330);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.94 0.01 240);
+  --secondary-foreground: oklch(0.2 0.03 240);
+  --muted: oklch(0.94 0.005 240);
+  --muted-foreground: oklch(0.5 0.02 240);
+  --accent: oklch(0.42 0.16 330);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.88 0.01 240);
+  --input: oklch(0.88 0.01 240);
+  --ring: oklch(0.42 0.16 330);
+}
+
+.dark {
+  --background: oklch(0.16 0.04 255);
+  --foreground: oklch(0.95 0.005 240);
+  --card: oklch(0.2 0.04 255);
+  --card-foreground: oklch(0.95 0.005 240);
+  --popover: oklch(0.2 0.04 255);
+  --popover-foreground: oklch(0.95 0.005 240);
+  --primary: oklch(0.55 0.18 330);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.25 0.05 255);
+  --secondary-foreground: oklch(0.85 0.01 240);
+  --muted: oklch(0.25 0.04 255);
+  --muted-foreground: oklch(0.6 0.02 240);
+  --accent: oklch(0.55 0.18 330);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.55 0.18 330);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Noto Sans JP', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  a[href],
+  select:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+
+  /* Brand-specific utilities */
+  .section-dark {
+    background-color: #172554;
+    color: #ffffff;
+  }
+  .section-navy {
+    background-color: #243B72;
+    color: #ffffff;
+  }
+  .section-light {
+    background-color: #F7F8FC;
+    color: #111827;
+  }
+  .section-white {
+    background-color: #ffffff;
+    color: #111827;
+  }
+
+  /* Glass card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+  }
+  .glass-card-light {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(163, 55, 123, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(23, 37, 84, 0.08);
+  }
+
+  /* CTA button */
+  .btn-primary {
+    background: linear-gradient(135deg, #A3377B, #762A62);
+    color: white;
+    font-weight: 700;
+    padding: 0.875rem 2rem;
+    border-radius: 6px;
+    transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 4px 20px rgba(163, 55, 123, 0.35);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(163, 55, 123, 0.5);
+  }
+  .btn-primary:active {
+    transform: scale(0.97);
+  }
+  .btn-outline-navy {
+    background: transparent;
+    color: white;
+    font-weight: 600;
+    padding: 0.875rem 2rem;
+    border-radius: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-outline-navy:hover {
+    border-color: white;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Number font */
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Section heading */
+  .section-heading {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  /* Outline number */
+  .outline-number {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 5rem;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(163, 55, 123, 0.3);
+    user-select: none;
+  }
+
+  /* Subsidy badge */
+  .subsidy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: rgba(163, 55, 123, 0.15);
+    border: 1px solid rgba(163, 55, 123, 0.4);
+    color: #e879b8;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+  }
+
+  /* SP Sticky CTA — shown after FV scroll, hidden near form */
+  .sp-sticky-cta {
+    display: none;
+  }
+  @media (max-width: 1023px) {
+    .sp-sticky-cta {
+      display: flex;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 45;
+      padding: 0.625rem 1rem;
+      padding-bottom: max(0.625rem, env(safe-area-inset-bottom));
+      background: rgba(23, 37, 84, 0.97);
+      border-top: 1px solid rgba(163, 55, 123, 0.3);
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s cubic-bezier(0.23,1,0.32,1), opacity 0.3s ease;
+    }
+    .sp-sticky-cta.hidden-cta {
+      transform: translateY(100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .btn-primary,
+    .btn-outline-navy,
+    * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}
+
+/* ── GRID SYSTEM ─────────────────────────────────────────────────────────────
+ * 全ページ共通コンテンツグリッド
+ * .container が基準グリッド。左端を全セクションで統一する。
+ * 幅を狭める場合は max-w-* を使うが、左揃え（mx-auto なし）を基本とする。
+ */
+
+/* 横スライダーのトラック */
+.slider-track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+  user-select: none;
+}
+.slider-track::-webkit-scrollbar { display: none; }
+.slider-track.is-dragging { cursor: grabbing; }
+.slider-track.is-dragging * { pointer-events: none; }
+
+/* スライダーの左端パディング — container の左端と揃える */
+.slider-left-pad { padding-left: 1rem; }
+@media (min-width: 640px) { .slider-left-pad { padding-left: 1.5rem; } }
+@media (min-width: 1024px) {
+  .slider-left-pad { padding-left: max(2rem, calc((100vw - 1280px) / 2 + 2rem)); }
+}
+
+/* Arrow ボタン */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid #D9E0EA;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: all 0.2s;
+  color: #172554;
+}
+.slider-arrow:hover { background: #172554; color: white; border-color: #172554; }
+.slider-arrow:disabled { opacity: 0.3; pointer-events: none; }
+.slider-arrow-left { left: -1.25rem; }
+.slider-arrow-right { right: -1.25rem; }
+
+/* Progress dots */
+.slider-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: #D9E0EA;
+  transition: all 0.3s;
+}
+.slider-dot.active { width: 1.5rem; background: #A3377B; }
+
+/* ── REEL SECTION ────────────────────────────────────────────────────────────
+ * Sticky Reel — スロットマシン縦リール演出
+ */
+.reel-item {
+  transition: opacity 0.45s cubic-bezier(0.23,1,0.32,1),
+              transform 0.45s cubic-bezier(0.23,1,0.32,1),
+              filter 0.45s ease;
+}
+.reel-item.active {
+  opacity: 1;
+  transform: scale(1) translateY(0) rotateX(0deg);
+  filter: blur(0px);
+}
+.reel-item.above {
+  opacity: 0.22;
+  transform: scale(0.86) translateY(-58%) rotateX(22deg);
+  filter: blur(1px);
+}
+.reel-item.below {
+  opacity: 0.22;
+  transform: scale(0.86) translateY(58%) rotateX(-22deg);
+  filter: blur(1px);
+}
+.reel-item.hidden-above {
+  opacity: 0;
+  transform: scale(0.78) translateY(-120%) rotateX(35deg);
+  filter: blur(2px);
+}
+.reel-item.hidden-below {
+  opacity: 0;
+  transform: scale(0.78) translateY(120%) rotateX(-35deg);
+  filter: blur(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-item { transition: opacity 0.2s ease; }
+  .reel-item.above,
+  .reel-item.below,
+  .reel-item.hidden-above,
+  .reel-item.hidden-below {
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+/* Reel illustration fade-in */
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── REEL BACKGROUND LAYER SYSTEM ───────────────────────────────────────────
+ * 背景全面化準備: reel-sticky-inner内の3レイヤー構造
+ *
+ * [1] .reel-bg-image  — 背景画像レイヤー (position:absolute, inset:0, z-index:0)
+ *     後から <img> または background-image を差し込む
+ * [2] .reel-bg-overlay — フェードオーバーレイ (z-index:1)
+ *     左側をDark Navyに溶かし、テキスト可読性を確保
+ * [3] .reel-content   — テキスト・リール (position:relative, z-index:2)
+ */
+.reel-sticky-inner {
+  position: relative;
+  background: linear-gradient(160deg, #0f1e4a 0%, #172554 60%, #1a1040 100%);
+}
+
+/* [1] 背景画像レイヤー */
+.reel-bg-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+/* 差し込む画像のスタイル */
+.reel-bg-image img,
+.reel-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  /* 個別img要素でopacityを制御するため、ここでは1 */
+  opacity: 1;
+}
+
+/* [2] フェードオーバーレイ — 左側をDark Navyに溶かす */
+.reel-bg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* PC: 右側60%が画像、左側40%がDark Navy → テキストエリアを確保 */
+  background: linear-gradient(
+    to right,
+    #172554 0%,
+    rgba(23, 37, 84, 0.95) 30%,
+    rgba(23, 37, 84, 0.7) 45%,
+    rgba(23, 37, 84, 0.15) 65%,
+    transparent 100%
+  );
+}
+@media (max-width: 1023px) {
+  /* Tablet: 上部をDark Navyで覆い、下部で画像が見える */
+  .reel-bg-overlay {
+    background: linear-gradient(
+      to bottom,
+      #172554 0%,
+      rgba(23, 37, 84, 0.9) 50%,
+      rgba(23, 37, 84, 0.6) 100%
+    );
+  }
+}
+@media (max-width: 639px) {
+  /* SP: ほぼ全体をDark Navyで覆う (テキスト可読性優先) */
+  .reel-bg-overlay {
+    background: rgba(23, 37, 84, 0.88);
+  }
+}
+
+/* [3] コンテンツレイヤー */
+.reel-content {
+  position: relative;
+  z-index: 2;
+}
